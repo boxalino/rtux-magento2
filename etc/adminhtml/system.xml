@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <!-- for add new tab in Magento2 system configuration section -->
+        <tab id="boxalino" translate="label" sortOrder="10">
+            <label>Boxalino</label>
+        </tab>
+        <!-- for create section -->
+        <section id="rtux" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+            <class>separator-top</class>
+            <label>General</label>
+            <!-- Assign section to tab -->
+            <tab>boxalino</tab>
+            <resource>Boxalino_RealTimeUserExperience::configuration</resource>
+            <group id="general" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>General</label>
+                <field id="status" translate="label" sortOrder="10" type="select" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Status</label>
+                    <source_model>Magento\Config\Model\Config\Source\Enabledisable</source_model>
+                    <comment>Is the Boxalino plugin active?</comment>
+                </field>
+                <field id="account" translate="label comment" sortOrder="20" type="text" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Boxalino account name</label>
+                    <comment>Please request your account with credentials by contacting support@boxalino.com</comment>
+                </field>
+                <field id="apiKey" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0" >
+                    <label>ApiKey</label>
+                    <comment>Please request your account with credentials by contacting support@boxalino.com</comment>
+                </field>
+                <field id="apiSecret" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="0" >
+                    <label>ApiSecret</label>
+                    <comment>Please request your account with credentials by contacting support@boxalino.com</comment>
+                </field>
+                <field id="password" translate="label comment" sortOrder="50" type="password" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Boxalino password</label>
+                    <comment>Please request your account with credentials by contacting support@boxalino.com</comment>
+                </field>
+                <field id="dev" translate="label" type="select" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1" >
+                    <label>Use Development Data Index</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+            </group>
+
+            <group id="tracker" translate="label" type="text"  sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Tracker</label>
+                <!-- create text type field -->
+                <field id="status" translate="label" sortOrder="10" type="select" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Status</label>
+                    <source_model>Magento\Config\Model\Config\Source\Enabledisable</source_model>
+                    <comment>Is the JavaScript tracker enabled?</comment>
+                </field>
+            </group>
+
+            <group id="api" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>REST API</label>
+                <field id="url" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0" >
+                    <label>REST API Url</label>
+                    <comment>REST API Url is https://*domain*.bx-cloud.com/narrative/*account*/api/1 where *domain* is main/r-st depending on your instance context (production or staging); *account* is the account name</comment>
+                </field>
+                <field id="test" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1" >
+                    <label>Test mode</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>The request will use test=false by default; The test property refers to the Boxalino Optimization configurations used (narratives, scenario, facets, etc)</comment>
+                </field>
+                <field id="apiServerKey" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0" >
+                    <label>JS API Key</label>
+                    <comment>JavaScript API Key as provided by Boxalino</comment>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>
