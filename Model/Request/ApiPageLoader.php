@@ -5,7 +5,6 @@ use Boxalino\RealTimeUserExperience\Framework\Request\ContextTrait;
 use Boxalino\RealTimeUserExperience\Framework\Request\RequestParametersTrait;
 use Boxalino\RealTimeUserExperience\Helper\Configuration as StoreConfigurationHelper;
 use Boxalino\RealTimeUserExperience\Model\ApiLoaderTrait;
-use Boxalino\RealTimeUserExperience\Model\Response\Page\ApiResponsePage;
 use Boxalino\RealTimeUserExperienceApi\Framework\Content\Page\ApiPageLoaderAbstract;
 use Boxalino\RealTimeUserExperienceApi\Framework\Content\Page\ApiResponsePageInterface;
 use Boxalino\RealTimeUserExperienceApi\Service\Api\ApiCallServiceInterface;
