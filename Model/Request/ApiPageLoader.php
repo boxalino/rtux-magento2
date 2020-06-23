@@ -25,10 +25,12 @@ class ApiPageLoader extends ApiPageLoaderAbstract
     public function __construct(
         ApiCallServiceInterface $apiCallService,
         ConfigurationInterface $configuration,
+        ApiResponsePageInterface $apiResponsePage,
         \Magento\Framework\Event\ManagerInterface $eventManager,
         StoreConfigurationHelper $storeConfigurationHelper
     ){
         parent::__construct($apiCallService, $configuration);
+        $this->apiResponsePage = $apiResponsePage;
         $this->eventManager =$eventManager;
         $this->storeConfigurationHelper = $storeConfigurationHelper;
     }
@@ -50,11 +52,6 @@ class ApiPageLoader extends ApiPageLoaderAbstract
      */
     public function getApiResponsePage(): ?ApiResponseViewInterface
     {
-        if(!$this->apiResponsePage)
-        {
-            $this->apiResponsePage = new ApiResponsePage();
-        }
-
         return $this->apiResponsePage;
     }
 }

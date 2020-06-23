@@ -26,6 +26,6 @@ trait ApiLoaderTrait
      */
     public function getContextId() : string
     {
-        return (string) $this->storeConfigurationHelper->getMagentoStoreId();
+        return \Magento\Store\Model\ScopeInterface::SCOPE_STORE;
     }
 }

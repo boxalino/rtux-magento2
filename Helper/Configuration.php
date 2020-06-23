@@ -1,7 +1,6 @@
 <?php
 namespace Boxalino\RealTimeUserExperience\Helper;
 
-
 /**
  * Class Configuration
  * Accesses platform (Magento2) data

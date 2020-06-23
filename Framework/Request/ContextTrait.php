@@ -26,6 +26,7 @@ trait ContextTrait
     public function validateRequest(RequestInterface $request) : void {}
 
     /**
+     * @param RequestInterface $request
      * @return ParameterInterface
      */
     public function getVisibilityFilter(RequestInterface $request) : ParameterInterface
@@ -35,6 +36,7 @@ trait ContextTrait
     }
 
     /**
+     * @param RequestInterface $request
      * @return ParameterInterface
      */
     public function getCategoryFilter(RequestInterface $request) : ParameterInterface
@@ -44,6 +46,7 @@ trait ContextTrait
     }
 
     /**
+     * @param RequestInterface $request
      * @return ParameterInterface
      */
     public function getActiveFilter(RequestInterface $request) : ParameterInterface

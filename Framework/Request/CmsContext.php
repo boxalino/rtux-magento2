@@ -2,47 +2,34 @@
 namespace Boxalino\RealTimeUserExperience\Framework\Request;
 
 use Boxalino\RealTimeUserExperience\Helper\Configuration as StoreConfigurationHelper;
-use Boxalino\RealTimeUserExperienceApi\Framework\Request\SearchContextAbstract;
-use Boxalino\RealTimeUserExperienceApi\Service\Api\Request\Context\ListingContextInterface;
-use Boxalino\RealTimeUserExperienceApi\Service\Api\Request\Context\SearchContextInterface;
+use Boxalino\RealTimeUserExperienceApi\Framework\Request\ContextAbstract;
+use Boxalino\RealTimeUserExperienceApi\Service\Api\Request\ContextInterface;
+use Boxalino\RealTimeUserExperienceApi\Service\Api\Request\Definition\ListingRequestDefinitionInterface;
 use Boxalino\RealTimeUserExperienceApi\Service\Api\Request\ParameterFactoryInterface;
 use Boxalino\RealTimeUserExperienceApi\Service\Api\Request\RequestInterface;
 use Boxalino\RealTimeUserExperienceApi\Service\Api\Request\RequestTransformerInterface;
 use Magento\Catalog\Model\Product\Visibility;
-use Symfony\Component\HttpFoundation\Request;
 
 /**
- * Boxalino Search Request handler
- * Allows to set the nr of subphrases and products returned on each subphrase hit
+ * Class CmsContext
+ * Holds the request properties: widget, hitcount, returnfields, groupby, offset, etc
  *
- * @package Boxalino\RealTimeUserExperienceSample\Framework\Request
+ * @package Boxalino\RealTimeUserExperience\Block\ApiNarrative
  */
-class SearchContext extends SearchContextAbstract
-    implements SearchContextInterface, ListingContextInterface
+class CmsContext extends ContextAbstract
+    implements ContextInterface
 {
     use ContextTrait;
     use RequestParametersTrait;
 
-    /**
-     * @var \Magento\Framework\App\Request\Http
-     */
-    protected $request;
-
-    /**
-     * @var \Magento\Search\Model\QueryFactory
-     */
-    protected $queryFactory;
-
     public function __construct(
         RequestTransformerInterface $requestTransformer,
         ParameterFactoryInterface $parameterFactory,
-        \Magento\Framework\App\Request\Http $request,
-        \Magento\Search\Model\QueryFactory $queryFactory,
+        ListingRequestDefinitionInterface $requestDefinition,
         StoreConfigurationHelper $storeConfigurationHelper
     ) {
         parent::__construct($requestTransformer, $parameterFactory);
-        $this->request = $request;
-        $this->queryFactory = $queryFactory;
+        $this->setRequestDefinition($requestDefinition);
         $this->storeConfigurationHelper = $storeConfigurationHelper;
     }
 
@@ -52,7 +39,7 @@ class SearchContext extends SearchContextAbstract
      */
     public function getContextVisibility() : array
     {
-        return [Visibility::VISIBILITY_BOTH, Visibility::VISIBILITY_IN_SEARCH];
+        return [Visibility::VISIBILITY_BOTH, Visibility::VISIBILITY_IN_SEARCH, Visibility::VISIBILITY_IN_CATALOG];
     }
 
     /**
@@ -73,16 +60,6 @@ class SearchContext extends SearchContextAbstract
     public function getReturnFields() : array
     {
         return ["id", "products_group_id", "title"];
-    }
-
-
-    /**
-     * Query string pre-validator
-     * @return string
-     */
-    public function getQueryText() : string
-    {
-        return $this->queryFactory->get()->getQueryText();
     }
 
 
