@@ -2,8 +2,6 @@
 namespace Boxalino\RealTimeUserExperience\Model;
 
 use Boxalino\RealTimeUserExperienceApi\Service\Api\ApiCallServiceInterface;
-use Magento\Framework\Event\ManagerInterface;
-use \Boxalino\RealTimeUserExperience\Helper\Configuration;
 
 trait ApiLoaderTrait
 {
@@ -17,17 +15,10 @@ trait ApiLoaderTrait
      */
     protected $storeConfigurationHelper;
 
+    /** @var ApiCallServiceInterface */
+    protected $apiCallService;
 
-    /**
-     * @return mixed
-     */
-    protected function validateCall(ApiCallServiceInterface $apiCallService) : void
-    {
-        if($apiCallService->isFallback())
-        {
-            throw new \Exception($apiCallService->getFallbackMessage());
-        }
-    }
+    protected function _beforeApiCallService(): void {}
 
     /**
      * @return string

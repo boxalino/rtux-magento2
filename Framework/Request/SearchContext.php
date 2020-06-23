@@ -5,7 +5,8 @@ use Boxalino\RealTimeUserExperience\Helper\Configuration as StoreConfigurationHe
 use Boxalino\RealTimeUserExperienceApi\Framework\Request\SearchContextAbstract;
 use Boxalino\RealTimeUserExperienceApi\Service\Api\Request\Context\ListingContextInterface;
 use Boxalino\RealTimeUserExperienceApi\Service\Api\Request\Context\SearchContextInterface;
-use Boxalino\RealTimeUserExperienceApi\Service\Api\Request\ParameterFactory;
+use Boxalino\RealTimeUserExperienceApi\Service\Api\Request\ParameterFactoryInterface;
+use Boxalino\RealTimeUserExperienceApi\Service\Api\Request\RequestInterface;
 use Boxalino\RealTimeUserExperienceApi\Service\Api\Request\RequestTransformerInterface;
 use Magento\Catalog\Model\Product\Visibility;
 use Symfony\Component\HttpFoundation\Request;
@@ -34,7 +35,7 @@ class SearchContext extends SearchContextAbstract
 
     public function __construct(
         RequestTransformerInterface $requestTransformer,
-        ParameterFactory $parameterFactory,
+        ParameterFactoryInterface $parameterFactory,
         \Magento\Framework\App\Request\Http $request,
         \Magento\Search\Model\QueryFactory $queryFactory,
         StoreConfigurationHelper $storeConfigurationHelper
@@ -57,10 +58,10 @@ class SearchContext extends SearchContextAbstract
     /**
      * For the search context - generally the root category ID is the navigation filter (if needed)
      *
-     * @param Request $request
+     * @param RequestInterface $request
      * @return string
      */
-    public function getContextNavigationId(Request $request): array
+    public function getContextNavigationId(RequestInterface $request): array
     {
         return [$this->storeConfigurationHelper->getMagentoRootCategoryId()];
     }

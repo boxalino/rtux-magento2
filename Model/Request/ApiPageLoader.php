@@ -9,9 +9,9 @@ use Boxalino\RealTimeUserExperience\Model\Response\Page\ApiResponsePage;
 use Boxalino\RealTimeUserExperienceApi\Framework\Content\Page\ApiPageLoaderAbstract;
 use Boxalino\RealTimeUserExperienceApi\Framework\Content\Page\ApiResponsePageInterface;
 use Boxalino\RealTimeUserExperienceApi\Service\Api\ApiCallServiceInterface;
-use Boxalino\RealTimeUserExperienceApi\Service\Api\Request\ContextInterface;
+use Boxalino\RealTimeUserExperienceApi\Service\Api\Request\RequestInterface;
+use Boxalino\RealTimeUserExperienceApi\Service\Api\Response\ApiResponseViewInterface;
 use Boxalino\RealTimeUserExperienceApi\Service\Api\Util\ConfigurationInterface;
-use Symfony\Component\HttpFoundation\Request;
 
 class ApiPageLoader extends ApiPageLoaderAbstract
 {
@@ -34,19 +34,11 @@ class ApiPageLoader extends ApiPageLoaderAbstract
     }
 
     /**
-     * @param ContextInterface $context
-     */
-    protected function prepareContext(ContextInterface $context): void
-    {
-        return;
-    }
-
-    /**
-     * @param Request $request
+     * @param RequestInterface $request
      * @param ApiResponsePageInterface $page
      * @return mixed|void
      */
-    protected function dispatchEvent(Request $request, ApiResponsePageInterface $page) : void
+    protected function dispatchEvent(RequestInterface $request, ApiResponsePageInterface $page) : void
     {
         $this->eventManager->dispatch(self::RTUX_API_LOADER_EVENT,
             ["content" => $page, "request" => $request]
@@ -54,11 +46,15 @@ class ApiPageLoader extends ApiPageLoaderAbstract
     }
 
     /**
-     * @param Request $request
-     * @return ApiResponsePageInterface
+     * @return ApiResponseViewInterface
      */
-    public function getApiResponsePage(Request $request): ApiResponsePageInterface
+    public function getApiResponsePage(): ?ApiResponseViewInterface
     {
-        return new ApiResponsePage();
+        if(!$this->apiResponsePage)
+        {
+            $this->apiResponsePage = new ApiResponsePage();
+        }
+
+        return $this->apiResponsePage;
     }
 }

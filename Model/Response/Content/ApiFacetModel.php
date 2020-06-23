@@ -31,5 +31,4 @@ class ApiFacetModel extends ApiFacetModelAbstract
         return ucwords(str_replace("_", " ", $propertyName));
     }
 
-
 }

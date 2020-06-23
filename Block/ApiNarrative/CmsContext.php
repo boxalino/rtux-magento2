@@ -6,11 +6,11 @@ use Boxalino\RealTimeUserExperience\Framework\Request\RequestParametersTrait;
 use Boxalino\RealTimeUserExperience\Helper\Configuration as StoreConfigurationHelper;
 use Boxalino\RealTimeUserExperienceApi\Framework\Request\ContextAbstract;
 use Boxalino\RealTimeUserExperienceApi\Service\Api\Request\ContextInterface;
-use Boxalino\RealTimeUserExperienceApi\Service\Api\Request\ParameterFactory;
-use Boxalino\RealTimeUserExperienceApi\Service\Api\Request\RequestDefinitionInterface;
+use Boxalino\RealTimeUserExperienceApi\Service\Api\Request\Definition\ListingRequestDefinitionInterface;
+use Boxalino\RealTimeUserExperienceApi\Service\Api\Request\ParameterFactoryInterface;
+use Boxalino\RealTimeUserExperienceApi\Service\Api\Request\RequestInterface;
 use Boxalino\RealTimeUserExperienceApi\Service\Api\Request\RequestTransformerInterface;
 use Magento\Catalog\Model\Product\Visibility;
-use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Class CmsContext
@@ -24,26 +24,14 @@ class CmsContext extends ContextAbstract
     use ContextTrait;
     use RequestParametersTrait;
 
-    /**
-     * @var \Magento\Framework\App\Request\Http
-     */
-    protected $request;
-
-    /**
-     * @var \Magento\Search\Model\QueryFactory
-     */
-    protected $queryFactory;
-
     public function __construct(
         RequestTransformerInterface $requestTransformer,
-        ParameterFactory $parameterFactory,
-        \Magento\Framework\App\Request\Http $request,
-        \Magento\Search\Model\QueryFactory $queryFactory,
+        ParameterFactoryInterface $parameterFactory,
+        ListingRequestDefinitionInterface $requestDefinition,
         StoreConfigurationHelper $storeConfigurationHelper
     ) {
         parent::__construct($requestTransformer, $parameterFactory);
-        $this->request = $request;
-        $this->queryFactory = $queryFactory;
+        $this->setRequestDefinition($requestDefinition);
         $this->storeConfigurationHelper = $storeConfigurationHelper;
     }
 
@@ -59,10 +47,10 @@ class CmsContext extends ContextAbstract
     /**
      * For the search context - generally the root category ID is the navigation filter (if needed)
      *
-     * @param Request $request
+     * @param RequestInterface $request
      * @return string
      */
-    public function getContextNavigationId(Request $request): array
+    public function getContextNavigationId(RequestInterface $request): array
     {
         return [$this->storeConfigurationHelper->getMagentoRootCategoryId()];
     }

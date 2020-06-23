@@ -2,6 +2,7 @@
 namespace Boxalino\RealTimeUserExperience\Model\Response\Page;
 
 use Boxalino\RealTimeUserExperienceApi\Framework\Content\Page\ApiResponsePageInterface;
+use Boxalino\RealTimeUserExperienceApi\Service\Api\Response\ApiResponseViewInterface;
 
 /**
  * @package Boxalino\RealTimeUserExperience\Model\Response\Page
@@ -81,7 +82,7 @@ class ApiResponsePage implements ApiResponsePageInterface
      * @param \ArrayIterator $blocks
      * @return $this
      */
-    public function setBlocks(\ArrayIterator $blocks) : self
+    public function setBlocks(\ArrayIterator $blocks) : ApiResponseViewInterface
     {
         $this->blocks = $blocks;
         return $this;
@@ -91,7 +92,7 @@ class ApiResponsePage implements ApiResponsePageInterface
      * @param string $groupBy
      * @return $this
      */
-    public function setGroupBy(string $groupBy) : self
+    public function setGroupBy(string $groupBy) : ApiResponseViewInterface
     {
         $this->groupBy = $groupBy;
         return $this;
@@ -101,7 +102,7 @@ class ApiResponsePage implements ApiResponsePageInterface
      * @param string $requestId
      * @return $this
      */
-    public function setRequestId(string $requestId) : self
+    public function setRequestId(string $requestId) : ApiResponseViewInterface
     {
         $this->requestId = $requestId;
         return $this;
@@ -119,7 +120,7 @@ class ApiResponsePage implements ApiResponsePageInterface
      * @param bool $fallback
      * @return ApiResponsePage
      */
-    public function setFallback(bool $fallback): ApiResponsePage
+    public function setFallback(bool $fallback): ApiResponseViewInterface
     {
         $this->fallback = $fallback;
         return $this;
@@ -137,7 +138,7 @@ class ApiResponsePage implements ApiResponsePageInterface
      * @param string $variantUuid
      * @return ApiResponsePage
      */
-    public function setVariantUuid(string $variantUuid): ApiResponsePage
+    public function setVariantUuid(string $variantUuid): ApiResponseViewInterface
     {
         $this->variantUuid = $variantUuid;
         return $this;
@@ -155,7 +156,7 @@ class ApiResponsePage implements ApiResponsePageInterface
      * @param bool $hasSearchSubPhrases
      * @return ApiResponsePage
      */
-    public function setHasSearchSubPhrases(bool $hasSearchSubPhrases): ApiResponsePage
+    public function setHasSearchSubPhrases(bool $hasSearchSubPhrases)
     {
         $this->hasSearchSubPhrases = $hasSearchSubPhrases;
         return $this;
@@ -173,7 +174,7 @@ class ApiResponsePage implements ApiResponsePageInterface
      * @param string|null $redirectUrl
      * @return ApiResponsePage
      */
-    public function setRedirectUrl(?string $redirectUrl): ApiResponsePage
+    public function setRedirectUrl(?string $redirectUrl)
     {
         $this->redirectUrl = $redirectUrl;
         return $this;
@@ -191,7 +192,7 @@ class ApiResponsePage implements ApiResponsePageInterface
      * @param int $totalHitCount
      * @return ApiResponsePage
      */
-    public function setTotalHitCount(int $totalHitCount): ApiResponsePage
+    public function setTotalHitCount(int $totalHitCount)
     {
         $this->totalHitCount = $totalHitCount;
         return $this;
@@ -201,7 +202,7 @@ class ApiResponsePage implements ApiResponsePageInterface
      * @param string $searchTerm
      * @return $this
      */
-    public function setSearchTerm(string $searchTerm) : ApiResponsePage
+    public function setSearchTerm(string $searchTerm)
     {
         $this->searchTerm = $searchTerm;
         return $this;

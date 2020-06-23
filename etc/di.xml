@@ -11,12 +11,75 @@
     <preference for="Magento\CatalogSearch\Block\Result" type="Boxalino\RealTimeUserExperience\Block\CatalogSearch\ApiResult" />
     <preference for="Magento\CatalogSearch\Controller\Result\Index" type="Boxalino\RealTimeUserExperience\Controller\CatalogSearch\Result\Index"/>
     -->
+    <preference for="Boxalino\RealTimeUserExperienceApi\Service\Api\ApiCallServiceInterface" type="Boxalino\RealTimeUserExperienceApi\Service\Api\ApiCallService"/>
+    <preference for="Boxalino\RealTimeUserExperienceApi\Service\Api\Request\RequestDefinitionInterface" type="Boxalino\RealTimeUserExperienceApi\Service\Api\Request\RequestDefinition"/>
+    <preference for="Boxalino\RealTimeUserExperienceApi\Service\Api\Response\ResponseDefinitionInterface" type="Boxalino\RealTimeUserExperienceApi\Service\Api\Response\ResponseDefinition"/>
+    <preference for="Boxalino\RealTimeUserExperienceApi\Service\Api\Response\Accessor\AccessorInterface" type="Boxalino\RealTimeUserExperienceApi\Service\Api\Response\Accessor\Accessor"/>
+    <preference for="Boxalino\RealTimeUserExperienceApi\Service\Api\Request\Definition\ItemRequestDefinitionInterface" type="Boxalino\RealTimeUserExperienceApi\Service\Api\Request\Definition\ItemRequestDefinition"/>
+    <preference for="Boxalino\RealTimeUserExperienceApi\Service\Api\Request\Definition\AutocompleteRequestDefinitionInterface" type="Boxalino\RealTimeUserExperienceApi\Service\Api\Request\Definition\AutocompleteRequestDefinition"/>
+    <preference for="Boxalino\RealTimeUserExperienceApi\Service\Api\Request\Definition\SearchRequestDefinitionInterface" type="Boxalino\RealTimeUserExperienceApi\Service\Api\Request\Definition\SearchRequestDefinition"/>
+    <preference for="Boxalino\RealTimeUserExperienceApi\Service\Api\Request\Definition\ListingRequestDefinitionInterface" type="Boxalino\RealTimeUserExperienceApi\Service\Api\Request\Definition\ListingRequestDefinition"/>
+    <preference for="Boxalino\RealTimeUserExperienceApi\Service\Api\Util\AccessorHandlerInterface" type="Boxalino\RealTimeUserExperience\Service\Api\Util\AccessorHandler"/>
+    <preference for="Boxalino\RealTimeUserExperienceApi\Service\Api\Request\ParameterFactoryInterface" type="Boxalino\RealTimeUserExperience\Service\Api\Request\ParameterFactory"/>
 
-    <preference for="Boxalino\RealTimeUserExperienceApi\Service\Api\Util\ConfigurationInterface"
-                type="Boxalino\RealTimeUserExperience\Helper\Api\Configuration"/>
-    <preference for="Boxalino\RealTimeUserExperienceApi\Framework\Content\Page\ApiResponsePageInterface"
-             type="Boxalino\RealTimeUserExperience\Model\Response\Page\ApiResponsePage"/>
-    <preference for="Boxalino\RealTimeUserExperienceApi\Service\Api\Request\RequestTransformerInterface"
-             type="Boxalino\RealTimeUserExperience\Framework\Request\RequestTransformer"/>
+    <type name="Boxalino\RealTimeUserExperience\Service\Api\Request\ParameterFactory">
+        <arguments>
+            <argument name="definitionLinks" xsi:type="array">
+                <item name="facet" xsi:type="object">Boxalino\RealTimeUserExperienceApi\Service\Api\Request\Parameter\FacetDefinitionFactory</item>
+                <item name="filter" xsi:type="object">Boxalino\RealTimeUserExperienceApi\Service\Api\Request\Parameter\FilterDefinitionFactory</item>
+                <item name="header" xsi:type="object">Boxalino\RealTimeUserExperienceApi\Service\Api\Request\Parameter\HeaderParameterDefinitionFactory</item>
+                <item name="item" xsi:type="object">Boxalino\RealTimeUserExperienceApi\Service\Api\Request\Parameter\ItemDefinitionFactory</item>
+                <item name="sorting" xsi:type="object">Boxalino\RealTimeUserExperienceApi\Service\Api\Request\Parameter\SortingDefinitionFactory</item>
+                <item name="user" xsi:type="object">Boxalino\RealTimeUserExperienceApi\Service\Api\Request\Parameter\UserParameterDefinitionFactory</item>
+                <item name="default" xsi:type="object">Boxalino\RealTimeUserExperienceApi\Service\Api\Request\ParameterDefinitionFactory</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Boxalino\RealTimeUserExperience\Service\Api\Util\AccessorHandler">
+        <arguments>
+            <argument name="accessorList" xsi:type="array">
+                <item name="facet" xsi:type="array">
+                    <item name="facet" xsi:type="string">Boxalino\RealTimeUserExperienceApi\Service\Api\Response\Accessor\Facet</item>
+                </item>
+                <item name="bx-sort" xsi:type="array">
+                    <item name="sorting" xsi:type="string">Boxalino\RealTimeUserExperienceApi\Service\Api\Response\Accessor\Sort</item>
+                </item>
+                <item name="facetValue" xsi:type="array">
+                    <item name="property" xsi:type="string">Boxalino\RealTimeUserExperienceApi\Service\Api\Response\Accessor\FacetValue</item>
+                </item>
+                <item name="bx-acQuery" xsi:type="array">
+                    <item name="suggestion" xsi:type="string">Boxalino\RealTimeUserExperienceApi\Service\Api\Response\Accessor\AcQuery</item>
+                </item>
+                <item name="bx-pagination" xsi:type="array">
+                    <item name="pagination" xsi:type="string">Boxalino\RealTimeUserExperienceApi\Service\Api\Response\Accessor\Pagination</item>
+                </item>
+                <item name="bx-hit" xsi:type="array">
+                    <item name="product" xsi:type="string">Boxalino\RealTimeUserExperienceApi\Service\Api\Response\Accessor\Hit</item>
+                </item>
+                <item name="blocks" xsi:type="array">
+                    <item name="blocks" xsi:type="string">Boxalino\RealTimeUserExperienceApi\Service\Api\Response\Accessor\Block</item>
+                </item>
+                <item name="bx-hits" xsi:type="array">
+                    <item name="productsCollection" xsi:type="string">Boxalino\RealTimeUserExperienceApi\Service\Api\Response\Accessor\BxAccessor</item>
+                </item>
+                <item name="bx-acQueries" xsi:type="array">
+                    <item name="suggestionsCollection" xsi:type="string">Boxalino\RealTimeUserExperienceApi\Service\Api\Response\Accessor\BxAccessor</item>
+                </item>
+                <item name="bx-facets" xsi:type="array">
+                    <item name="facetsList" xsi:type="string">Boxalino\RealTimeUserExperienceApi\Service\Api\Response\Accessor\BxAccessor</item>
+                </item>
+            </argument>
+            <argument name="hitIdFieldNameList" xsi:type="array">
+                <item name="bx-hit" xsi:type="string">products_group_id</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <preference for="Boxalino\RealTimeUserExperienceApi\Framework\Content\Listing\ApiSortingModelInterface" type="Boxalino\RealTimeUserExperience\Model\Response\Content\ApiSortingModel"/>
+    <preference for="Boxalino\RealTimeUserExperienceApi\Service\Api\Util\ConfigurationInterface" type="Boxalino\RealTimeUserExperience\Helper\Api\Configuration"/>
+    <preference for="Boxalino\RealTimeUserExperienceApi\Framework\Content\Page\ApiResponsePageInterface" type="Boxalino\RealTimeUserExperience\Model\Response\Page\ApiResponsePage"/>
+    <preference for="Boxalino\RealTimeUserExperienceApi\Service\Api\Request\RequestTransformerInterface" type="Boxalino\RealTimeUserExperience\Framework\Request\RequestTransformer"/>
+    <preference for="Boxalino\RealTimeUserExperienceApi\Service\Api\Request\RequestInterface" type="Boxalino\RealTimeUserExperience\Service\Api\Request\Request"/>
 
 </config>

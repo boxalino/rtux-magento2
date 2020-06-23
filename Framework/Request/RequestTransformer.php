@@ -2,14 +2,12 @@
 namespace Boxalino\RealTimeUserExperience\Framework\Request;
 
 use Boxalino\RealTimeUserExperienceApi\Framework\Content\Listing\ApiSortingModelInterface;
-use Boxalino\RealTimeUserExperienceApi\Service\Api\Request\ParameterFactory;
+use Boxalino\RealTimeUserExperienceApi\Service\Api\Request\ParameterFactoryInterface;
+use Boxalino\RealTimeUserExperienceApi\Service\Api\Request\RequestInterface;
 use Boxalino\RealTimeUserExperienceApi\Service\Api\Request\RequestTransformerInterface;
 use Boxalino\RealTimeUserExperienceApi\Service\Api\Util\ConfigurationInterface;
-use Doctrine\DBAL\Connection;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\HttpFoundation\Request;
 use Boxalino\RealTimeUserExperienceApi\Framework\Request\RequestTransformerAbstract as ApiRequestTransformer;
-
 use Boxalino\RealTimeUserExperience\Helper\Configuration as StoreConfigurationHelper;
 
 /**
@@ -17,7 +15,7 @@ use Boxalino\RealTimeUserExperience\Helper\Configuration as StoreConfigurationHe
  * Sets request variables dependent on the channel
  * (account, credentials, environment details -- language, dev, test, session, header parameters, etc)
  *
- * @package Boxalino\RealTimeUserExperience\Service\Api
+ * @package Boxalino\RealTimeUserExperience\Framework\Request
  */
 class RequestTransformer extends ApiRequestTransformer
     implements RequestTransformerInterface
@@ -25,22 +23,21 @@ class RequestTransformer extends ApiRequestTransformer
     use RequestParametersTrait;
 
     public function __construct(
-        Connection $connection,
-        ParameterFactory $parameterFactory,
+        ParameterFactoryInterface $parameterFactory,
         ConfigurationInterface $configuration,
         ApiSortingModelInterface $sortingModel,
         LoggerInterface $logger,
         StoreConfigurationHelper $storeConfigurationHelper
     ){
-        parent::__construct($connection, $parameterFactory, $configuration, $sortingModel, $logger);
+        parent::__construct($parameterFactory, $configuration, $sortingModel, $logger);
         $this->storeConfigurationHelper = $storeConfigurationHelper;
     }
 
     /**
-     * @param Request $request
+     * @param RequestInterface $request
      * @return string
      */
-    public function getCustomerId(Request $request) : string
+    public function getCustomerId(RequestInterface $request) : string
     {
         $sessionCustomerId = $this->storeConfigurationHelper->getSessionCustomerId();
         if(is_null($sessionCustomerId))
@@ -60,6 +57,5 @@ class RequestTransformer extends ApiRequestTransformer
     {
         return (string) $this->storeConfigurationHelper->getMagentoStoreId();
     }
-
 
 }
