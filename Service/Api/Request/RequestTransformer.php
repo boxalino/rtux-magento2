@@ -16,7 +16,7 @@ use Boxalino\RealTimeUserExperience\Helper\Configuration as StoreConfigurationHe
  * Sets request variables dependent on the channel
  * (account, credentials, environment details -- language, dev, test, session, header parameters, etc)
  *
- * @package Boxalino\RealTimeUserExperience\Framework\Request
+ * @package Boxalino\RealTimeUserExperience\Service\Api\Request
  */
 class RequestTransformer extends ApiRequestTransformer
     implements RequestTransformerInterface

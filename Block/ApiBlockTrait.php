@@ -3,6 +3,7 @@ namespace Boxalino\RealTimeUserExperience\Block;
 
 use Boxalino\RealTimeUserExperience\Api\ApiBlockAccessorInterface;
 use Boxalino\RealTimeUserExperience\Api\ApiRendererInterface;
+use Boxalino\RealTimeUserExperience\Api\ApiResponseBlockInterface;
 use Boxalino\RealTimeUserExperienceApi\Service\Api\Response\Accessor\BlockInterface;
 use Boxalino\RealTimeUserExperienceApi\Service\ErrorHandler\MissingDependencyException;
 
@@ -30,11 +31,31 @@ trait ApiBlockTrait
     protected $rtuxGroupBy = null;
 
     /**
+     * @var \ArrayIterator
+     */
+    protected $apiBlocks;
+
+    /**
      * @return \ArrayIterator|null
      */
     public function getBlocks() : ?\ArrayIterator
     {
+        if($this->apiBlocks)
+        {
+            return $this->apiBlocks;
+        }
+
         return $this->getBlock()->getBlocks();
+    }
+
+    /**
+     * @param \ArrayIterator $blocks
+     * @return $this
+     */
+    public function setBlocks(\ArrayIterator $blocks) : ApiRendererInterface
+    {
+        $this->apiBlocks = $blocks;
+        return $this;
     }
 
     /**
@@ -107,17 +128,48 @@ trait ApiBlockTrait
             throw new MissingDependencyException("BoxalinoAPI RenderBlock Error: the block template is missing: " . json_encode($block));
         }
 
-        $apiBlock = $this->getLayout()->createBlock($block->getType(), $block->getName())
-            ->setTemplate($block->getTemplate());
+        try{
+            $apiBlock = $this->getLayout()->createBlock($block->getType(), $block->getName())
+                ->setTemplate($block->getTemplate());
 
-        if($apiBlock instanceof ApiRendererInterface)
+            if($apiBlock instanceof ApiRendererInterface)
+            {
+                $apiBlock->setRtuxVariantUuid($this->getRtuxVariantUuid())
+                    ->setRtuxGroupBy($this->getRtuxGroupBy())
+                    ->setBlock($block);
+            }
+
+            return $apiBlock;
+        } catch (\Throwable $exception)
         {
-            $apiBlock->setRtuxVariantUuid($this->getRtuxVariantUuid())
-                ->setRtuxGroupBy($this->getRtuxGroupBy())
-                ->setBlock($block);
+            return $this->getDefaultBlock();
         }
+    }
 
-        return $apiBlock;
+    /**
+     * @return ApiRendererInterface
+     */
+    public function getDefaultBlock() : ApiRendererInterface
+    {
+        return $this->getLayout()
+            ->createBlock(
+                ApiRendererInterface::BOXALINO_RTUX_API_BLOCK_TYPE_DEFAULT,
+                uniqid(ApiRendererInterface::BOXALINO_RTUX_API_BLOCK_NAME_DEFAULT)
+            )
+            ->setTemplate(ApiRendererInterface::BOXALINO_RTUX_API_BLOCK_TEMPLATE_DEFAULT);
+    }
+
+    /**
+     * @return ApiResponseBlockInterface
+     */
+    public function getDefaultResponseBlock() : ApiResponseBlockInterface
+    {
+        return $this->getLayout()
+            ->createBlock(
+                ApiRendererInterface::BOXALINO_RTUX_API_RESPONSE_TYPE_DEFAULT,
+                uniqid(ApiRendererInterface::BOXALINO_RTUX_API_BLOCK_NAME_DEFAULT)
+            )
+            ->setTemplate(ApiRendererInterface::BOXALINO_RTUX_API_BLOCK_TEMPLATE_DEFAULT);
     }
 
 }

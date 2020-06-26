@@ -62,12 +62,26 @@ class Block extends ItemBlock implements ProductAwareInterface, ApiRendererInter
      */
     public function getProduct()
     {
-        if(is_null($this->product))
+        $product = parent::getProduct();
+        if(!$product)
         {
-            $this->product = $this->productRepository->getById($this->getApiProduct()->getId());
+            $this->setProduct($this->productRepository->getById($this->getProductId()));
         }
 
-        return $this->product;
+        return parent::getProduct();
+    }
+
+    /**
+     * @return string
+     */
+    protected function getProductId() : string
+    {
+        if($this->getRtuxGroupBy()=='id')
+        {
+            return $this->getApiProduct()->getId();
+        }
+
+        return $this->getBlock()->getProduct()->get($this->getRtuxGroupBy())[0];
     }
 
     /**
@@ -136,6 +150,7 @@ class Block extends ItemBlock implements ProductAwareInterface, ApiRendererInter
 
     /**
      * Block view mode to switch from list view to grid view (Magento)
+     * Use the general configuration for product list mode from config path catalog/frontend/list_mode as default value
      *
      * @duplicate from Toolbar block
      * @return string

@@ -47,7 +47,12 @@ class Configuration
      */
     public function getLanguage() : string
     {
-        return substr($this->scopeConfig->getValue('general/locale/code', \Magento\Store\Model\ScopeInterface::SCOPE_STORE), 0, 2);
+        return substr($this->scopeConfig->getValue(
+            'general/locale/code',
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE),
+            0,
+            2
+        );
     }
 
     /**

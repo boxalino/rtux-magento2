@@ -13,6 +13,9 @@ use Magento\Search\Model\QueryFactory;
 trait RequestParametersTrait
 {
 
+    /**
+     * @var \Boxalino\RealTimeUserExperience\Helper\Configuration
+     */
     protected $storeConfigurationHelper;
 
     /**

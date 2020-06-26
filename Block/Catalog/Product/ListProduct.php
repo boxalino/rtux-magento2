@@ -13,14 +13,14 @@ use Boxalino\RealTimeUserExperienceApi\Service\ErrorHandler\MissingDependencyExc
 use Magento\Catalog\Api\Data\ProductInterface;
 
 /**
- * Class ApiListProduct
+ * Class ListProduct
  * Manages a product collection from the response
  * As observed, it does not extend the base Magento2 blocks :
  * Magento\Catalog\Block\Product\AbstractProduct or Magento\Catalog\Block\Product\ListProduct
  *
  * @package Boxalino\RealTimeUserExperience\Block\Catalog\Product
  */
-class ApiListProduct extends \Magento\Framework\View\Element\Template
+class ListProduct extends \Magento\Framework\View\Element\Template
     implements ApiRendererInterface, ApiListingBlockAccessorInterface
 {
     use ApiBlockTrait;
@@ -63,7 +63,7 @@ class ApiListProduct extends \Magento\Framework\View\Element\Template
      * @param BlockInterface $block
      * @throws \Magento\Framework\Exception\LocalizedException
      */
-    public function getApiBlock(ApiBlockAccessorInterface $block) : ApiRendererInterface
+    public function getApiBlock(ApiBlockAccessorInterface $block) : ?ApiRendererInterface
     {
         if(!$block->getType())
         {
@@ -75,22 +75,44 @@ class ApiListProduct extends \Magento\Framework\View\Element\Template
             throw new MissingDependencyException("BoxalinoAPI RenderBlock Error: the block template is missing: " . json_encode($block));
         }
 
-        $apiBlock = $this->getLayout()->createBlock($block->getType(), $block->getName())
-            ->setTemplate($block->getTemplate());
+        try{
+            $apiBlock = $this->getLayout()->createBlock($block->getType(), $block->getName())
+                ->setTemplate($block->getTemplate());
 
-        if($apiBlock instanceof ApiRendererInterface)
+            if($apiBlock instanceof ApiRendererInterface)
+            {
+                $apiBlock->setRtuxVariantUuid($this->getRtuxVariantUuid())
+                    ->setRtuxGroupBy($this->getRtuxGroupBy())
+                    ->setBlock($block);
+            }
+
+            if($apiBlock instanceof ApiProductBlockAccessorInterface)
+            {
+                if($product=$this->getProductById($this->getProductId($block)))
+                {
+                    $apiBlock->setProduct($product);
+                }
+            }
+
+            return $apiBlock;
+        } catch (\Throwable $exception) {
+            $this->_logger->warning("BoxalinoAPI ListProduct ERROR: " . $exception->getMessage());
+            return null;
+        }
+    }
+
+    /**
+     * @param ApiBlockAccessorInterface $block
+     * @return string
+     */
+    protected function getProductId(ApiBlockAccessorInterface $block) : string
+    {
+        if($this->getRtuxGroupBy() == 'id')
         {
-            $apiBlock->setRtuxVariantUuid($this->getRtuxVariantUuid())
-                ->setRtuxGroupBy($this->getRtuxGroupBy())
-                ->setBlock($block);
+            return $block->getProduct()->getId();
         }
 
-        if($apiBlock instanceof ApiProductBlockAccessorInterface)
-        {
-            $apiBlock->setProduct($this->getProductById($block->getProduct()->getId()));
-        }
-
-        return $apiBlock;
+        return $block->getProduct()->get($this->getRtuxGroupBy())[0];
     }
 
     /**
@@ -118,6 +140,7 @@ class ApiListProduct extends \Magento\Framework\View\Element\Template
 
     /**
      * Block view mode to switch from list view to grid view (Magento)
+     * Use the general configuration for product list mode from config path catalog/frontend/list_mode as default value
      *
      * @duplicate from Toolbar block
      * @return string
