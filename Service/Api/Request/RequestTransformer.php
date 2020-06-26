@@ -1,6 +1,7 @@
 <?php declare(strict_types=1);
-namespace Boxalino\RealTimeUserExperience\Framework\Request;
+namespace Boxalino\RealTimeUserExperience\Service\Api\Request;
 
+use Boxalino\RealTimeUserExperience\Service\Api\Util\RequestParametersTrait;
 use Boxalino\RealTimeUserExperienceApi\Framework\Content\Listing\ApiSortingModelInterface;
 use Boxalino\RealTimeUserExperienceApi\Service\Api\Request\ParameterFactoryInterface;
 use Boxalino\RealTimeUserExperienceApi\Service\Api\Request\RequestInterface;

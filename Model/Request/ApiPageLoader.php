@@ -1,10 +1,11 @@
 <?php
 namespace Boxalino\RealTimeUserExperience\Model\Request;
 
-use Boxalino\RealTimeUserExperience\Framework\Request\ContextTrait;
-use Boxalino\RealTimeUserExperience\Framework\Request\RequestParametersTrait;
+use Boxalino\RealTimeUserExperience\Service\Api\Util\ContextTrait;
+use Boxalino\RealTimeUserExperience\Service\Api\Util\RequestParametersTrait;
 use Boxalino\RealTimeUserExperience\Helper\Configuration as StoreConfigurationHelper;
 use Boxalino\RealTimeUserExperience\Model\ApiLoaderTrait;
+use Boxalino\RealTimeUserExperience\Model\Response\Page\ApiResponsePage;
 use Boxalino\RealTimeUserExperienceApi\Framework\Content\Page\ApiPageLoaderAbstract;
 use Boxalino\RealTimeUserExperienceApi\Framework\Content\Page\ApiResponsePageInterface;
 use Boxalino\RealTimeUserExperienceApi\Service\Api\ApiCallServiceInterface;
@@ -24,12 +25,10 @@ class ApiPageLoader extends ApiPageLoaderAbstract
     public function __construct(
         ApiCallServiceInterface $apiCallService,
         ConfigurationInterface $configuration,
-        ApiResponsePageInterface $apiResponsePage,
         \Magento\Framework\Event\ManagerInterface $eventManager,
         StoreConfigurationHelper $storeConfigurationHelper
     ){
         parent::__construct($apiCallService, $configuration);
-        $this->apiResponsePage = $apiResponsePage;
         $this->eventManager =$eventManager;
         $this->storeConfigurationHelper = $storeConfigurationHelper;
     }
@@ -51,6 +50,11 @@ class ApiPageLoader extends ApiPageLoaderAbstract
      */
     public function getApiResponsePage(): ?ApiResponseViewInterface
     {
+        if(!$this->apiResponsePage)
+        {
+            $this->apiResponsePage = new ApiResponsePage();
+        }
+
         return $this->apiResponsePage;
     }
 }

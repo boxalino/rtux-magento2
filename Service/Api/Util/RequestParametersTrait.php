@@ -1,5 +1,5 @@
 <?php declare(strict_types=1);
-namespace Boxalino\RealTimeUserExperience\Framework\Request;
+namespace Boxalino\RealTimeUserExperience\Service\Api\Util;
 
 use Magento\Catalog\Model\Product\ProductList\Toolbar;
 use Magento\Search\Model\QueryFactory;
@@ -63,6 +63,14 @@ trait RequestParametersTrait
     public function getDefaultLimitValue() : int
     {
         return $this->storeConfigurationHelper->getMagentoStoreConfigPageSize();
+    }
+
+    /**
+     * @return string
+     */
+    public function getBlockViewModeParameter() : string
+    {
+        return Toolbar::MODE_PARAM_NAME;
     }
 
 }

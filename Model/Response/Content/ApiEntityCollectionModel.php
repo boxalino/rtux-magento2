@@ -7,10 +7,11 @@ use Boxalino\RealTimeUserExperienceApi\Framework\Content\Listing\ApiEntityCollec
 use Magento\Catalog\Api\Data\ProductSearchResultsInterface;
 use Magento\Catalog\Model\ProductRepository;
 use Magento\Framework\Api\SearchCriteriaBuilder;
+use Magento\Catalog\Model\ResourceModel\Product\Collection;
 
 
 /**
- * Class ApiEntityCollectionModel
+ * Class ApiEntityCollection
  *
  * Item refers to any data model/logic that is desired to be rendered/displayed
  * The integrator can decide to either use all data as provided by the Narrative API,
@@ -18,7 +19,7 @@ use Magento\Framework\Api\SearchCriteriaBuilder;
  *
  * @package Boxalino\RealTimeUserExperience\Model\Response
  */
-class ApiEntityCollectionModel extends ApiEntityCollectionModelAbstract
+class ApiEntityCollection extends ApiEntityCollectionModelAbstract
     implements AccessorModelInterface
 {
 
@@ -33,21 +34,14 @@ class ApiEntityCollectionModel extends ApiEntityCollectionModelAbstract
     protected $responseCollection;
 
     /**
-     * @var ProductRepository
+     * @var \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory
      */
-    private $productRepository;
-
-    /**
-     * @var \Magento\Framework\Api\SearchCriteriaBuilder
-     */
-    private $searchCriteriaBuilder;
+    protected $collectionFactory;
 
     public function __construct(
-        ProductRepository $productRepository,
-        SearchCriteriaBuilder $searchCriteriaBuilder
+        \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory $collectionFactory
     ){
-        $this->productRepository = $productRepository;
-        $this->searchCriteriaBuilder = $searchCriteriaBuilder;
+        $this->collectionFactory = $collectionFactory;
     }
 
     /**
@@ -55,14 +49,19 @@ class ApiEntityCollectionModel extends ApiEntityCollectionModelAbstract
      * (\Magento\Catalog\Api\Data\ProductSearchResultsInterface)
      * @return \ArrayIterator
      */
-    public function getCollection() : ProductSearchResultsInterface
+    public function getCollection() : Collection
     {
         if(is_null($this->collection))
         {
-            /** @var \Magento\Framework\Api\SearchCriteriaInterface $criteria */
-            $this->searchCriteriaBuilder->addFilter('entity_id', $this->getHitIds(), 'in');
-            $criteria = $this->searchCriteriaBuilder->create();
-            $this->collection = $this->productRepository->getList($criteria);
+            /** @var \Magento\Catalog\Model\ResourceModel\Product\Collection $collection */
+            $collection = $this->collectionFactory->create();
+            $collection->addAttributeToSelect('*')
+                ->joinAttribute('status', 'catalog_product/status', 'entity_id', null, 'inner')
+                ->joinAttribute('visibility', 'catalog_product/visibility', 'entity_id', null, 'inner')
+                ->addFieldToFilter("entity_id", ['in'=>$this->getHitIds()])
+                ->addUrlRewrite();
+
+            $this->collection = $collection;
         }
 
         return $this->collection;

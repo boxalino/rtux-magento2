@@ -1,5 +1,5 @@
 <?php declare(strict_types=1);
-namespace Boxalino\RealTimeUserExperience\Framework\Request;
+namespace Boxalino\RealTimeUserExperience\Service\Api\Util;
 
 use Boxalino\RealTimeUserExperienceApi\Service\Api\Request\ParameterFactoryInterface;
 use Boxalino\RealTimeUserExperienceApi\Service\Api\Request\RequestInterface;
@@ -22,11 +22,20 @@ trait ContextTrait
      */
     protected $groupBy = "products_group_id";
 
+    /**
+     * @var RequestTransformerInterface
+     */
+    protected $requestTransformer;
+
+    /**
+     * @var ParameterFactoryInterface
+     */
+    protected $parameterFactory;
+
 
     public function validateRequest(RequestInterface $request) : void {}
 
     /**
-     * @param RequestInterface $request
      * @return ParameterInterface
      */
     public function getVisibilityFilter(RequestInterface $request) : ParameterInterface
@@ -36,7 +45,6 @@ trait ContextTrait
     }
 
     /**
-     * @param RequestInterface $request
      * @return ParameterInterface
      */
     public function getCategoryFilter(RequestInterface $request) : ParameterInterface
@@ -46,7 +54,6 @@ trait ContextTrait
     }
 
     /**
-     * @param RequestInterface $request
      * @return ParameterInterface
      */
     public function getActiveFilter(RequestInterface $request) : ParameterInterface

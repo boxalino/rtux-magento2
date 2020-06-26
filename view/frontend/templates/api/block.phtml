@@ -1,0 +1,11 @@
+<?php
+/**
+ * Template core for rendering children elements
+ *
+ * @var $block Boxalino\RealTimeUserExperience\Block\Api\Block
+ */
+?>
+<?php foreach($this->getBlocks() as $block):?>
+    <?php echo $this->getApiBlock($block)->toHtml();?>
+<?php endforeach;?>
+

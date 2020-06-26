@@ -47,7 +47,7 @@
                     <item name="product" xsi:type="string">Boxalino\RealTimeUserExperienceApi\Service\Api\Response\Accessor\Hit</item>
                 </item>
                 <item name="blocks" xsi:type="array">
-                    <item name="blocks" xsi:type="string">Boxalino\RealTimeUserExperienceApi\Service\Api\Response\Accessor\Block</item>
+                    <item name="blocks" xsi:type="string">Boxalino\RealTimeUserExperience\Service\Api\Response\Accessor\Block</item>
                 </item>
                 <item name="bx-hits" xsi:type="array">
                     <item name="productsCollection" xsi:type="string">Boxalino\RealTimeUserExperienceApi\Service\Api\Response\Accessor\BxAccessor</item>
@@ -56,7 +56,7 @@
                     <item name="suggestionsCollection" xsi:type="string">Boxalino\RealTimeUserExperienceApi\Service\Api\Response\Accessor\BxAccessor</item>
                 </item>
                 <item name="bx-facets" xsi:type="array">
-                    <item name="facetsList" xsi:type="string">Boxalino\RealTimeUserExperienceApi\Service\Api\Response\Accessor\BxAccessor</item>
+                    <item name="facetsCollection" xsi:type="string">Boxalino\RealTimeUserExperienceApi\Service\Api\Response\Accessor\BxAccessor</item>
                 </item>
             </argument>
             <argument name="hitIdFieldNameList" xsi:type="array">
@@ -65,10 +65,11 @@
         </arguments>
     </type>
 
+    <preference for="Boxalino\RealTimeUserExperience\Api\ApiBlockAccessorInterface" type="Boxalino\RealTimeUserExperience\Service\Api\Response\Accessor\Block"/>
     <preference for="Boxalino\RealTimeUserExperienceApi\Framework\Content\Listing\ApiSortingModelInterface" type="Boxalino\RealTimeUserExperience\Model\Response\Content\ApiSortingModel"/>
     <preference for="Boxalino\RealTimeUserExperienceApi\Service\Api\Util\ConfigurationInterface" type="Boxalino\RealTimeUserExperience\Helper\Api\Configuration"/>
     <preference for="Boxalino\RealTimeUserExperienceApi\Framework\Content\Page\ApiResponsePageInterface" type="Boxalino\RealTimeUserExperience\Model\Response\Page\ApiResponsePage"/>
-    <preference for="Boxalino\RealTimeUserExperienceApi\Service\Api\Request\RequestTransformerInterface" type="Boxalino\RealTimeUserExperience\Framework\Request\RequestTransformer"/>
+    <preference for="Boxalino\RealTimeUserExperienceApi\Service\Api\Request\RequestTransformerInterface" type="Boxalino\RealTimeUserExperience\Service\Api\Request\RequestTransformer"/>
     <preference for="Boxalino\RealTimeUserExperienceApi\Service\Api\Request\RequestInterface" type="Boxalino\RealTimeUserExperience\Service\Api\Request\Request"/>
 
 </config>
