@@ -18,7 +18,7 @@ class Configuration implements ConfigurationInterface
     /**
      * @var string
      */
-    protected $contextId;
+    protected $contextId = \Magento\Store\Model\ScopeInterface::SCOPE_STORE;
 
     /**
      * @var \Magento\Framework\App\Config\ScopeConfigInterface

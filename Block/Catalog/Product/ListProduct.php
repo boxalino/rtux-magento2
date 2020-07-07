@@ -6,8 +6,8 @@ use Boxalino\RealTimeUserExperience\Api\ApiListingBlockAccessorInterface;
 use Boxalino\RealTimeUserExperience\Api\ApiProductBlockAccessorInterface;
 use Boxalino\RealTimeUserExperience\Api\ApiRendererInterface;
 use Boxalino\RealTimeUserExperience\Block\ApiBlockTrait;
+use Boxalino\RealTimeUserExperience\Block\FrameworkBlockTrait;
 use Boxalino\RealTimeUserExperience\Model\Response\Content\ApiEntityCollection;
-use Boxalino\RealTimeUserExperience\Service\Api\Util\RequestParametersTrait;
 use Boxalino\RealTimeUserExperienceApi\Service\Api\Response\Accessor\BlockInterface;
 use Boxalino\RealTimeUserExperienceApi\Service\ErrorHandler\MissingDependencyException;
 use Magento\Catalog\Api\Data\ProductInterface;
@@ -24,7 +24,7 @@ class ListProduct extends \Magento\Framework\View\Element\Template
     implements ApiRendererInterface, ApiListingBlockAccessorInterface
 {
     use ApiBlockTrait;
-    use RequestParametersTrait;
+    use FrameworkBlockTrait;
 
     /**
      * @var null | \Magento\Eav\Model\Entity\Collection\AbstractCollection
@@ -76,7 +76,7 @@ class ListProduct extends \Magento\Framework\View\Element\Template
         }
 
         try{
-            $apiBlock = $this->getLayout()->createBlock($block->getType(), $block->getName())
+            $apiBlock = $this->getLayout()->createBlock($block->getType(), uniqid($block->getName()))
                 ->setTemplate($block->getTemplate());
 
             if($apiBlock instanceof ApiRendererInterface)
@@ -138,16 +138,5 @@ class ListProduct extends \Magento\Framework\View\Element\Template
         return null;
     }
 
-    /**
-     * Block view mode to switch from list view to grid view (Magento)
-     * Use the general configuration for product list mode from config path catalog/frontend/list_mode as default value
-     *
-     * @duplicate from Toolbar block
-     * @return string
-     */
-    public function getMode() : string
-    {
-        return $this->getRequest()->getParam($this->getBlockViewModeParameter(), "grid");
-    }
 
 }

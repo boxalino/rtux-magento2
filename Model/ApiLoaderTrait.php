@@ -3,6 +3,10 @@ namespace Boxalino\RealTimeUserExperience\Model;
 
 use Boxalino\RealTimeUserExperienceApi\Service\Api\ApiCallServiceInterface;
 
+/**
+ * Trait ApiLoaderTrait
+ * @package Boxalino\RealTimeUserExperience\Model
+ */
 trait ApiLoaderTrait
 {
     /**

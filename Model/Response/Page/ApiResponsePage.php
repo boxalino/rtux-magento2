@@ -5,6 +5,10 @@ use Boxalino\RealTimeUserExperienceApi\Framework\Content\Page\ApiResponsePageInt
 use Boxalino\RealTimeUserExperienceApi\Service\Api\Response\ApiResponseViewInterface;
 
 /**
+ * Class ApiResponsePage
+ * After the API request - stores all information relevant for a view
+ * (required by dependency)
+ *
  * @package Boxalino\RealTimeUserExperience\Model\Response\Page
  */
 class ApiResponsePage implements ApiResponsePageInterface

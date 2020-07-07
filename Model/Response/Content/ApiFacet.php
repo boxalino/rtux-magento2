@@ -5,15 +5,15 @@ use Boxalino\RealTimeUserExperienceApi\Service\Api\Response\Accessor\AccessorFac
 use Boxalino\RealTimeUserExperienceApi\Framework\Content\Listing\ApiFacetModelAbstract;
 
 /**
- * Class ApiFacetModel
+ * Class ApiFacet
  *
  * Item refers to any data model/logic that is desired to be rendered/displayed
  * The integrator can decide to either use all data as provided by the Narrative API,
  * or to design custom data layers to represent the fetched content
  *
- * @package Boxalino\RealTimeUserExperienceSample\Service\Api\Content
+ * @package Boxalino\RealTimeUserExperience\Model\Response\Content
  */
-class ApiFacetModel extends ApiFacetModelAbstract
+class ApiFacet extends ApiFacetModelAbstract
     implements AccessorFacetModelInterface
 {
     /**

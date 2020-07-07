@@ -6,6 +6,7 @@ use Boxalino\RealTimeUserExperience\Api\ApiRendererInterface;
 use Boxalino\RealTimeUserExperience\Api\ApiResponseBlockInterface;
 use Boxalino\RealTimeUserExperienceApi\Service\Api\Response\Accessor\BlockInterface;
 use Boxalino\RealTimeUserExperienceApi\Service\ErrorHandler\MissingDependencyException;
+use Boxalino\RealTimeUserExperience\Model\Request\ApiPageLoader;
 
 /**
  * Trait ApiBlockTrait
@@ -31,9 +32,14 @@ trait ApiBlockTrait
     protected $rtuxGroupBy = null;
 
     /**
-     * @var \ArrayIterator
+     * @var \ArrayIterator | null
      */
-    protected $apiBlocks;
+    protected $apiBlocks = null;
+
+    /**
+     * @var ApiPageLoader
+     */
+    protected $apiLoader;
 
     /**
      * @return \ArrayIterator|null
@@ -91,6 +97,11 @@ trait ApiBlockTrait
      */
     public function getRtuxVariantUuid() : ?string
     {
+        if(is_null($this->rtuxVariantUuid))
+        {
+            $this->rtuxVariantUuid = $this->getApiLoader()->getApiResponsePage()->getVariantUuid();
+        }
+
         return $this->rtuxVariantUuid;
     }
 
@@ -109,7 +120,20 @@ trait ApiBlockTrait
      */
     public function getRtuxGroupBy() : ?string
     {
+        if(is_null($this->rtuxGroupBy))
+        {
+            $this->rtuxGroupBy = $this->getApiLoader()->getApiResponsePage()->getGroupBy();
+        }
+
         return $this->rtuxGroupBy;
+    }
+
+    /**
+     * @return ApiPageLoader
+     */
+    public function getApiLoader() : ApiPageLoader
+    {
+        return $this->apiLoader;
     }
 
     /**
@@ -140,13 +164,16 @@ trait ApiBlockTrait
             }
 
             return $apiBlock;
-        } catch (\Throwable $exception)
+        } catch (\Exception $exception)
         {
             return $this->getDefaultBlock();
         }
     }
 
     /**
+     * On pages extending from \Magento\Framework\View\Element\Template:
+     * creates a Magento2 block with the BlockAccessorInterface details
+     *
      * @return ApiRendererInterface
      */
     public function getDefaultBlock() : ApiRendererInterface
@@ -160,6 +187,9 @@ trait ApiBlockTrait
     }
 
     /**
+     * On pages extending from \Magento\Framework\View\Element\Template:
+     * creates a Magento2 block with the ApiResponsePageInterface details/accessors
+     *
      * @return ApiResponseBlockInterface
      */
     public function getDefaultResponseBlock() : ApiResponseBlockInterface

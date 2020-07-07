@@ -40,7 +40,7 @@ class Block extends ApiBlock
      */
     public function setName(array $value) : ApiBlockAccessorInterface
     {
-        $this->name = uniqid($value[0]);
+        $this->name = $value[0];
         return $this;
     }
 

@@ -8,10 +8,10 @@ use Boxalino\RealTimeUserExperienceApi\Service\ErrorHandler\MissingDependencyExc
 use Boxalino\RealTimeUserExperienceApi\Framework\Content\Listing\ApiSortingModelAbstract;
 
 /**
- * Class ApiSortingModel
- * @package Boxalino\RealTimeUserExperienceSample\Framework\Content\Listing
+ * Class ApiSorting
+ * @package Boxalino\RealTimeUserExperience\Model\Response\Content
  */
-class ApiSortingModel extends ApiSortingModelAbstract
+class ApiSorting extends ApiSortingModelAbstract
     implements ApiSortingModelInterface
 {
 

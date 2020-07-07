@@ -5,7 +5,7 @@ use Boxalino\RealTimeUserExperience\Api\ApiBlockAccessorInterface;
 use Boxalino\RealTimeUserExperience\Api\ApiProductBlockAccessorInterface;
 use Boxalino\RealTimeUserExperience\Api\ApiRendererInterface;
 use Boxalino\RealTimeUserExperience\Block\ApiBlockTrait;
-use Boxalino\RealTimeUserExperience\Service\Api\Util\RequestParametersTrait;
+use Boxalino\RealTimeUserExperience\Block\FrameworkBlockTrait;
 use Boxalino\RealTimeUserExperienceApi\Service\Api\Response\Accessor\AccessorInterface;
 use Magento\Catalog\Api\Data\ProductInterface;
 use Magento\Catalog\Block\Product\Context;
@@ -25,10 +25,11 @@ use Magento\Catalog\Api\ProductRepositoryInterface;
  *
  * @package Boxalino\RealTimeUserExperience\Block\Catalog\Product\ProductList\Item
  */
-class Block extends ItemBlock implements ProductAwareInterface, ApiRendererInterface, ApiProductBlockAccessorInterface
+class Block extends ItemBlock
+    implements ProductAwareInterface, ApiRendererInterface, ApiProductBlockAccessorInterface
 {
     use ApiBlockTrait;
-    use RequestParametersTrait;
+    use FrameworkBlockTrait;
 
     /**
      * @var UrlHelper
@@ -148,16 +149,5 @@ class Block extends ItemBlock implements ProductAwareInterface, ApiRendererInter
         ];
     }
 
-    /**
-     * Block view mode to switch from list view to grid view (Magento)
-     * Use the general configuration for product list mode from config path catalog/frontend/list_mode as default value
-     *
-     * @duplicate from Toolbar block
-     * @return string
-     */
-    public function getMode() : string
-    {
-        return $this->getRequest()->getParam($this->getBlockViewModeParameter(), "grid");
-    }
 
 }

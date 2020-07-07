@@ -1,0 +1,26 @@
+<?php
+/**
+ * JS Helper init
+ */
+// phpcs:disable Magento2.Templates.ThisInTemplate.FoundThis
+?>
+<?php
+/** @var $block \Magento\Framework\View\Element\Template */
+/** @var $helper \Boxalino\RealTimeUserExperience\Helper\Js\Configuration */
+$helper = $this->helper(\Boxalino\RealTimeUserExperience\Helper\Js\Configuration::class);
+?>
+<script type="text/x-magento-init">
+    {
+        "*":{
+            "rtuxApiHelper": {
+                "account":"<?= $block->escapeHtml($helper->getAccount()) ?>",
+                "key":"<?= $block->escapeHtml($helper->getKey()) ?>",
+                "profile":"<?= $block->escapeHtml($helper->getProfile()) ?>",
+                "endpoint":"<?= $block->escapeHtml($helper->getEndpoint()) ?>",
+                "language":"<?= $block->escapeHtml($helper->getLanguage()) ?>",
+                "dev":"<?= json_encode($helper->isDev()) ?>",
+                "test":"<?= json_encode($helper->isTest()) ?>"
+            }
+        }
+    }
+</script>

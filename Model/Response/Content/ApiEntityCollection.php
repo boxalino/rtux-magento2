@@ -59,6 +59,7 @@ class ApiEntityCollection extends ApiEntityCollectionModelAbstract
                 ->joinAttribute('status', 'catalog_product/status', 'entity_id', null, 'inner')
                 ->joinAttribute('visibility', 'catalog_product/visibility', 'entity_id', null, 'inner')
                 ->addFieldToFilter("entity_id", ['in' => $this->getHitIds()])
+                ->addStoreFilter()
                 ->addUrlRewrite();
 
             $this->collection = $collection;

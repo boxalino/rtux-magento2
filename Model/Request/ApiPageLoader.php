@@ -13,6 +13,12 @@ use Boxalino\RealTimeUserExperienceApi\Service\Api\Request\RequestInterface;
 use Boxalino\RealTimeUserExperienceApi\Service\Api\Response\ApiResponseViewInterface;
 use Boxalino\RealTimeUserExperienceApi\Service\Api\Util\ConfigurationInterface;
 
+/**
+ * Class ApiPageLoader
+
+ *
+ * @package Boxalino\RealTimeUserExperience\Model\Request
+ */
 class ApiPageLoader extends ApiPageLoaderAbstract
 {
 
