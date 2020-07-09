@@ -15,7 +15,9 @@ use Magento\Catalog\Api\Data\ProductInterface;
 /**
  * Class ListProduct
  * Manages a product collection from the response
- * As observed, it does not extend the base Magento2 blocks :
+ * Besides the obvious speed performance, it is also desired for the pages/blocks to be non-cacheable
+ *
+ * As observed, it does NOT extend the base Magento2 blocks :
  * Magento\Catalog\Block\Product\AbstractProduct or Magento\Catalog\Block\Product\ListProduct
  *
  * @package Boxalino\RealTimeUserExperience\Block\Catalog\Product

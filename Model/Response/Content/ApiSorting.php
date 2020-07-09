@@ -4,11 +4,18 @@ namespace Boxalino\RealTimeUserExperience\Model\Response\Content;
 use Boxalino\RealTimeUserExperienceApi\Framework\Content\Listing\ApiSortingModelInterface;
 use Boxalino\RealTimeUserExperienceApi\Service\Api\Response\Accessor\AccessorInterface;
 use Boxalino\RealTimeUserExperienceApi\Service\Api\Response\Accessor\AccessorModelInterface;
-use Boxalino\RealTimeUserExperienceApi\Service\ErrorHandler\MissingDependencyException;
 use Boxalino\RealTimeUserExperienceApi\Framework\Content\Listing\ApiSortingModelAbstract;
 
 /**
  * Class ApiSorting
+ *
+ * In a default M2 environment, the sort is described by 2 parameters: field (ex:price) and direction (ex:desc)
+ * As a recommended integration, we suggest to use a combined key field-direction for the sort field (ex: price-desc)
+ * The 2nd option will allow to have extended labels (ex: "Highest price first") as opposed to the generic "Price"
+ *
+ * The ApiSortingModelInterface dependency is added with the integration repository
+ * The ApiSorting is used as "model" for the Layout Block
+ *
  * @package Boxalino\RealTimeUserExperience\Model\Response\Content
  */
 class ApiSorting extends ApiSortingModelAbstract
@@ -16,26 +23,90 @@ class ApiSorting extends ApiSortingModelAbstract
 {
 
     /**
-     * @var []
+     * The argument is provided via DI
+     * To be extended for any desired sorting field for the integration project
+     *
+     * @param array $sortingList
      */
-    protected $sortings = [];
-
-    /**
-     * @var AccessorInterface
-     */
-    protected $activeSorting;
-
-    /**
-     * @param string $key
-     * @return |null
-     */
-    public function get(string $key)
+    public function __construct(array $sortingList)
     {
-        foreach($this->getSortings() as $key=>$sorting)
+        parent::__construct();
+        foreach($sortingList as $urlKey => $sortDefinition)
         {
-            foreach($sorting as $field=>$direction)
+            $sortingOption = new ApiSortingOption($sortDefinition);
+            $this->add([$sortingOption->getField() => $sortingOption->getApiField()]);
+            $this->addSystemSortingOption($urlKey, $sortingOption);
+        }
+    }
+
+    /**
+     * Adding system sort options per project integration specifications
+     *
+     * @param string $key
+     * @param ApiSortingOption $option
+     * @return $this
+     */
+    public function addSystemSortingOption(string $key, ApiSortingOption $option) : self
+    {
+        $this->sortings[$key] = $option;
+        return $this;
+    }
+
+    /**
+     * The default sort field recommended with the Boxalino API is the "position" (label: "Relevance"/"Recommended")
+     * because the product order is the recommended one
+     *
+     * @return string
+     */
+    public function getDefaultSortField(): string
+    {
+        return "position";
+    }
+
+    /**
+     * @inherited from Magento2
+     * @return string
+     */
+    public function getDefaultSortDirection() : string
+    {
+        return ApiSortingModelInterface::SORT_ASCENDING;
+    }
+
+    /**
+     * Transform a request key to a valid API sort
+     *
+     * @param string $key
+     * @return array
+     */
+    public function getRequestSorting(string $key) : array
+    {
+        $requestedSortingList = [];
+        if($this->has($key))
+        {
+            $requestedSortingList[] = [
+                "field" => $this->get($key)->getApiField(),
+                "reverse" => $this->get($key)->isReverse()
+            ];
+        }
+
+        return $requestedSortingList;
+    }
+
+    /**
+     * Based on the response,
+     * transforms the response field and direction into a e-shop valid sorting
+     */
+    public function getCurrent() : string
+    {
+        $responseField = $this->getCurrentApiSortField();
+        if(!empty($responseField))
+        {
+            $direction = $this->getCurrentSortDirection();
+            $field = $this->getResponseField($responseField);
+            foreach($this->getSortings() as $key => $sorting)
             {
-                if($field == $key)
+                /** @var $sorting ApiSortingOption */
+                if($sorting->getField() == $field && $sorting->getDirection() == $direction)
                 {
                     return $key;
                 }
@@ -45,66 +116,38 @@ class ApiSorting extends ApiSortingModelAbstract
         return $this->getDefaultSortField();
     }
 
+    /**w
+     * @param string $key
+     * @return ApiSortingOption |null
+     */
+    public function get(string $key) : ?ApiSortingOption
+    {
+        return $this->sortings[$key] ?? null;
+    }
+
     /**
      * @param string $key
      * @return bool
      */
     public function has(string $key): bool
     {
-        return true;
+        return isset($this->sortings[$key]);
     }
 
     /**
+     * Accessing the sort options available for the e-shop
+     *
      * @return array
      */
     public function getSortings(): array
     {
-        return [
-            "relevance" => ["relevance"=>"desc"],
-            "relevance-asc" => ["relevance"=>"asc"], //this does not generally happen
-            "price" => ["price" => "desc"],
-            "price-asc" => ["price" => "asc"],
-            "name" => ["name" => "desc"],
-            "name-asc" => ["name" => "asc"],
-            "newest" => ["id"=>"desc"]
-        ];
+        return $this->sortings;
     }
 
     /**
-     * @return string
-     */
-    public function getDefaultSortField(): string
-    {
-        return "score";
-    }
-
-    /**
-     * Based on the response, transform the response field+direction into a e-shop valid sorting
-     */
-    public function getCurrent() : string
-    {
-        $responseField = $this->activeSorting->getField();
-        if(!empty($responseField))
-        {
-            $direction = $this->activeSorting->getReverse() === true ? mb_strtolower(self::SORT_DESCENDING)
-                : mb_strtolower(self::SORT_ASCENDING);
-            $field = $this->getResponseField($responseField);
-            foreach($this->getSortings() as $key => $sorting)
-            {
-                foreach($sorting as $sortingField=>$sortingDirection)
-                {
-                    if($sortingField == $field && $sortingDirection == $direction)
-                    {
-                        return $key;
-                    }
-                }
-            }
-        }
-
-        return $this->getDefaultSortField();
-    }
-
-    /**
+     * The getter "getSorting" is used in accordance to the property name assigned for the bx-sort accessor
+     * (in di.xml)
+     *
      * @param null | AccessorInterface $context
      * @return AccessorModelInterface
      */

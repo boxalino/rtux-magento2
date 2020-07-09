@@ -36,7 +36,7 @@ class Pager extends \Magento\Catalog\Block\Product\Widget\Html\Pager
 
     /**
      * Accesses the pagination model of the Boxalino API response
-     * (as configured in the accessor definitions)
+     * (as configured as accessor getter in di.xml)
      *
      * @return Pagination
      */
@@ -92,7 +92,6 @@ class Pager extends \Magento\Catalog\Block\Product\Widget\Html\Pager
     {
         return $this->getPagination()->getLastPage();
     }
-
 
     /**
      * Return number of current page
@@ -168,7 +167,7 @@ class Pager extends \Magento\Catalog\Block\Product\Widget\Html\Pager
     }
 
     /**
-     * Property used in template & defined in Layout Block
+     * Property used in template & defined in Layout Block's JSON schema
      * @return bool
      */
     public function getShowAmounts() : bool
@@ -182,7 +181,7 @@ class Pager extends \Magento\Catalog\Block\Product\Widget\Html\Pager
     }
 
     /**
-     * Property used in template & defined in Layout Block
+     * Property used in template & defined in Layout Block's JSON schema
      * @return bool
      */
     public function getUseContainer() : bool
@@ -196,7 +195,7 @@ class Pager extends \Magento\Catalog\Block\Product\Widget\Html\Pager
     }
 
     /**
-     * Property used in template & defined in Layout Block
+     * Property used in template & defined in Layout Block's JSON schema
      * @return bool
      */
     public function isShowPerPage() : bool
@@ -210,7 +209,7 @@ class Pager extends \Magento\Catalog\Block\Product\Widget\Html\Pager
     }
 
     /**
-     * Property used in template & defined in Layout Block
+     * Property used in template & defined in Layout Block's JSON schema
      * @return bool
      */
     public function showPager() : bool
