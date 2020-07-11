@@ -3,6 +3,7 @@ namespace Boxalino\RealTimeUserExperience\Model\Response\Content;
 
 use Boxalino\RealTimeUserExperienceApi\Service\Api\Response\Accessor\AccessorFacetModelInterface;
 use Boxalino\RealTimeUserExperienceApi\Framework\Content\Listing\ApiFacetModelAbstract;
+use Magento\Eav\Model\Entity\Attribute\AbstractAttribute;
 
 /**
  * Class ApiFacet
@@ -17,6 +18,17 @@ class ApiFacet extends ApiFacetModelAbstract
     implements AccessorFacetModelInterface
 {
     /**
+     * @var \Magento\Eav\Model\Config
+     */
+    protected $_config;
+
+    public function __construct(\Magento\Eav\Model\Config $config)
+    {
+        parent::__construct();
+        $this->_config = $config;
+    }
+
+    /**
      * Accessing translation for the property name from DB
      *
      * @param string $propertyName
@@ -24,11 +36,29 @@ class ApiFacet extends ApiFacetModelAbstract
      */
     public function getLabel(string $propertyName) : string
     {
-        if(strpos($propertyName, self::BOXALINO_STORE_FACET_PREFIX)===0)
+        /** if the facet name starts with products_ it makes it a Magento2 product attribute */
+        if(strpos($propertyName, AccessorFacetModelInterface::BOXALINO_STORE_FACET_PREFIX)===0)
         {
-            $propertyName = substr($propertyName, strlen(self::BOXALINO_STORE_FACET_PREFIX), strlen($propertyName));
+            $propertyName = substr($propertyName, strlen(AccessorFacetModelInterface::BOXALINO_STORE_FACET_PREFIX), strlen($propertyName));
+            $label = $this->_getAttributeModel($propertyName)->getStoreLabel();
+            if(!empty($label))
+            {
+                return $label;
+            }
         }
+
         return ucwords(str_replace("_", " ", $propertyName));
+    }
+
+    /**
+     * Accessing Magento2 attribute
+     *
+     * @param string $attributeCode
+     * @return AbstractAttribute
+     */
+    public function _getAttributeModel(string $attributeCode)
+    {
+        return $this->_config->getAttribute('catalog_product', $attributeCode);
     }
 
 }
