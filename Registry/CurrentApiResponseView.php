@@ -25,7 +25,7 @@ class CurrentApiResponseView implements CurrentApiResponseViewRegistryInterface
 
     public function get(): ?ApiResponseViewInterface
     {
-        return $this->apiResponseView ?? new ApiResponsePage();
+        return $this->apiResponseView ?? null;
     }
 
 }

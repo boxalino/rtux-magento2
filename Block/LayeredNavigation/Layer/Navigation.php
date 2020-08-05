@@ -117,6 +117,25 @@ class Navigation extends \Magento\Framework\View\Element\Template
     }
 
     /**
+     * Checks which facet is to be expanded
+     * (for the accordion widget)
+     *
+     * @return string
+     */
+    public function getExpandedFiltersConfiguration() : string
+    {
+        $configuration = [];
+        foreach($this->getFilters() as $index=>$filter)
+        {
+            if ($filter->getValues()->count() && $filter->getDisplay() === 'expanded') {
+                $configuration[] = $index;
+            }
+        }
+
+        return json_encode($configuration);
+    }
+
+    /**
      * The block can be aware of the expected children elements (state&renderer)
      *
      * @param BlockInterface $block
