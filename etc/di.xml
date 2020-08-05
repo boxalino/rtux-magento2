@@ -56,7 +56,7 @@
                     <item name="suggestionsCollection" xsi:type="string">Boxalino\RealTimeUserExperienceApi\Service\Api\Response\Accessor\BxAccessor</item>
                 </item>
                 <item name="bx-facets" xsi:type="array">
-                    <item name="facetsCollection" xsi:type="string">Boxalino\RealTimeUserExperienceApi\Service\Api\Response\Accessor\BxAccessor</item>
+                    <item name="facetsList" xsi:type="string">Boxalino\RealTimeUserExperienceApi\Service\Api\Response\Accessor\BxAccessor</item>
                 </item>
             </argument>
             <argument name="hitIdFieldNameList" xsi:type="array">

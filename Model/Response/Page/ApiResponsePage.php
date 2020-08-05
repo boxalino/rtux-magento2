@@ -31,7 +31,7 @@ class ApiResponsePage implements ApiResponsePageInterface
     /**
      * @var bool
      */
-    protected $fallback = false;
+    protected $fallback = true;
 
     /**
      * @var string

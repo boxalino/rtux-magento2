@@ -40,11 +40,16 @@ class ApiFacet extends ApiFacetModelAbstract
         if(strpos($propertyName, AccessorFacetModelInterface::BOXALINO_STORE_FACET_PREFIX)===0)
         {
             $propertyName = substr($propertyName, strlen(AccessorFacetModelInterface::BOXALINO_STORE_FACET_PREFIX), strlen($propertyName));
-            $label = $this->_getAttributeModel($propertyName)->getStoreLabel();
-            if(!empty($label))
-            {
-                return $label;
+            try{
+                $label = $this->_getAttributeModel($propertyName)->getStoreLabel();
+                if(!empty($label))
+                {
+                    return $label;
+                }
+            } catch(\Throwable $exception) {
+                //$this->log("ERROR: " . $exception->getMessage());
             }
+
         }
 
         return ucwords(str_replace("_", " ", $propertyName));

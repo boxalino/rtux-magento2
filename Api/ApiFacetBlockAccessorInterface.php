@@ -1,8 +1,7 @@
 <?php
 namespace Boxalino\RealTimeUserExperience\Api;
 
-use Boxalino\RealTimeUserExperienceApi\Service\Api\Response\Accessor\AccessorInterface;
-use Boxalino\RealTimeUserExperienceApi\Service\Api\Response\Accessor\BlockInterface;
+use Boxalino\RealTimeUserExperienceApi\Service\Api\Response\Accessor\Facet;
 
 /**
  * @package Boxalino\RealTimeUserExperience\Api
@@ -10,8 +9,13 @@ use Boxalino\RealTimeUserExperienceApi\Service\Api\Response\Accessor\BlockInterf
 interface ApiFacetBlockAccessorInterface extends ApiRendererInterface
 {
     /**
-     * @return AccessorInterface|null
      */
-    public function getFacetsCollection() : ?AccessorInterface;
+    public function getFilter();
+
+    /**
+     * @param $filter
+     * @return mixed
+     */
+    public function setFilter(Facet $filter);
 
 }

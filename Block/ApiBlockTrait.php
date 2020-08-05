@@ -7,6 +7,7 @@ use Boxalino\RealTimeUserExperience\Api\ApiResponseBlockInterface;
 use Boxalino\RealTimeUserExperienceApi\Service\Api\Response\Accessor\BlockInterface;
 use Boxalino\RealTimeUserExperienceApi\Service\ErrorHandler\MissingDependencyException;
 use Boxalino\RealTimeUserExperience\Model\Request\ApiPageLoader;
+use Boxalino\RealTimeUserExperienceApi\Service\ErrorHandler\UndefinedPropertyError;
 
 /**
  * Trait ApiBlockTrait
@@ -137,8 +138,10 @@ trait ApiBlockTrait
     }
 
     /**
+     * Generates API response block elements
+     * Required parameters: type, template, name
+     *
      * @param BlockInterface $block
-     * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function getApiBlock(ApiBlockAccessorInterface $block) : ?ApiRendererInterface
     {
@@ -152,6 +155,11 @@ trait ApiBlockTrait
             throw new MissingDependencyException("BoxalinoAPI RenderBlock Error: the block template is missing: " . json_encode($block));
         }
 
+        if(!$block->getName())
+        {
+            throw new MissingDependencyException("BoxalinoAPI RenderBlock Error: the block name is missing: " . json_encode($block));
+        }
+
         try{
             $apiBlock = $this->getLayout()->createBlock($block->getType(), $block->getName())
                 ->setTemplate($block->getTemplate());
@@ -161,6 +169,32 @@ trait ApiBlockTrait
                 $apiBlock->setRtuxVariantUuid($this->getRtuxVariantUuid())
                     ->setRtuxGroupBy($this->getRtuxGroupBy())
                     ->setBlock($block);
+            }
+
+            try{
+                foreach($block->getChild() as $childBlockName)
+                {
+                    foreach($block->getBlocks() as $index => $nestedBlock)
+                    {
+                        try {
+                            if($nestedBlock->getName() === $childBlockName)
+                            {
+                                $childBlock = $apiBlock->getApiBlock($nestedBlock);
+                                if($apiBlock->getChildBlock($childBlockName))
+                                {
+                                    continue;
+                                }
+                                $apiBlock->setChild($childBlockName, $childBlock);
+
+                                /** once the child block is set, it needs to be removed from the nested elements */
+                                $block->getBlocks()->offsetUnset($index);
+                                $apiBlock->setBlock($block);
+                            }
+                        } catch(UndefinedPropertyError $error) {
+                        }
+                    }
+                }
+            } catch(UndefinedPropertyError $error) {
             }
 
             return $apiBlock;
