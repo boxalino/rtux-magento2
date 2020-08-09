@@ -32,10 +32,10 @@ class Configuration implements ConfigurationInterface
 
     /**
      * The API endpoint depends on the testing conditionals and on the data index
-     * @param string $contextId
+     *
      * @return string
      */
-    public function getRestApiEndpoint(string $contextId = \Magento\Store\Model\ScopeInterface::SCOPE_STORE) : string
+    public function getRestApiEndpoint() : string
     {
         $value = $this->scopeConfig->getValue('rtux/api/url', $this->contextId);
         if(empty($value))
@@ -52,10 +52,9 @@ class Configuration implements ConfigurationInterface
     }
 
     /**
-     * @param string $contextId
      * @return string
      */
-    public function getUsername(string $contextId = \Magento\Store\Model\ScopeInterface::SCOPE_STORE) : string
+    public function getUsername() : string
     {
         $value = $this->scopeConfig->getValue('rtux/general/account', $this->contextId);
         if(empty($value))
@@ -67,10 +66,9 @@ class Configuration implements ConfigurationInterface
     }
 
     /**
-     * @param string $contextId
      * @return string
      */
-    public function getApiKey(string $contextId = \Magento\Store\Model\ScopeInterface::SCOPE_STORE) : string
+    public function getApiKey() : string
     {
         $value = $this->scopeConfig->getValue('rtux/general/apiKey', $this->contextId);
         if(empty($value))
@@ -82,10 +80,9 @@ class Configuration implements ConfigurationInterface
     }
 
     /**
-     * @param string $contextId
      * @return string
      */
-    public function getApiSecret(string $contextId = \Magento\Store\Model\ScopeInterface::SCOPE_STORE) : string
+    public function getApiSecret() : string
     {
         $value = $this->scopeConfig->getValue('rtux/general/apiSecret', $this->contextId);
         if(empty($value))
@@ -97,10 +94,9 @@ class Configuration implements ConfigurationInterface
     }
 
     /**
-     * @param string $contextId
      * @return bool
      */
-    public function getIsDev(string $contextId = \Magento\Store\Model\ScopeInterface::SCOPE_STORE) : bool
+    public function getIsDev() : bool
     {
         $value = $this->scopeConfig->getValue('rtux/general/dev', $this->contextId);
         if(empty($value))
@@ -112,10 +108,9 @@ class Configuration implements ConfigurationInterface
     }
 
     /**
-     * @param string $contextId
      * @return bool
      */
-    public function getIsTest(string $contextId = \Magento\Store\Model\ScopeInterface::SCOPE_STORE) : bool
+    public function getIsTest() : bool
     {
         $value = $this->scopeConfig->getValue('rtux/api/test', $this->contextId);
         if(empty($value))
@@ -124,16 +119,6 @@ class Configuration implements ConfigurationInterface
         }
 
         return (bool)$value;
-    }
-
-    /**
-     * @param string $contextId
-     * @return $this
-     */
-    public function setContextId(string $contextId = \Magento\Store\Model\ScopeInterface::SCOPE_STORE) : self
-    {
-        $this->contextId = \Magento\Store\Model\ScopeInterface::SCOPE_STORE;
-        return $this;
     }
 
 }

@@ -24,12 +24,4 @@ trait ApiLoaderTrait
 
     protected function _beforeApiCallService(): void {}
 
-    /**
-     * @return string
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
-     */
-    public function getContextId() : string
-    {
-        return \Magento\Store\Model\ScopeInterface::SCOPE_STORE;
-    }
 }

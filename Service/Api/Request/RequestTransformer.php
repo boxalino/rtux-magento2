@@ -49,14 +49,5 @@ class RequestTransformer extends ApiRequestTransformer
         return (string) $sessionCustomerId;
     }
 
-    /**
-     * Store ID
-     *
-     * @return string
-     */
-    public function getContextId() : string
-    {
-        return (string) $this->storeConfigurationHelper->getMagentoStoreId();
-    }
 
 }
