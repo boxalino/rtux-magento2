@@ -46,10 +46,7 @@ class ApiFacet extends ApiFacetModelAbstract
                 {
                     return $label;
                 }
-            } catch(\Throwable $exception) {
-                //$this->log("ERROR: " . $exception->getMessage());
-            }
-
+            } catch(\Throwable $exception) {}
         }
 
         return ucwords(str_replace("_", " ", $propertyName));

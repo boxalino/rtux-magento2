@@ -10,6 +10,7 @@ use Boxalino\RealTimeUserExperience\Block\FrameworkBlockTrait;
 use Boxalino\RealTimeUserExperience\Model\Response\Content\ApiFacet;
 use Boxalino\RealTimeUserExperienceApi\Service\Api\Response\Accessor\BlockInterface;
 use Boxalino\RealTimeUserExperienceApi\Service\ErrorHandler\MissingDependencyException;
+use Boxalino\RealTimeUserExperienceApi\Service\ErrorHandler\UndefinedPropertyError;
 
 /**
  * Class Navigation
@@ -60,6 +61,8 @@ class Navigation extends \Magento\Framework\View\Element\Template
     }
 
     /**
+     * The filters are set based on the position property defined
+     *
      * @return \ArrayIterator
      */
     public function getFilters() : \ArrayIterator
@@ -67,6 +70,12 @@ class Navigation extends \Magento\Framework\View\Element\Template
         if (is_null($this->filtersList))
         {
             $apiFacetsList = $this->getApiFacetModel()->getFacets();
+            try{
+                if($this->getBlock()->getPosition())
+                {
+                    $apiFacetsList = $this->getApiFacetModel()->getByPosition($this->getBlock()->getPosition());
+                }
+            } catch(UndefinedPropertyError $exception) {}
             $this->_eventManager->dispatch(
                 'rtux_api_block_facet_list_collection',
                 ['collection' => $apiFacetsList]
@@ -182,6 +191,7 @@ class Navigation extends \Magento\Framework\View\Element\Template
             return $apiBlock;
         } catch (\Throwable $exception) {
             $this->_logger->warning("BoxalinoAPI Facets Navigation ERROR: " . $exception->getMessage());
+            $this->_logger->warning("BoxalinoAPI Facets Navigation ERROR: " . $exception->getTraceAsString());
             return null;
         }
     }

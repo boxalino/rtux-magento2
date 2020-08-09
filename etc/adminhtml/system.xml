@@ -3,7 +3,7 @@
     <system>
         <!-- for add new tab in Magento2 system configuration section -->
         <tab id="boxalino" translate="label" sortOrder="10">
-            <label>Boxalino</label>
+            <label>Boxalino API</label>
         </tab>
         <!-- for create section -->
         <section id="rtux" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
@@ -17,7 +17,7 @@
                 <field id="status" translate="label" sortOrder="10" type="select" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Status</label>
                     <source_model>Magento\Config\Model\Config\Source\Enabledisable</source_model>
-                    <comment>Is the Boxalino plugin active?</comment>
+                    <comment>Is the Boxalino RTUX API plugin active?</comment>
                 </field>
                 <field id="account" translate="label comment" sortOrder="20" type="text" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Boxalino account name</label>
@@ -31,16 +31,7 @@
                     <label>ApiSecret</label>
                     <comment>Please request your account with credentials by contacting support@boxalino.com</comment>
                 </field>
-                <field id="password" translate="label comment" sortOrder="50" type="password" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Boxalino password</label>
-                    <comment>Please request your account with credentials by contacting support@boxalino.com</comment>
-                </field>
-                <field id="dev" translate="label" type="select" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1" >
-                    <label>Use Development Data Index</label>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                </field>
             </group>
-
             <group id="tracker" translate="label" type="text"  sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>Tracker</label>
                 <!-- create text type field -->
@@ -61,6 +52,10 @@
                     <label>Test mode</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <comment>The request will use test=false by default; The test property refers to the Boxalino Optimization configurations used (narratives, scenario, facets, etc)</comment>
+                </field>
+                <field id="dev" translate="label" type="select" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1" >
+                    <label>Use Development Data Index</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
                 <field id="apiServerKey" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0" >
                     <label>JS API Key</label>

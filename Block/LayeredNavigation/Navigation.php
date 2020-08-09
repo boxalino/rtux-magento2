@@ -51,7 +51,7 @@ class Navigation extends MagentoNavigation
     protected $requestWrapper;
 
     public function __construct(
-        CurrentApiResponseRegistryInterface$currentApiResponse,
+        CurrentApiResponseRegistryInterface $currentApiResponse,
         CurrentApiResponseViewRegistryInterface $currentApiResponseView,
         ApiPageLoader $apiPageLoader,
         ContextInterface $apiContext,
@@ -114,9 +114,11 @@ class Navigation extends MagentoNavigation
         try{
             if($this->currentApiResponse->get())
             {
+                $this->_logger->info("LAYERED NAVIGATION - HAS REQUEST");
                 return $this;
             }
 
+            $this->_logger->info("LAYERED NAVIGATION - GET REQUEST");
             $this->apiLoader
                 ->setRequest($this->requestWrapper->setRequest($this->_request))
                 ->setApiContext($this->apiContext)

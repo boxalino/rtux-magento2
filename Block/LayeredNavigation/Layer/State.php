@@ -3,12 +3,11 @@ namespace Boxalino\RealTimeUserExperience\Block\LayeredNavigation\Layer;
 
 use Boxalino\RealTimeUserExperience\Api\ApiSelectedFacetListBlockAccessorInterface;
 use Boxalino\RealTimeUserExperience\Block\ApiBlockTrait;
-use Magento\LayeredNavigation\Block\Navigation\State as MagentoState;
 
 /**
  * Layered navigation state
  */
-class State extends MagentoState
+class State extends \Magento\Framework\View\Element\Template
     implements ApiSelectedFacetListBlockAccessorInterface
 {
 
@@ -22,16 +21,16 @@ class State extends MagentoState
     /**
      * Retrieve active filters
      *
-     * @return array | \ArrayIterator
+     * @return \ArrayIterator
      */
-    public function getActiveFilters()
+    public function getActiveFilters() : \ArrayIterator
     {
         if($this->activeFilters)
         {
             return $this->activeFilters;
         }
 
-        return parent::getActiveFilters();
+        return new \ArrayIterator();
     }
 
     /**
