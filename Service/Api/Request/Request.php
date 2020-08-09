@@ -3,6 +3,8 @@ namespace Boxalino\RealTimeUserExperience\Service\Api\Request;
 
 use \Boxalino\RealTimeUserExperienceApi\Service\Api\Request\RequestInterface;
 use \Magento\Framework\App\RequestInterface as PlatformRequest;
+use Magento\Framework\Stdlib\Cookie\CookieMetadataFactory;
+use Magento\Framework\Stdlib\CookieManagerInterface;
 
 /**
  * Class Request
@@ -30,12 +32,28 @@ class Request implements RequestInterface
     protected $locale;
 
     /**
+     * @var CookieManagerInterface
+     */
+    protected $cookieManager;
+
+    /**
+     * @var CookieMetadataFactory
+     */
+    protected $cookieMetadataFactory;
+
+    /**
      * Request constructor.
      * @param \Magento\Framework\HTTP\Header $httpHeader
      * @param \Magento\Framework\Locale\ResolverInterface $store
      */
-    public function __construct(\Magento\Framework\HTTP\Header $httpHeader, \Magento\Framework\Locale\ResolverInterface $locale)
-    {
+    public function __construct(
+        \Magento\Framework\HTTP\Header $httpHeader,
+        \Magento\Framework\Locale\ResolverInterface $locale,
+        CookieManagerInterface $cookieManager,
+        CookieMetadataFactory $cookieMetadataFactory
+    ){
+        $this->cookieManager = $cookieManager;
+        $this->cookieMetadataFactory = $cookieMetadataFactory;
         $this->locale = $locale;
         $this->httpHeader = $httpHeader;
     }
@@ -52,7 +70,8 @@ class Request implements RequestInterface
 
     /**
      * Magento2 request is a preference for \Magento\Framework\App\RequestInterface
-     * @return PlatformRequest|mixed|null
+     *
+     * @return PlatformRequest
      */
     public function getRequest()
     {
@@ -65,7 +84,7 @@ class Request implements RequestInterface
      */
     public function hasCookie(string $key) : bool
     {
-        return (bool) $this->request->getCookie($key, null);
+        return (bool) $this->cookieManager->getCookie($key);
     }
 
     /**
@@ -75,7 +94,11 @@ class Request implements RequestInterface
      */
     public function setCookie(string $key, $value) : RequestInterface
     {
-        $this->request->setCookies([$key => $value]);
+        $metadata = $this->cookieMetadataFactory
+            ->createPublicCookieMetadata()
+            ->setPath("/");
+
+        $this->cookieManager->setPublicCookie($key, $value, $metadata);
         return $this;
     }
 
@@ -83,9 +106,9 @@ class Request implements RequestInterface
      * @param string $key
      * @return string
      */
-    public function getCookie(string $key, $default=null): string
+    public function getCookie(string $key, $default = null): string
     {
-        return $this->request->getCookie($key, $default);
+        return $this->cookieManager->getCookie($key, $default);
     }
 
     /**
@@ -93,8 +116,7 @@ class Request implements RequestInterface
      */
     public function getLocale(): string
     {
-        return "de";
-        //return $this->locale->getLocale();
+        return $this->locale->getLocale();
     }
 
     /**
@@ -126,7 +148,7 @@ class Request implements RequestInterface
      */
     public function getUserUrl(): string
     {
-        return $this->httpHeader->getRequestUri();
+        return $this->httpHeader->getHttpHost().$this->httpHeader->getRequestUri();
     }
 
     /**

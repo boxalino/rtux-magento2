@@ -1,0 +1,23 @@
+<?php
+/**
+ * JS Tracker init
+ *
+ * @var $block \Magento\Framework\View\Element\Template
+ * @var $helper \Boxalino\RealTimeUserExperience\Helper\Js\Configuration
+ */
+// phpcs:disable Magento2.Templates.ThisInTemplate.FoundThis
+?>
+<?php
+$helper = $this->helper(\Boxalino\RealTimeUserExperience\Helper\Js\Configuration::class);
+?>
+<script>
+    var _bxq = _bxq || [];
+    _bxq.push(['setAccount', <?php echo json_encode($helper->getAccount()); ?>]);
+    _bxq.push(['trackPageView']);
+    (function () {
+        var s = document.createElement('script');
+        s.async = 1;
+        s.src = '<?php echo $helper->getTrackerUrl($helper->isDev());?>';
+        document.getElementsByTagName('head')[0].appendChild(s);
+    })();
+</script>

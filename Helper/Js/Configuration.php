@@ -107,7 +107,7 @@ class Configuration extends \Magento\Framework\App\Helper\AbstractHelper
      * @param bool $isDev
      * @return string
      */
-    public function getTrackerUrl(bool $isDev=false) : string
+    public function getTrackerUrl(bool $isDev = false) : string
     {
         if($isDev)
         {

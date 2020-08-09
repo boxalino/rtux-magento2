@@ -53,11 +53,18 @@ class Top extends \Magento\Framework\View\Element\Template
      */
     public function getBlocks(): \ArrayIterator
     {
-        if ($this->currentApiResponse->get() && $this->currentApiResponseView->get()->isFallback()) {
+        if (!$this->currentApiResponse->get() || $this->currentApiResponseView->get()->isFallback()) {
             return new \ArrayIterator();
         }
 
-        return $this->currentApiResponse->get()->getTop();
+        try {
+            $blocks =  $this->currentApiResponse->get()->getTop();
+        } catch (\Exception $exception)
+        {
+            $blocks = new \ArrayIterator();
+        }
+
+        return $blocks;
     }
 
     /**

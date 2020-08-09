@@ -79,7 +79,7 @@ class Navigation extends MagentoNavigation
      */
     public function getBlocks() : \ArrayIterator
     {
-        if($this->currentApiResponse->get() && $this->currentApiResponseView->get()->isFallback())
+        if(!$this->currentApiResponse->get() || $this->currentApiResponseView->get() && $this->currentApiResponseView->get()->isFallback())
         {
             return new \ArrayIterator();
         }
@@ -95,7 +95,7 @@ class Navigation extends MagentoNavigation
      */
     public function getTemplate()
     {
-        if($this->currentApiResponse->get() && $this->currentApiResponseView->get()->isFallback())
+        if(!$this->currentApiResponse->get() || $this->currentApiResponseView->get() && $this->currentApiResponseView->get()->isFallback())
         {
             return parent::getTemplate();
         }
@@ -114,11 +114,9 @@ class Navigation extends MagentoNavigation
         try{
             if($this->currentApiResponse->get())
             {
-                $this->_logger->info("LAYERED NAVIGATION - HAS REQUEST");
                 return $this;
             }
 
-            $this->_logger->info("LAYERED NAVIGATION - GET REQUEST");
             $this->apiLoader
                 ->setRequest($this->requestWrapper->setRequest($this->_request))
                 ->setApiContext($this->apiContext)
@@ -143,7 +141,7 @@ class Navigation extends MagentoNavigation
      */
     protected function _beforeToHtml()
     {
-        if($this->currentApiResponse->get() && $this->currentApiResponseView->get()->isFallback())
+        if(!$this->currentApiResponse->get() || $this->currentApiResponseView->get() && $this->currentApiResponseView->get()->isFallback())
         {
             return parent::_beforeToHtml();
         }
@@ -159,7 +157,7 @@ class Navigation extends MagentoNavigation
      */
     public function canShowBlock()
     {
-        if($this->currentApiResponse->get() && $this->currentApiResponseView->get()->isFallback())
+        if(!$this->currentApiResponse->get() || $this->currentApiResponseView->get() && $this->currentApiResponseView->get()->isFallback())
         {
             return parent::canShowBlock();
         }
