@@ -7,6 +7,7 @@ use Boxalino\RealTimeUserExperienceApi\Service\Api\Response\Accessor\Block as Ap
 
 /**
  * Class Block
+ * Extending the default API data-contract in order to access Magento2-required properties for layout block generation
  *
  * @package Boxalino\RealTimeUserExperience\Service\Api\Accessor
  */
@@ -23,6 +24,26 @@ class Block extends ApiBlock
      * @var string
      */
     protected $name;
+
+    /**
+     * Block type (as required in order to create Magento2 layout blocks)
+     *
+     * @return string
+     */
+    public function getType(): string
+    {
+        return $this->type;
+    }
+
+    /**
+     * Block name (as required in order to create Magento2 layout blocks)
+     *
+     * @return string|null
+     */
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
 
     /**
      * @param array $value
@@ -45,24 +66,8 @@ class Block extends ApiBlock
     }
 
     /**
-     * Block type is
-     * @return string
-     */
-    public function getType(): string
-    {
-        return $this->type;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
-
-    /**
      * As configured in the di.xml - product is a match for bx-hit accessor
+     *
      * @return AccessorInterface|null
      */
     public function getProduct() : ?AccessorInterface

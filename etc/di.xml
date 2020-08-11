@@ -29,13 +29,13 @@
         <arguments>
             <argument name="accessorList" xsi:type="array">
                 <item name="facet" xsi:type="array">
-                    <item name="facet" xsi:type="string">Boxalino\RealTimeUserExperienceApi\Service\Api\Response\Accessor\Facet</item>
+                    <item name="facet" xsi:type="string">Boxalino\RealTimeUserExperience\Service\Api\Response\Accessor\Facet</item>
+                </item>
+                <item name="facetValue" xsi:type="array">
+                    <item name="property" xsi:type="string">Boxalino\RealTimeUserExperience\Service\Api\Response\Accessor\FacetValue</item>
                 </item>
                 <item name="bx-sort" xsi:type="array">
                     <item name="sorting" xsi:type="string">Boxalino\RealTimeUserExperienceApi\Service\Api\Response\Accessor\Sort</item>
-                </item>
-                <item name="facetValue" xsi:type="array">
-                    <item name="property" xsi:type="string">Boxalino\RealTimeUserExperienceApi\Service\Api\Response\Accessor\FacetValue</item>
                 </item>
                 <item name="bx-acQuery" xsi:type="array">
                     <item name="suggestion" xsi:type="string">Boxalino\RealTimeUserExperienceApi\Service\Api\Response\Accessor\AcQuery</item>
