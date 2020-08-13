@@ -88,5 +88,4 @@ class FacetValue extends ApiFacetValue
         return $this;
     }
 
-
 }
