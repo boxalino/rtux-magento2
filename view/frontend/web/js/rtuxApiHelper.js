@@ -2,17 +2,35 @@
  * API JS Helper class
  * it sets setup configurations via default.xml (if desired)
  * reusable for the client-side JS requests integration
+ *
+ * Can be accessed as $.boxalino.rtuxApiHelper in other JS components
  */
 
 define([
     'jquery',
+    'mage/mage',
     'mage/cookies'
 ], function ($) {
     'use strict';
 
-    $.widget('boxalino.rtuxApiHelper', {
+    var RtuxApiHelper = function () {
+
         /**
-         * additional parameters to be set: returnFields, filters, facets, sort
+         * Cookie default values.
+         * @type {Object}
+         */
+        this.options = {
+            dev: false,
+            test: false,
+            endpoint: "//track.bx-cloud.com/static/bav2.min.js",
+            account: null,
+            key: null,
+            profile: null,
+            language: null
+        };
+
+        /**
+         * additional parameters to be set: filters, facets, sort
          * for more details, check the Narrative Api Technical Integration manual provided by Boxalino
          *
          * @public
@@ -22,8 +40,8 @@ define([
          * @param {*} otherParameters
          * @returns {{widget: *, hitCount: number, apiKey: *, dev: boolean, test: boolean, profileId: (string|*|{}|DOMPoint|SVGTransform|SVGNumber|SVGLength|SVGPathSeg), customerId: (string|*), language: *, sessionId: *, groupBy: *, parameters: {"User-Agent": string, "User-URL", "User-Referer": string}, username: *}}
          */
-        getApiRequestData: function(widget, hitCount, groupBy, otherParameters = {}) {
-            var baseParameters = {
+        this.getApiRequestData = function(widget, hitCount, groupBy, otherParameters = {}) {
+            let baseParameters = {
                 'username': this.options.account,
                 'apiKey': this.options.key,
                 'sessionId': this.getApiSessionId(),
@@ -43,50 +61,61 @@ define([
             };
 
             return Object.assign({}, baseParameters, otherParameters);
-        },
+        }
 
         /**
          * @public
          * @param url string|null
          * @returns {string}
          */
-        getApiRequestUrl: function(url=null) {
+        this.getApiRequestUrl = function(url = null) {
             var endpoint = this.options.endpoint;
-            if(url) {
+            if (url) {
                 endpoint = url;
             }
             return endpoint + '?profileId=' + encodeURIComponent(this.getApiProfileId());
-        },
+        }
 
         /**
          * @public
          * @returns {string|*}
          * @param customerId
          */
-        getApiCustomerId: function(customerId = null) {
+        this.getApiCustomerId = function(customerId = null) {
             if (customerId) {
                 return atob(customerId);
             }
 
             return this.getApiProfileId();
-        },
+        }
 
         /**
          * @public
          * @returns {string|*|{}|DOMPoint|SVGTransform|SVGNumber|SVGLength|SVGPathSeg}
          */
-        getApiProfileId: function() {
+        this.getApiProfileId = function() {
             return $.mage.cookies.get('cemv');
-        },
+        }
 
         /**
          * @public
          * @returns {string|*|{}|DOMPoint|SVGTransform|SVGNumber|SVGLength|SVGPathSeg}
          */
-        getApiSessionId: function() {
+        this.getApiSessionId = function() {
             return $.mage.cookies.get('cems');
-        },
+        }
+
+        return this;
+    };
+
+    $.extend(true, $, {
+        boxalino: {
+            rtuxApiHelper: new RtuxApiHelper()
+        }
     });
 
-    return $.boxalino.rtuxApiHelper;
+    return function (options) {
+        $.extend($.boxalino.rtuxApiHelper.options, options);
+    };
+
 });
