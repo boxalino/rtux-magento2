@@ -29,14 +29,15 @@ The latest documentation is available upon request.
 4. Log in your Magento2 admin and configure the plugin with the configurations provided for your setup
 Magento2 Admin >> Stores >> Configuration >> Boxalino >> General
 
-5. Due to the JS files in the plugin (tracker, Shopware6 CMS blocks, etc), a theme compilation might be required:
-``./psh.phar administration:build ``
-``./psh.phar storefront:build``
+5. Due to the JS files in the plugin (tracker, M2 CMS blocks, etc), a theme compilation might be required:
+``php bin/magento setup:static-content:deploy ``
 
 6. In order to kick off your account, a full export is required
 ``php bin/magento indexer:reindex``
 
 7. Proceed with the integration features available in our guidelines suggestions https://github.com/boxalino/rtux-integration-magento2
+
+For more in-depth details on the structure of the repository, please consult the [wiki page](https://github.com/boxalino/rtux-magento2/wiki).
 
 ## Contact us!
 

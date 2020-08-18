@@ -10,8 +10,8 @@
         </policy>
         <policy id="script-src">
             <values>
-                <value id="rtux-main" type="host">https://main.bx-cloud.com</value>
-                <value id="rtux-stage" type="host">https://r-st.bx-cloud.com</value>
+                <value id="rtux-main" type="host">https://track.bx-cloud.com/static/bav2.min.js</value>
+                <value id="rtux-stage" type="host">https://r-st.bx-cloud.com/static/bav2.min.js</value>
             </values>
         </policy>
     </policies>
