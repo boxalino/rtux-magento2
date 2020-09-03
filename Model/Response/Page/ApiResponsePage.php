@@ -59,6 +59,26 @@ class ApiResponsePage implements ApiResponsePageInterface
     protected $searchTerm;
 
     /**
+     * @var \ArrayIterator
+     */
+    protected $left;
+
+    /**
+     * @var \ArrayIterator
+     */
+    protected $right;
+
+    /**
+     * @var \ArrayIterator
+     */
+    protected $bottom;
+
+    /**
+     * @var \ArrayIterator
+     */
+    protected $top;
+
+    /**
      * @return \ArrayIterator
      */
     public function getBlocks() : \ArrayIterator
@@ -218,6 +238,78 @@ class ApiResponsePage implements ApiResponsePageInterface
     public function getSearchTerm() : string
     {
         return $this->searchTerm;
+    }
+
+    /**
+     * @return \ArrayIterator
+     */
+    public function getLeft(): \ArrayIterator
+    {
+        return $this->left;
+    }
+
+    /**
+     * @param \ArrayIterator $left
+     * @return ApiResponseViewInterface
+     */
+    public function setLeft(\ArrayIterator $left): ApiResponseViewInterface
+    {
+        $this->left = $left;
+        return $this;
+    }
+
+    /**
+     * @return \ArrayIterator
+     */
+    public function getRight(): \ArrayIterator
+    {
+        return $this->right;
+    }
+
+    /**
+     * @param \ArrayIterator $right
+     * @return ApiResponseViewInterface
+     */
+    public function setRight(\ArrayIterator $right): ApiResponseViewInterface
+    {
+        $this->right = $right;
+        return $this;
+    }
+
+    /**
+     * @return \ArrayIterator
+     */
+    public function getBottom(): \ArrayIterator
+    {
+        return $this->bottom;
+    }
+
+    /**
+     * @param \ArrayIterator $bottom
+     * @return ApiResponseViewInterface
+     */
+    public function setBottom(\ArrayIterator $bottom): ApiResponseViewInterface
+    {
+        $this->bottom = $bottom;
+        return $this;
+    }
+
+    /**
+     * @return \ArrayIterator
+     */
+    public function getTop(): \ArrayIterator
+    {
+        return $this->top;
+    }
+
+    /**
+     * @param \ArrayIterator $top
+     * @return ApiResponseViewInterface
+     */
+    public function setTop(\ArrayIterator $top): ApiResponseViewInterface
+    {
+        $this->top = $top;
+        return $this;
     }
 
 }
