@@ -11,13 +11,20 @@
 $helper = $this->helper(\Boxalino\RealTimeUserExperience\Helper\Js\Configuration::class);
 ?>
 <script>
-    var _bxq = _bxq || [];
-    _bxq.push(['setAccount', <?php echo json_encode($helper->getAccount()); ?>]);
-    _bxq.push(['trackPageView']);
-    (function () {
-        var s = document.createElement('script');
-        s.async = 1;
-        s.src = '<?php echo $helper->getTrackerUrl($helper->isDev());?>';
-        document.getElementsByTagName('head')[0].appendChild(s);
-    })();
+     window._bxq = window._bxq || [];
+     function bxq(arguments) { _bxq.push(arguments); }
+</script>
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "Boxalino_RealTimeUserExperience/js/rtuxApiTracker": {
+                "isRestricted": <?= json_encode($helper->isTrackingRestricted()) ?>,
+                "moduleName": "<?= $this->getRequest()->getModuleName(); ?>",
+                "controllerName": "<?= $this->getRequest()->getControllerName(); ?>",
+                "actionName": "<?= $this->getRequest()->getActionName(); ?>",
+                "activeId": <?= json_encode($this->getRequest()->getParam("id")); ?>,
+                "currencyCode": "<?= $helper->getCurrencyCode(); ?>"
+            }
+        }
+    }
 </script>

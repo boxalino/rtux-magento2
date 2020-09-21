@@ -42,14 +42,14 @@ define([
          */
         this.getApiRequestData = function(widget, hitCount, groupBy, otherParameters = {}) {
             let baseParameters = {
-                'username': this.options.account,
+                'username': this.getAccount(),
                 'apiKey': this.options.key,
                 'sessionId': this.getApiSessionId(),
                 'profileId': this.getApiProfileId(),
                 'customerId': this.getApiCustomerId(this.options.profile),
                 'widget': widget,
-                'dev': this.options.dev,
-                'test': this.options.test,
+                'dev': this.isDev(),
+                'test': this.isTest(),
                 'hitCount': hitCount,
                 'language': this.options.language,
                 'groupBy': groupBy,
@@ -103,6 +103,55 @@ define([
          */
         this.getApiSessionId = function() {
             return $.mage.cookies.get('cems');
+        }
+
+        /**
+         * @public
+         * @returns {string|null}
+         */
+        this.getAccount = function() {
+            return this.options.account;
+        }
+
+        /**
+         * @public
+         * @returns {string|null}
+         */
+        this.getCustomerId = function() {
+            let profile=this.options.profile;
+            if(profile) {
+                return atob(profile);
+            }
+            return null;
+        }
+
+        /**
+         * @public
+         * @returns {boolean}
+         */
+        this.isTest = function() {
+           return this.options.test === "true";
+        }
+
+        /**
+         * @public
+         * @returns {boolean}
+         */
+        this.isDev = function() {
+            return this.options.dev === "true";
+        }
+
+        /**
+         * @returns {boolean}
+         */
+        this.isLogin = function() {
+            if($.mage.cookies.get('cemv-login')) {
+                /** using $.mage.cookies.clear() did not work */
+                document.cookie= 'cemv-login=0;path=/;expires=' + new Date().toUTCString() + ';'
+                return true;
+            }
+
+            return false;
         }
 
         return this;

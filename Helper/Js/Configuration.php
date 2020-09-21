@@ -3,7 +3,11 @@ namespace Boxalino\RealTimeUserExperience\Helper\Js;
 
 use Boxalino\RealTimeUserExperience\Helper\Api\Configuration as ApiConfiguration;
 use Boxalino\RealTimeUserExperience\Helper\Configuration as GenericConfiguration;
+use Boxalino\RealTimeUserExperienceApi\Service\Api\ApiCookieSubscriber;
+use GuzzleHttp\Client;
+use GuzzleHttp\Psr7\Request;
 use Magento\Framework\App\Helper\Context;
+use Magento\Framework\Stdlib\CookieManagerInterface;
 
 /**
  * Class Configuration
@@ -19,6 +23,11 @@ class Configuration extends \Magento\Framework\App\Helper\AbstractHelper
     const BOXALINO_API_SERVER_STAGE="//r-st.bx-cloud.com/track/v2";
 
     /**
+     * Application json header.
+     */
+    const APPLICATION_TRACKER_HEADER = ['Content-Type' => 'text/plain'];
+
+    /**
      * @var \Boxalino\RealTimeUserExperience\Helper\Api\Configuration
      */
     protected $apiConfiguration;
@@ -28,26 +37,94 @@ class Configuration extends \Magento\Framework\App\Helper\AbstractHelper
      */
     protected $genericConfiguration;
 
+    /**
+     * @var Client
+     */
+    private $trackClient;
+
+    /**
+     * @var CookieManagerInterface
+     */
+    protected $cookieManager;
+
     public function __construct(
         GenericConfiguration $genericConfiguration,
         ApiConfiguration $apiConfiguration,
+        CookieManagerInterface $cookieManager,
         Context $context
     ) {
         parent::__construct($context);
         $this->apiConfiguration = $apiConfiguration;
         $this->genericConfiguration = $genericConfiguration;
+        $this->cookieManager = $cookieManager;
+        $this->trackClient = new Client();
     }
 
     /**
+     * Function that submits an api track request via the guzzle client
+     *
+     * @param string $event
+     * @param array $params
+     * @return void
+     */
+    public function track(string $event, array $params) : void
+    {
+        $params['_a'] = $this->getAccount();
+        $params['_ev'] = $event;
+        $params['_t'] = round(microtime(true) * 1000);
+        $params['_ln'] = $this->getLanguage();
+        $params['_bxs'] = $this->cookieManager->getCookie(ApiCookieSubscriber::BOXALINO_API_COOKIE_SESSION);
+        $params['_bxv'] = $this->cookieManager->getCookie(ApiCookieSubscriber::BOXALINO_API_COOKIE_VISITOR);
+        $this->_logger->info(json_encode($params));
+        try {
+            $this->trackClient->send(
+                new Request(
+                    'POST',
+                    $this->getServerUrl($params["_bxv"]),
+                    self::APPLICATION_TRACKER_HEADER,
+                    json_encode(['events' => [$params]])
+                )
+            );
+        } catch (\Throwable $exception) {
+            $this->_logger->warning("Boxalino API Tracker $event not delivered: " . $exception->getMessage());
+        }
+    }
+
+    /**
+     * Tracker URL for frontend/JS requests
+     * (the full endpoint construct is part of the JS RtuxApiHelper element https://github.com/boxalino/rtux-magento2/blob/master/view/frontend/web/js/rtuxApiHelper.js)
+     *
      * @return string
      */
-    public function getAccount() : string
+    public function getTrackerUrl() : string
     {
-        return $this->apiConfiguration->getUsername();
+        if($this->isDev())
+        {
+            return self::BOXALINO_API_TRACKING_STAGE;
+        }
+
+        return self::BOXALINO_API_TRACKING_PRODUCTION;
     }
 
     /**
-     * Because it is displayed in a template, the current customer data will be encoded
+     * Tracker URL for server-side requests
+     *
+     * @param string $session
+     * @return string
+     */
+    public function getServerUrl(string $session) : string
+    {
+        if($this->isDev())
+        {
+            return self::BOXALINO_API_SERVER_STAGE . "?_bxv=" . $session;
+        }
+
+        return self::BOXALINO_API_SERVER_PRODUCTION . "?_bxv=" . $session;
+    }
+
+    /**
+     * Encoded profile ID (logged customer value)
+     * Used in the template
      *
      * @return string|null
      */
@@ -60,6 +137,22 @@ class Configuration extends \Magento\Framework\App\Helper\AbstractHelper
         }
 
         return base64_encode($profile);
+    }
+
+    /**
+     * Check if tracker is active
+     *
+     * @return bool
+     */
+    public function isTrackerActive() : bool
+    {
+        $value = $this->scopeConfig->getValue('rtux/tracker/status',\Magento\Store\Model\ScopeInterface::SCOPE_STORE);
+        if(empty($value))
+        {
+            return false;
+        }
+
+        return (bool)$value;
     }
 
     /**
@@ -77,6 +170,14 @@ class Configuration extends \Magento\Framework\App\Helper\AbstractHelper
         }
 
         return $value;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAccount() : string
+    {
+        return $this->apiConfiguration->getUsername();
     }
 
     /**
@@ -104,35 +205,6 @@ class Configuration extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * @param bool $isDev
-     * @return string
-     */
-    public function getTrackerUrl(bool $isDev = false) : string
-    {
-        if($isDev)
-        {
-            return self::BOXALINO_API_TRACKING_STAGE;
-        }
-
-        return self::BOXALINO_API_TRACKING_PRODUCTION;
-    }
-
-    /**
-     * @param bool $isDev
-     * @param string $session
-     * @return string
-     */
-    public function getServerUrl(string $session, bool $isDev=false) : string
-    {
-        if($isDev)
-        {
-            return self::BOXALINO_API_SERVER_STAGE . "?_bxv=" . $session;
-        }
-
-        return self::BOXALINO_API_SERVER_PRODUCTION . "?_bxv=" . $session;
-    }
-
-    /**
      * @return bool
      */
     public function isDev() : bool
@@ -156,5 +228,20 @@ class Configuration extends \Magento\Framework\App\Helper\AbstractHelper
         return $this->genericConfiguration->getLanguage();
     }
 
+    /**
+     * @return string
+     */
+    public function getCurrencyCode() : string
+    {
+        return $this->genericConfiguration->getCurrencyCode();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isTrackingRestricted() : bool
+    {
+        return $this->isTrackerActive() && $this->genericConfiguration->isCookieRestrictionModeEnabled();
+    }
 
 }

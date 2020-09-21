@@ -30,16 +30,23 @@ class Configuration
      */
     protected $searchHelper;
 
+    /**
+     * @var \Magento\Cookie\Helper\Cookie
+     */
+    protected $cookieHelper;
+
     public function __construct(
         \Magento\Store\Model\StoreManagerInterface $storeManager,
         \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
         \Magento\Customer\Model\Session $customerSession,
+        \Magento\Cookie\Helper\Cookie $cookieHelper,
         \Magento\Search\Helper\Data $searchHelper
     ) {
         $this->scopeConfig = $scopeConfig;
         $this->storeManager = $storeManager;
         $this->customerSession = $customerSession;
         $this->searchHelper = $searchHelper;
+        $this->cookieHelper = $cookieHelper;
     }
 
     /**
@@ -53,6 +60,22 @@ class Configuration
             0,
             2
         );
+    }
+
+    /**
+     * @return string
+     */
+    public function getCurrencyCode() : string
+    {
+        return $this->storeManager->getStore()->getCurrentCurrency()->getCode();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isCookieRestrictionModeEnabled() : bool
+    {
+        return $this->cookieHelper->isCookieRestrictionModeEnabled();
     }
 
     /**
