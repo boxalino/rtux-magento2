@@ -26,7 +26,13 @@ define([
             account: null,
             key: null,
             profile: null,
-            language: null
+            language: null,
+            currencyCode: null,
+            activeId: null,
+            isProduct: false,
+            isNavigation: false,
+            isSearch: false,
+            isRestricted: false
         };
 
         /**
@@ -130,7 +136,7 @@ define([
          * @returns {boolean}
          */
         this.isTest = function() {
-           return this.options.test === "true";
+           return this.options.test;
         }
 
         /**
@@ -138,7 +144,31 @@ define([
          * @returns {boolean}
          */
         this.isDev = function() {
-            return this.options.dev === "true";
+            return this.options.dev;
+        }
+
+        /**
+         * @public
+         */
+        this.addTracker = function() {
+            (function (i, s, o, g, a, m) {
+                a = s.createElement(o), m = s.getElementsByTagName(o)[0];
+                a.async = 1; a.src = g;
+                m.parentNode.insertBefore(a, m)
+            })(window, document, 'script', this.isDev() ? '//r-st.bx-cloud.com/static/bav2.min.js' : '//track.bx-cloud.com/static/bav2.min.js');
+
+            bxq(["setAccount", this.getAccount()]);
+            if(this.isTest()) {
+                bxq(['debugCookie', true]);
+            }
+        }
+
+        /**
+         * @public
+         * @returns {boolean}
+         */
+        this.hasCookieRestriction = function() {
+            return this.options.isRestricted;
         }
 
         /**
@@ -152,6 +182,44 @@ define([
             }
 
             return false;
+        }
+
+        /**
+         * @public
+         * @returns {boolean}
+         */
+        this.isNavigation = function() {
+            return this.options.isNavigation;
+        }
+
+        /**
+         * @public
+         * @returns {boolean}
+         */
+        this.isProduct = function() {
+            return this.options.isProduct;
+        }
+
+        /**
+         * @public
+         * @returns {boolean}
+         */
+        this.isSearch = function() {
+            return this.options.isSearch;
+        }
+
+        /**
+         * @returns {null | string}
+         */
+        this.getActiveId = function() {
+            return this.options.activeId;
+        }
+
+        /**
+         * @returns {null| string}
+         */
+        this.getCurrencyCode = function() {
+            return this.options.currencyCode;
         }
 
         return this;

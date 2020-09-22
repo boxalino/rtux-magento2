@@ -5,8 +5,8 @@ define(['jquery'], function ($) {
     'use strict';
     return {
 
-        supports(moduleName, controllerName, actionName) {
-            return moduleName === 'catalogsearch' && controllerName === 'result' && actionName === 'index';
+        supports() {
+            return $.boxalino.rtuxApiHelper.isSearch();
         },
 
         execute() {

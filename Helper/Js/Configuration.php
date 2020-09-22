@@ -237,11 +237,13 @@ class Configuration extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
+     * Per Magento2 logic (as seen on GA)
+     *
      * @return bool
      */
     public function isTrackingRestricted() : bool
     {
-        return $this->isTrackerActive() && $this->genericConfiguration->isCookieRestrictionModeEnabled();
+        return $this->genericConfiguration->isCookieRestrictionModeEnabled();
     }
 
 }

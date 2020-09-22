@@ -6,7 +6,6 @@ use Magento\Framework\Event\ObserverInterface;
 use Boxalino\RealTimeUserExperience\Helper\Js\Configuration as RtuxApiHandler;
 use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Api\Data\OrderItemInterface;
-use Psr\Log\LoggerInterface;
 
 /**
  * Class TrackEventPurchaseObserver
@@ -25,14 +24,9 @@ class TrackEventPurchaseObserver implements ObserverInterface
      */
     protected $rtuxApiHandler;
 
-    protected $logger;
-
-    public function __construct(
-        RtuxApiHandler $configuration,
-        LoggerInterface $logger
-    ){
+    public function __construct(RtuxApiHandler $configuration)
+    {
         $this->rtuxApiHandler = $configuration;
-        $this->logger = $logger;
     }
 
     /**

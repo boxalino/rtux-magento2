@@ -10,13 +10,11 @@ define([
     'use strict';
     return {
 
-        supports(moduleName, controllerName, controllerAction) {
+        supports() {
             return true;
         },
 
         execute() {
-            /** @todo add check if tracker is active */
-
             /** add to cart for main product on PDP **/
             $('#product_addtocart_form').mage('validation', {
                 radioCheckboxClosest: '.nested',
@@ -48,7 +46,7 @@ define([
                         price = $('#product-price-'+ productId).data("price-amount");
 
                     /*global bxq */
-                    bxq(['trackAddToBasket', productId, 1, price, window.currencyCode]);
+                    bxq(['trackAddToBasket', productId, 1, price, $.boxalino.rtuxApiHelper.getCurrencyCode()]);
                 }
             });
         }

@@ -6,7 +6,7 @@ define([], function () {
     'use strict';
     return {
 
-        supports(moduleName, controllerName, controllerAction) {
+        supports() {
             return false;
         },
 

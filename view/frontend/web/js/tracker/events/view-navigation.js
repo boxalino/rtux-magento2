@@ -2,23 +2,20 @@
  * View category/navigation track event for Boxalino RealTimeUserExperience
  * triggered only on category pages
  */
-define([], function () {
+define(['jquery'], function ($) {
     'use strict';
     return {
 
-        supports(moduleName, controllerName, actionName) {
-            return moduleName === 'catalog' && controllerName === 'category' && actionName === 'view';
+        supports() {
+            return $.boxalino.rtuxApiHelper.isNavigation();
         },
 
         execute() {
-            const activeId = window.rtuxActiveId;
-            if (!activeId) {
-                console.warn('[Boxalino RTUX API Tracker Plugin] Category ID could not be found.');
-                return;
+            let activeId = $.boxalino.rtuxApiHelper.getActiveId();
+            if (activeId) {
+                /*global bxq */
+                bxq(['trackCategoryView', activeId]);
             }
-
-            /*global bxq */
-            bxq(['trackCategoryView', activeId]);
         }
     };
 });

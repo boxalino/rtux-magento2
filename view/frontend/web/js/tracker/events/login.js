@@ -6,7 +6,7 @@ define(['jquery'], function ($) {
     'use strict';
     return {
 
-        supports(moduleName, controllerName, controllerAction) {
+        supports() {
             return $.boxalino.rtuxApiHelper.isLogin();
         },
 

@@ -1,6 +1,7 @@
 <?php declare(strict_types=1);
 namespace Boxalino\RealTimeUserExperience\Observer;
 
+use Boxalino\RealTimeUserExperience\Helper\Js\Configuration as RtuxApiHandler;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\Stdlib\Cookie\CookieMetadataFactory;
@@ -30,12 +31,19 @@ class TrackCookieLoginObserver implements ObserverInterface
      */
     protected $cookieMetadataFactory;
 
+    /**
+     * @var RtuxApiHandler
+     */
+    protected $rtuxApiHandler;
+
     public function __construct(
         CookieManagerInterface $cookieManager,
-        CookieMetadataFactory $cookieMetadataFactory
+        CookieMetadataFactory $cookieMetadataFactory,
+        RtuxApiHandler $configuration
     ){
         $this->cookieManager = $cookieManager;
         $this->cookieMetadataFactory = $cookieMetadataFactory;
+        $this->rtuxApiHandler = $configuration;
     }
 
     /**
@@ -44,7 +52,7 @@ class TrackCookieLoginObserver implements ObserverInterface
     public function execute(Observer $observer) : void
     {
         try {
-            if($observer->getCustomer()->getId())
+            if($observer->getCustomer()->getId() && $this->rtuxApiHandler->isTrackerActive())
             {
                 if($this->cookieManager->getCookie(self::RTUX_API_TRACKER_EVENT_COOKIE))
                 {
