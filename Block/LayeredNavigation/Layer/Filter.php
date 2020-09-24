@@ -50,4 +50,13 @@ class Filter extends \Magento\Framework\View\Element\Template
         return $this->_toHtml();
     }
 
+    /**
+     * Make block non-cacheable
+     * @return int|null
+     */
+    protected function getCacheLifetime() : ?int
+    {
+        return null;
+    }
+
 }

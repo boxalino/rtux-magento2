@@ -77,4 +77,12 @@ class Left extends \Magento\Framework\View\Element\Template
         return ApiResponseBlockInterface::BOXALINO_RTUX_API_BLOCK_TEMPLATE_DEFAULT;
     }
 
+    /**
+     * @return int|null
+     */
+    protected function getCacheLifetime() : ?int
+    {
+        return null;
+    }
+
 }

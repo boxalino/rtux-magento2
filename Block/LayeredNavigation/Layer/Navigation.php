@@ -196,4 +196,14 @@ class Navigation extends \Magento\Framework\View\Element\Template
         }
     }
 
+    /**
+     * This will allow not to cache the block
+     *
+     * @return bool
+     */
+    public function isScopePrivate()
+    {
+        return true;
+    }
+
 }

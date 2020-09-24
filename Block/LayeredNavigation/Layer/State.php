@@ -89,5 +89,13 @@ class State extends \Magento\Framework\View\Element\Template
         return $this->_urlBuilder->getUrl('*/*/*', $params);
     }
 
+    /**
+     * Make block non-cacheable
+     * @return int|null
+     */
+    protected function getCacheLifetime() : ?int
+    {
+        return null;
+    }
 
 }
