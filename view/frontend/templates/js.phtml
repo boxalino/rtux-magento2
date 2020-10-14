@@ -22,7 +22,6 @@ $helper = $this->helper(\Boxalino\RealTimeUserExperience\Helper\Js\Configuration
             "rtuxApiHelper": {
                 "account":"<?= $block->escapeHtml($helper->getAccount()) ?>",
                 "key":"<?= $block->escapeHtml($helper->getKey()) ?>",
-                "profile":"<?= $block->escapeHtml($helper->getProfile()) ?>",
                 "endpoint":"<?= $block->escapeHtml($helper->getEndpoint()) ?>",
                 "language":"<?= $block->escapeHtml($helper->getLanguage()) ?>",
                 "dev":<?= json_encode($helper->isDev()) ?>,

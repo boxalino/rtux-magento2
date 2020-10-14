@@ -34,7 +34,7 @@ class TrackEventLoginObserver implements ObserverInterface
         try {
             if($observer->getCustomer()->getId() && $this->rtuxApiHandler->isTrackerActive())
             {
-                $this->rtuxApiHandler->track("login", [$observer->getCustomer()->getId()]);
+                $this->rtuxApiHandler->track("login", ["id" => $observer->getCustomer()->getId()]);
             }
         } catch (\Exception $e) {
             //do nothing

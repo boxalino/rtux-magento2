@@ -123,23 +123,6 @@ class Configuration extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * Encoded profile ID (logged customer value)
-     * Used in the template
-     *
-     * @return string|null
-     */
-    public function getProfile() : ?string
-    {
-        $profile = $this->genericConfiguration->getSessionCustomerId();
-        if(is_null($profile))
-        {
-            return null;
-        }
-
-        return base64_encode($profile);
-    }
-
-    /**
      * Check if tracker is active
      *
      * @return bool

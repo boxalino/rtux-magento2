@@ -25,7 +25,6 @@ define([
             endpoint: "//track.bx-cloud.com/static/bav2.min.js",
             account: null,
             key: null,
-            profile: null,
             language: null,
             currencyCode: null,
             activeId: null,
@@ -52,7 +51,6 @@ define([
                 'apiKey': this.options.key,
                 'sessionId': this.getApiSessionId(),
                 'profileId': this.getApiProfileId(),
-                'customerId': this.getApiCustomerId(this.options.profile),
                 'widget': widget,
                 'dev': this.isDev(),
                 'test': this.isTest(),
@@ -121,18 +119,6 @@ define([
 
         /**
          * @public
-         * @returns {string|null}
-         */
-        this.getCustomerId = function() {
-            let profile=this.options.profile;
-            if(profile) {
-                return atob(profile);
-            }
-            return null;
-        }
-
-        /**
-         * @public
          * @returns {boolean}
          */
         this.isTest = function() {
@@ -169,19 +155,6 @@ define([
          */
         this.hasCookieRestriction = function() {
             return this.options.isRestricted;
-        }
-
-        /**
-         * @returns {boolean}
-         */
-        this.isLogin = function() {
-            if($.mage.cookies.get('cemv-login')) {
-                /** using $.mage.cookies.clear() did not work */
-                document.cookie= 'cemv-login=0;path=/;expires=' + new Date().toUTCString() + ';'
-                return true;
-            }
-
-            return false;
         }
 
         /**
