@@ -12,13 +12,13 @@
     "AFL-3.0"
   ],
   "require": {
-    "php": ">=7.2",
+    "php": "^7.0",
     "magento/module-catalog": "*",
     "magento/module-layered-navigation": "*",
     "magento/module-search": "*",
     "magento/module-indexer": "*",
     "magento/framework": "*",
-    "boxalino/rtux-api-php": ">=1.1.0"
+    "boxalino/rtux-api-php": "^2.2.11.0"
   },
   "autoload": {
     "files": ["registration.php"],
