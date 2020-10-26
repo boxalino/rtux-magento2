@@ -58,7 +58,7 @@ class Left extends \Magento\Framework\View\Element\Template
         }
 
         try {
-            $blocks =  $this->currentApiResponse->get()->getTop();
+            $blocks =  $this->currentApiResponse->get()->getLeft();
         } catch (\Exception $exception)
         {
             $blocks = new \ArrayIterator();
