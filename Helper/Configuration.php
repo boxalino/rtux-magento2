@@ -126,7 +126,7 @@ class Configuration
     /**
      * @return int|null
      */
-    public function getSessionCustomerId() : ?int
+    public function getSessionCustomerId()
     {
         if($this->customerSession->getCustomerId())
         {

@@ -15,11 +15,11 @@ interface CurrentApiResponseViewRegistryInterface
     /**
      * @param ApiResponseViewInterface $apiResponseView
      */
-    public function set(ApiResponseViewInterface $apiResponseView): void;
+    public function set(ApiResponseViewInterface $apiResponseView);
 
     /**
      * @return ApiResponseViewInterface|null
      */
-    public function get(): ?ApiResponseViewInterface;
+    public function get(): ApiResponseViewInterface;
 
 }

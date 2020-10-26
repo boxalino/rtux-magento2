@@ -18,12 +18,14 @@ class Response extends \Magento\Framework\View\Element\Template
     /**
      * @return \ArrayIterator|null
      */
-    public function getBlocks(): ?\ArrayIterator
+    public function getBlocks(): \ArrayIterator
     {
         if($this->apiResponsePage)
         {
             return $this->apiResponsePage->getBlocks();
         }
+
+        return new \ArrayIterator();
     }
 
     /**

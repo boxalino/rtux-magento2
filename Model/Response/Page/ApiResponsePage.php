@@ -189,7 +189,7 @@ class ApiResponsePage implements ApiResponsePageInterface
     /**
      * @return string|null
      */
-    public function getRedirectUrl(): ?string
+    public function getRedirectUrl()
     {
         return $this->redirectUrl;
     }
@@ -198,7 +198,7 @@ class ApiResponsePage implements ApiResponsePageInterface
      * @param string|null $redirectUrl
      * @return ApiResponsePage
      */
-    public function setRedirectUrl(?string $redirectUrl)
+    public function setRedirectUrl($redirectUrl = null)
     {
         $this->redirectUrl = $redirectUrl;
         return $this;

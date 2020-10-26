@@ -11,6 +11,6 @@ interface ApiListingBlockAccessorInterface extends ApiRendererInterface
      *
      * @return \Magento\Eav\Model\Entity\Collection\AbstractCollection|null
      */
-    public function getLoadedProductCollection() : ?\Magento\Eav\Model\Entity\Collection\AbstractCollection;
+    public function getLoadedProductCollection();
 
 }

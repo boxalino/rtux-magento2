@@ -24,7 +24,7 @@ class Facet extends ApiFacet
      *
      * @return string | null
      */
-    public function getCleanValue() : ?string
+    public function getCleanValue()
     {
         return $this->cleanValue;
     }
@@ -33,7 +33,7 @@ class Facet extends ApiFacet
      * @param string $value
      * @return $this
      */
-    public function setCleanValue(string $value) : self
+    public function setCleanValue(string $value = null) : self
     {
         $this->cleanValue = $value;
         return $this;

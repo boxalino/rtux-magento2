@@ -98,7 +98,7 @@ class ApiEntityCollection extends ApiEntityCollectionModelAbstract
      * @param null | AccessorInterface $context
      * @return AccessorModelInterface
      */
-    public function addAccessorContext(?AccessorInterface $context = null): AccessorModelInterface
+    public function addAccessorContext(AccessorInterface $context = null): AccessorModelInterface
     {
         parent::addAccessorContext($context);
         $this->setResponseCollection($context->getBlocks(), $context->getAccessorHandler()->getAccessorSetter("bx-hit"));

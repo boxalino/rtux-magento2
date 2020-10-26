@@ -67,7 +67,7 @@ class Configuration extends \Magento\Framework\App\Helper\AbstractHelper
      * @param array $params
      * @return void
      */
-    public function track(string $event, array $params) : void
+    public function track(string $event, array $params)
     {
         $params['_a'] = $this->getAccount();
         $params['_ev'] = $event;
@@ -144,12 +144,12 @@ class Configuration extends \Magento\Framework\App\Helper\AbstractHelper
      *
      * @return string
      */
-    public function getKey() : ?string
+    public function getKey() : string
     {
         $value = $this->scopeConfig->getValue('rtux/api/apiServerKey', \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
         if(empty($value))
         {
-            return null;
+            return "";
         }
 
         return $value;

@@ -109,7 +109,7 @@ class ApiPageLoader extends ApiPageLoaderAbstract
     /**
      * @return ApiResponseViewInterface
      */
-    public function getApiResponsePage(): ?ApiResponseViewInterface
+    public function getApiResponsePage(): ApiResponseViewInterface
     {
         if(!$this->apiResponsePage)
         {

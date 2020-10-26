@@ -12,17 +12,17 @@ use Magento\Framework\View\Element\BlockInterface;
 interface ApiRendererInterface extends BlockInterface
 {
 
-    public const BOXALINO_RTUX_API_BLOCK_TYPE_DEFAULT = "Boxalino\RealTimeUserExperience\Block\Api\Block";
-    public const BOXALINO_RTUX_API_RESPONSE_TYPE_DEFAULT = "Boxalino\RealTimeUserExperience\Block\Api\Response";
-    public const BOXALINO_RTUX_API_BLOCK_TEMPLATE_DEFAULT = "Boxalino_RealTimeUserExperience::api/block.phtml";
-    public const BOXALINO_RTUX_API_BLOCK_NAME_DEFAULT = "rtux_api_block_default";
+    const BOXALINO_RTUX_API_BLOCK_TYPE_DEFAULT = "Boxalino\RealTimeUserExperience\Block\Api\Block";
+    const BOXALINO_RTUX_API_RESPONSE_TYPE_DEFAULT = "Boxalino\RealTimeUserExperience\Block\Api\Response";
+    const BOXALINO_RTUX_API_BLOCK_TEMPLATE_DEFAULT = "Boxalino_RealTimeUserExperience::api/block.phtml";
+    const BOXALINO_RTUX_API_BLOCK_NAME_DEFAULT = "rtux_api_block_default";
 
     /**
      * Boxalino API response block set on the Magento block type
      *
      * @return ApiBlockAccessorInterface|null
      */
-    public function getBlock() : ?ApiBlockAccessorInterface;
+    public function getBlock() : ApiBlockAccessorInterface;
 
     /**
      * @param ApiBlockAccessorInterface $block
@@ -43,7 +43,7 @@ interface ApiRendererInterface extends BlockInterface
      *
      * @return \ArrayIterator|null
      */
-    public function getBlocks() : ?\ArrayIterator;
+    public function getBlocks() : \ArrayIterator;
 
     /**
      * @param string $value
@@ -57,7 +57,7 @@ interface ApiRendererInterface extends BlockInterface
      *
      * @return string|null
      */
-    public function getRtuxVariantUuid() : ?string;
+    public function getRtuxVariantUuid();
 
     /**
      * @param string $value
@@ -68,7 +68,7 @@ interface ApiRendererInterface extends BlockInterface
     /**
      * @return string|null
      */
-    public function getRtuxGroupBy() : ?string;
+    public function getRtuxGroupBy();
 
     /**
      * Creates a block based on the ApiBlockAccessorInterface | Boxalino API response
@@ -76,7 +76,7 @@ interface ApiRendererInterface extends BlockInterface
      * @param ApiBlockAccessorInterface $block
      * @return ApiRendererInterface|null
      */
-    public function getApiBlock(ApiBlockAccessorInterface $block) : ?ApiRendererInterface;
+    public function getApiBlock(ApiBlockAccessorInterface $block) : ApiRendererInterface;
 
     /**
      * Generate a default narrative API renderer block

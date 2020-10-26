@@ -2,7 +2,9 @@
 namespace Boxalino\RealTimeUserExperience\Registry;
 
 use Boxalino\RealTimeUserExperience\Api\CurrentApiResponseRegistryInterface;
+use Boxalino\RealTimeUserExperienceApi\Service\Api\Response\ResponseDefinition;
 use Boxalino\RealTimeUserExperienceApi\Service\Api\Response\ResponseDefinitionInterface;
+use Boxalino\RealTimeUserExperienceApi\Service\ErrorHandler\MissingDependencyException;
 
 /**
  * Class CurrentApiResponse
@@ -15,15 +17,15 @@ class CurrentApiResponse implements CurrentApiResponseRegistryInterface
     /**
      * @var ResponseDefinitionInterface
      */
-    private $apiResponse;
+    private $apiResponse = null;
 
-    public function set(ResponseDefinitionInterface $apiResponse): void
+    public function set(ResponseDefinitionInterface $apiResponse)
     {
         $this->apiResponse = $apiResponse;
     }
 
-    public function get(): ?ResponseDefinitionInterface
+    public function get(): ResponseDefinitionInterface
     {
-        return $this->apiResponse ?? null;
+        return $this->apiResponse;
     }
 }

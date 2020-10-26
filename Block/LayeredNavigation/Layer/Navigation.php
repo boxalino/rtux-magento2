@@ -150,7 +150,7 @@ class Navigation extends \Magento\Framework\View\Element\Template
      * @param BlockInterface $block
      * @throws \Magento\Framework\Exception\LocalizedException
      */
-    public function getApiBlock(ApiBlockAccessorInterface $block) : ?ApiRendererInterface
+    public function getApiBlock(ApiBlockAccessorInterface $block) : ApiRendererInterface
     {
         if(!$block->getType())
         {
@@ -192,7 +192,6 @@ class Navigation extends \Magento\Framework\View\Element\Template
         } catch (\Throwable $exception) {
             $this->_logger->warning("BoxalinoAPI Facets Navigation ERROR: " . $exception->getMessage());
             $this->_logger->warning("BoxalinoAPI Facets Navigation ERROR: " . $exception->getTraceAsString());
-            return null;
         }
     }
 

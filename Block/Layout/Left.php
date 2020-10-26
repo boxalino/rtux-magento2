@@ -7,6 +7,8 @@ use Boxalino\RealTimeUserExperience\Block\ApiBlockTrait;
 use Boxalino\RealTimeUserExperience\Api\CurrentApiResponseRegistryInterface;
 use Boxalino\RealTimeUserExperience\Api\CurrentApiResponseViewRegistryInterface;
 use Boxalino\RealTimeUserExperience\Model\Request\ApiPageLoader;
+use Boxalino\RealTimeUserExperienceApi\Service\Api\Response\ApiResponseViewInterface;
+use Boxalino\RealTimeUserExperienceApi\Service\Api\Response\ResponseDefinitionInterface;
 use Magento\Framework\View\Element\Template;
 
 /**
@@ -21,16 +23,6 @@ class Left extends \Magento\Framework\View\Element\Template
 {
 
     use ApiBlockTrait;
-
-    /**
-     * @var CurrentApiResponseRegistryInterface
-     */
-    protected $currentApiResponse;
-
-    /**
-     * @var CurrentApiResponseViewRegistryInterface
-     */
-    protected $currentApiResponseView;
 
     public function __construct(
         CurrentApiResponseRegistryInterface $currentApiResponse,
@@ -53,12 +45,13 @@ class Left extends \Magento\Framework\View\Element\Template
      */
     public function getBlocks(): \ArrayIterator
     {
-        if (!$this->currentApiResponse->get() || $this->currentApiResponseView->get()->isFallback()) {
+        if ($this->isApiFallback())
+        {
             return new \ArrayIterator();
         }
 
         try {
-            $blocks =  $this->currentApiResponse->get()->getTop();
+            $blocks =  $this->currentApiResponse->get()->getLeft();
         } catch (\Exception $exception)
         {
             $blocks = new \ArrayIterator();
@@ -80,7 +73,7 @@ class Left extends \Magento\Framework\View\Element\Template
     /**
      * @return int|null
      */
-    protected function getCacheLifetime() : ?int
+    protected function getCacheLifetime()
     {
         return null;
     }

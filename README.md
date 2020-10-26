@@ -22,7 +22,7 @@ The latest documentation is available upon request.
 
 ## Setup
 1. Add the plugin to your project via composer
-``composer require boxalino/rtux-magento2``
+``composer require boxalino/rtux-magento2 1.0.11``
 
 2. The Magento2 plugin has a dependency on the Boxalino API repository (https://github.com/boxalino/rtux-api-php).
 

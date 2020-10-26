@@ -120,7 +120,7 @@ class ApiSorting extends ApiSortingModelAbstract
      * @param string $key
      * @return ApiSortingOption |null
      */
-    public function get(string $key) : ?ApiSortingOption
+    public function get(string $key)
     {
         return $this->sortings[$key] ?? null;
     }
@@ -151,7 +151,7 @@ class ApiSorting extends ApiSortingModelAbstract
      * @param null | AccessorInterface $context
      * @return AccessorModelInterface
      */
-    public function addAccessorContext(?AccessorInterface $context = null): AccessorModelInterface
+    public function addAccessorContext(AccessorInterface $context = null): AccessorModelInterface
     {
         $this->setActiveSorting($context->getSorting());
         return $this;

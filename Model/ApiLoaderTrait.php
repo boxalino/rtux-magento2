@@ -22,6 +22,6 @@ trait ApiLoaderTrait
     /** @var ApiCallServiceInterface */
     protected $apiCallService;
 
-    protected function _beforeApiCallService(): void {}
+    protected function _beforeApiCallService() {}
 
 }

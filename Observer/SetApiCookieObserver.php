@@ -40,7 +40,7 @@ class SetApiCookieObserver implements ObserverInterface
      *
      * @param Observer $observer
      */
-    public function execute(Observer $observer) : void
+    public function execute(Observer $observer)
     {
         if(!$this->cookieManager->getCookie(ApiCookieSubscriber::BOXALINO_API_COOKIE_SESSION))
         {

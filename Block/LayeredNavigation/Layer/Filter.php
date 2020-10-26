@@ -54,7 +54,7 @@ class Filter extends \Magento\Framework\View\Element\Template
      * Make block non-cacheable
      * @return int|null
      */
-    protected function getCacheLifetime() : ?int
+    protected function getCacheLifetime()
     {
         return null;
     }

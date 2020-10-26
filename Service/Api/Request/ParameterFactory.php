@@ -39,7 +39,7 @@ class ParameterFactory implements ParameterFactoryInterface
      * @param string $type
      * @return mixed
      */
-    public function get(string $type) : ?ParameterInterface
+    public function get(string $type) : ParameterInterface
     {
         $serviceId = strtolower($type);
         if($this->definitionLinks->offsetExists($serviceId))

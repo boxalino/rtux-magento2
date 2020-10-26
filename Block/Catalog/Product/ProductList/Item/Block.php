@@ -91,7 +91,7 @@ class Block extends ItemBlock
      * @param ApiBlockAccessorInterface $block
      * @return $this|ApiRendererInterface|null
      */
-    public function getApiBlock(ApiBlockAccessorInterface $block): ?ApiRendererInterface
+    public function getApiBlock(ApiBlockAccessorInterface $block): ApiRendererInterface
     {
         return $this;
     }
@@ -100,8 +100,10 @@ class Block extends ItemBlock
      * Accessing the data as returned in the response
      * Object built with the returnFields property from the request
      * or based on the scenario rule (from Boxalino Intelligence)
+     *
+     * @return AccessorInterface | null
      */
-    public function getApiProduct() : ?AccessorInterface
+    public function getApiProduct()
     {
         return $this->getBlock()->getProduct();
     }

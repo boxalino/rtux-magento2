@@ -13,7 +13,7 @@ interface ApiProductBlockAccessorInterface extends ApiRendererInterface
     /**
      * @return AccessorInterface|null
      */
-    public function getApiProduct() : ?AccessorInterface;
+    public function getApiProduct();
 
     /**
      * @return mixed | ProductInterface

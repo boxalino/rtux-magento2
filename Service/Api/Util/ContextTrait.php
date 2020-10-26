@@ -33,7 +33,7 @@ trait ContextTrait
     protected $parameterFactory;
 
 
-    public function validateRequest(RequestInterface $request) : void {}
+    public function validateRequest(RequestInterface $request){}
 
     /**
      * @return ParameterInterface

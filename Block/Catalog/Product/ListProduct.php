@@ -8,6 +8,7 @@ use Boxalino\RealTimeUserExperience\Api\ApiRendererInterface;
 use Boxalino\RealTimeUserExperience\Block\ApiBlockTrait;
 use Boxalino\RealTimeUserExperience\Block\FrameworkBlockTrait;
 use Boxalino\RealTimeUserExperience\Model\Response\Content\ApiEntityCollection;
+use Boxalino\RealTimeUserExperienceApi\Service\Api\Response\Accessor\AccessorInterface;
 use Boxalino\RealTimeUserExperienceApi\Service\Api\Response\Accessor\BlockInterface;
 use Boxalino\RealTimeUserExperienceApi\Service\ErrorHandler\MissingDependencyException;
 use Magento\Catalog\Api\Data\ProductInterface;
@@ -41,7 +42,7 @@ class ListProduct extends \Magento\Framework\View\Element\Template
     /**
      * @return \Magento\Eav\Model\Entity\Collection\AbstractCollection|null
      */
-    public function getLoadedProductCollection(): ?\Magento\Eav\Model\Entity\Collection\AbstractCollection
+    public function getLoadedProductCollection()
     {
         if (is_null($this->_productCollection)) {
             /** @var ApiEntityCollection $apiCollectionModel */
@@ -65,7 +66,7 @@ class ListProduct extends \Magento\Framework\View\Element\Template
      * @param BlockInterface $block
      * @throws \Magento\Framework\Exception\LocalizedException
      */
-    public function getApiBlock(ApiBlockAccessorInterface $block) : ?ApiRendererInterface
+    public function getApiBlock(ApiBlockAccessorInterface $block) : ApiRendererInterface
     {
         if(!$block->getType())
         {
@@ -90,16 +91,18 @@ class ListProduct extends \Magento\Framework\View\Element\Template
 
             if($apiBlock instanceof ApiProductBlockAccessorInterface)
             {
-                if($product=$this->getProductById($this->getProductId($block)))
+                if($productId = $this->getProductId($block))
                 {
-                    $apiBlock->setProduct($product);
+                    if($product = $this->getProductById($productId))
+                    {
+                        $apiBlock->setProduct($product);
+                    }
                 }
             }
 
             return $apiBlock;
         } catch (\Throwable $exception) {
             $this->_logger->warning("BoxalinoAPI ListProduct ERROR: " . $exception->getMessage());
-            return null;
         }
     }
 
@@ -109,12 +112,17 @@ class ListProduct extends \Magento\Framework\View\Element\Template
      */
     protected function getProductId(ApiBlockAccessorInterface $block) : string
     {
-        if($this->getRtuxGroupBy() == 'id')
+        if($block->getProduct() instanceof AccessorInterface)
         {
-            return $block->getProduct()->getId();
+            if($this->getRtuxGroupBy() == 'id')
+            {
+                return $block->getProduct()->getId();
+            }
+
+            return $block->getProduct()->get($this->getRtuxGroupBy())[0];
         }
 
-        return $block->getProduct()->get($this->getRtuxGroupBy())[0];
+        return false;
     }
 
     /**
@@ -125,7 +133,7 @@ class ListProduct extends \Magento\Framework\View\Element\Template
      * @param int $index
      * @return ProductInterface | null
      */
-    public function getProductById(int $index) : ?ProductInterface
+    public function getProductById(int $index)
     {
         if(is_null($this->_collectionIterator))
         {
@@ -137,7 +145,7 @@ class ListProduct extends \Magento\Framework\View\Element\Template
             return $this->_collectionIterator->offsetGet($index);
         }
 
-        return null;
+        return false;
     }
 
 

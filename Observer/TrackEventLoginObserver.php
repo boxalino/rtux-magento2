@@ -29,7 +29,7 @@ class TrackEventLoginObserver implements ObserverInterface
     /**
      * @param Observer $observer
      */
-    public function execute(Observer $observer) : void
+    public function execute(Observer $observer)
     {
         try {
             if($observer->getCustomer()->getId() && $this->rtuxApiHandler->isTrackerActive())

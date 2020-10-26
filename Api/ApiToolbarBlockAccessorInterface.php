@@ -12,11 +12,11 @@ interface ApiToolbarBlockAccessorInterface extends ApiRendererInterface
     /**
      * @return AccessorInterface|null
      */
-    public function getSorting() : ?AccessorInterface;
+    public function getSorting() : AccessorInterface;
 
     /**
      * @return AccessorInterface|null
      */
-    public function getPagination() : ?AccessorInterface;
+    public function getPagination() : AccessorInterface;
 
 }

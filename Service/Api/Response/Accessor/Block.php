@@ -40,7 +40,7 @@ class Block extends ApiBlock
      *
      * @return string|null
      */
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }
@@ -70,7 +70,7 @@ class Block extends ApiBlock
      *
      * @return AccessorInterface|null
      */
-    public function getProduct() : ?AccessorInterface
+    public function getProduct()
     {
         if(isset($this->product))
         {

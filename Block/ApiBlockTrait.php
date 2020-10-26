@@ -4,7 +4,11 @@ namespace Boxalino\RealTimeUserExperience\Block;
 use Boxalino\RealTimeUserExperience\Api\ApiBlockAccessorInterface;
 use Boxalino\RealTimeUserExperience\Api\ApiRendererInterface;
 use Boxalino\RealTimeUserExperience\Api\ApiResponseBlockInterface;
+use Boxalino\RealTimeUserExperience\Api\CurrentApiResponseRegistryInterface;
+use Boxalino\RealTimeUserExperience\Api\CurrentApiResponseViewRegistryInterface;
 use Boxalino\RealTimeUserExperienceApi\Service\Api\Response\Accessor\BlockInterface;
+use Boxalino\RealTimeUserExperienceApi\Service\Api\Response\ApiResponseViewInterface;
+use Boxalino\RealTimeUserExperienceApi\Service\Api\Response\ResponseDefinitionInterface;
 use Boxalino\RealTimeUserExperienceApi\Service\ErrorHandler\MissingDependencyException;
 use Boxalino\RealTimeUserExperience\Model\Request\ApiPageLoader;
 use Boxalino\RealTimeUserExperienceApi\Service\ErrorHandler\UndefinedPropertyError;
@@ -43,9 +47,20 @@ trait ApiBlockTrait
     protected $apiLoader;
 
     /**
+     * @var CurrentApiResponseRegistryInterface
+     */
+    protected $currentApiResponse;
+
+    /**
+     * @var CurrentApiResponseViewRegistryInterface
+     */
+    protected $currentApiResponseView;
+
+
+    /**
      * @return \ArrayIterator|null
      */
-    public function getBlocks() : ?\ArrayIterator
+    public function getBlocks() : \ArrayIterator
     {
         if($this->apiBlocks)
         {
@@ -96,7 +111,7 @@ trait ApiBlockTrait
     /**
      * @return string|null
      */
-    public function getRtuxVariantUuid() : ?string
+    public function getRtuxVariantUuid()
     {
         if(is_null($this->rtuxVariantUuid))
         {
@@ -119,7 +134,7 @@ trait ApiBlockTrait
     /**
      * @return string|null
      */
-    public function getRtuxGroupBy() : ?string
+    public function getRtuxGroupBy()
     {
         if(is_null($this->rtuxGroupBy))
         {
@@ -143,7 +158,7 @@ trait ApiBlockTrait
      *
      * @param BlockInterface $block
      */
-    public function getApiBlock(ApiBlockAccessorInterface $block) : ?ApiRendererInterface
+    public function getApiBlock(ApiBlockAccessorInterface $block) : ApiRendererInterface
     {
         if(!$block->getType())
         {
@@ -235,5 +250,19 @@ trait ApiBlockTrait
             )
             ->setTemplate(ApiRendererInterface::BOXALINO_RTUX_API_BLOCK_TEMPLATE_DEFAULT);
     }
+
+    /**
+     * @return bool
+     */
+    public function isApiFallback() : bool
+    {
+        if($this->currentApiResponse->get() instanceof ResponseDefinitionInterface && $this->currentApiResponseView->get() instanceof ApiResponseViewInterface)
+        {
+            return $this->currentApiResponseView->get()->isFallback();
+        }
+
+        return true;
+    }
+
 
 }

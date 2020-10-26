@@ -4,6 +4,7 @@ namespace Boxalino\RealTimeUserExperience\Registry;
 use Boxalino\RealTimeUserExperience\Api\CurrentApiResponseViewRegistryInterface;
 use Boxalino\RealTimeUserExperience\Model\Response\Page\ApiResponsePage;
 use Boxalino\RealTimeUserExperienceApi\Service\Api\Response\ApiResponseViewInterface;
+use Boxalino\RealTimeUserExperienceApi\Service\ErrorHandler\MissingDependencyException;
 
 /**
  * Class CurrentApiResponseView
@@ -16,16 +17,21 @@ class CurrentApiResponseView implements CurrentApiResponseViewRegistryInterface
     /**
      * @var ApiResponseViewInterface
      */
-    private $apiResponseView;
+    private $apiResponseView = null;
 
-    public function set(ApiResponseViewInterface $apiResponseView): void
+    public function set(ApiResponseViewInterface $apiResponseView)
     {
         $this->apiResponseView = $apiResponseView;
     }
 
-    public function get(): ?ApiResponseViewInterface
+    public function get(): ApiResponseViewInterface
     {
-        return $this->apiResponseView ?? null;
+        if($this->apiResponseView instanceof ApiResponseViewInterface)
+        {
+            return $this->apiResponseView;
+        }
+
+        throw new MissingDependencyException("The API call was not yet done.");
     }
 
 }

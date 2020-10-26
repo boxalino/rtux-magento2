@@ -31,16 +31,6 @@ class Navigation extends MagentoNavigation
     use ApiBlockTrait;
 
     /**
-     * @var CurrentApiResponseRegistryInterface
-     */
-    protected $currentApiResponse;
-
-    /**
-     * @var CurrentApiResponseViewRegistryInterface
-     */
-    protected $currentApiResponseView;
-
-    /**
      * @var ContextInterface
      */
     protected $apiContext;
@@ -79,7 +69,7 @@ class Navigation extends MagentoNavigation
      */
     public function getBlocks() : \ArrayIterator
     {
-        if(!$this->currentApiResponse->get() || $this->currentApiResponseView->get() && $this->currentApiResponseView->get()->isFallback())
+        if($this->isApiFallback())
         {
             return new \ArrayIterator();
         }
@@ -95,7 +85,7 @@ class Navigation extends MagentoNavigation
      */
     public function getTemplate()
     {
-        if(!$this->currentApiResponse->get() || $this->currentApiResponseView->get() && $this->currentApiResponseView->get()->isFallback())
+        if($this->isApiFallback())
         {
             return parent::getTemplate();
         }
@@ -141,7 +131,7 @@ class Navigation extends MagentoNavigation
      */
     protected function _beforeToHtml()
     {
-        if(!$this->currentApiResponse->get() || $this->currentApiResponseView->get() && $this->currentApiResponseView->get()->isFallback())
+        if($this->isApiFallback())
         {
             return parent::_beforeToHtml();
         }
@@ -157,7 +147,7 @@ class Navigation extends MagentoNavigation
      */
     public function canShowBlock()
     {
-        if(!$this->currentApiResponse->get() || $this->currentApiResponseView->get() && $this->currentApiResponseView->get()->isFallback())
+        if($this->isApiFallback())
         {
             return parent::canShowBlock();
         }

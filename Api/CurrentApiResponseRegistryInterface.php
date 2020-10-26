@@ -16,13 +16,13 @@ interface CurrentApiResponseRegistryInterface
      *
      * @param ResponseDefinitionInterface $apiResponse
      */
-    public function set(ResponseDefinitionInterface $apiResponse): void;
+    public function set(ResponseDefinitionInterface $apiResponse);
 
     /**
      * Accessing the available API response
      *
      * @return ResponseDefinitionInterface|null
      */
-    public function get(): ?ResponseDefinitionInterface;
+    public function get(): ResponseDefinitionInterface;
 
 }
