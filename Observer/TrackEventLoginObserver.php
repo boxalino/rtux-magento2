@@ -14,7 +14,7 @@ use Magento\Framework\Event\ObserverInterface;
 class TrackEventLoginObserver implements ObserverInterface
 {
 
-    public const RTUX_API_TRACKER_EVENT = "login";
+    const RTUX_API_TRACKER_EVENT = "login";
 
     /**
      * @var RtuxApiHandler

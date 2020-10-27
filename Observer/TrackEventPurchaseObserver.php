@@ -17,7 +17,7 @@ use Magento\Sales\Api\Data\OrderItemInterface;
 class TrackEventPurchaseObserver implements ObserverInterface
 {
 
-    public const RTUX_API_TRACKER_EVENT = "purchase";
+    const RTUX_API_TRACKER_EVENT = "purchase";
 
     /**
      * @var RtuxApiHandler
