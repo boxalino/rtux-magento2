@@ -82,7 +82,7 @@ class ApiEntityCollection extends ApiEntityCollectionModelAbstract
      * @param \ArrayIterator $blocks
      * @param string $hitAccessor
      */
-    public function setResponseCollection(\ArrayIterator $blocks, string $hitAccessor) : void
+    public function setResponseCollection(\ArrayIterator $blocks, string $hitAccessor)
     {
         $products = array_map(function(AccessorInterface $block) use ($hitAccessor) {
             if(property_exists($block, $hitAccessor))

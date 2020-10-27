@@ -99,7 +99,7 @@ class ApiPageLoader extends ApiPageLoaderAbstract
      * @param ApiResponsePageInterface $page
      * @return mixed|void
      */
-    protected function dispatchEvent(RequestInterface $request, ApiResponsePageInterface $page) : void
+    protected function dispatchEvent(RequestInterface $request, ApiResponsePageInterface $page)
     {
         $this->eventManager->dispatch(self::RTUX_API_LOADER_EVENT,
             ["content" => $page, "request" => $request]
