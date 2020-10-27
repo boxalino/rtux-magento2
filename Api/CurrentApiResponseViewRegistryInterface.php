@@ -20,6 +20,6 @@ interface CurrentApiResponseViewRegistryInterface
     /**
      * @return ApiResponseViewInterface|null
      */
-    public function get(): ApiResponseViewInterface;
+    public function get();
 
 }

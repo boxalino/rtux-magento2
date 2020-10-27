@@ -24,7 +24,7 @@ class CurrentApiResponse implements CurrentApiResponseRegistryInterface
         $this->apiResponse = $apiResponse;
     }
 
-    public function get(): ResponseDefinitionInterface
+    public function get()
     {
         return $this->apiResponse;
     }

@@ -23,6 +23,6 @@ interface CurrentApiResponseRegistryInterface
      *
      * @return ResponseDefinitionInterface|null
      */
-    public function get(): ResponseDefinitionInterface;
+    public function get();
 
 }

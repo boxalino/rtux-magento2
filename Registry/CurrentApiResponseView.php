@@ -24,14 +24,9 @@ class CurrentApiResponseView implements CurrentApiResponseViewRegistryInterface
         $this->apiResponseView = $apiResponseView;
     }
 
-    public function get(): ApiResponseViewInterface
+    public function get()
     {
-        if($this->apiResponseView instanceof ApiResponseViewInterface)
-        {
-            return $this->apiResponseView;
-        }
-
-        throw new MissingDependencyException("The API call was not yet done.");
+        return $this->apiResponseView;
     }
 
 }
