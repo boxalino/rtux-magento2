@@ -15,7 +15,7 @@ class CurrentApiResponse implements CurrentApiResponseRegistryInterface
     /**
      * @var ResponseDefinitionInterface
      */
-    private $apiResponse;
+    private $apiResponse = null;
 
     public function set(ResponseDefinitionInterface $apiResponse): void
     {
@@ -24,6 +24,6 @@ class CurrentApiResponse implements CurrentApiResponseRegistryInterface
 
     public function get(): ?ResponseDefinitionInterface
     {
-        return $this->apiResponse ?? null;
+        return $this->apiResponse;
     }
 }

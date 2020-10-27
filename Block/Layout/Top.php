@@ -22,16 +22,6 @@ class Top extends \Magento\Framework\View\Element\Template
 
     use ApiBlockTrait;
 
-    /**
-     * @var CurrentApiResponseRegistryInterface
-     */
-    protected $currentApiResponse;
-
-    /**
-     * @var CurrentApiResponseViewRegistryInterface
-     */
-    protected $currentApiResponseView;
-
     public function __construct(
         CurrentApiResponseRegistryInterface $currentApiResponse,
         CurrentApiResponseViewRegistryInterface $currentApiResponseView,
@@ -53,7 +43,7 @@ class Top extends \Magento\Framework\View\Element\Template
      */
     public function getBlocks(): \ArrayIterator
     {
-        if (!$this->currentApiResponse->get() || $this->currentApiResponseView->get()->isFallback()) {
+        if ($this->isApiFallback()) {
             return new \ArrayIterator();
         }
 

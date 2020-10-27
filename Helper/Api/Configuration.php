@@ -40,7 +40,7 @@ class Configuration implements ConfigurationInterface
         $value = $this->scopeConfig->getValue('rtux/api/url', $this->contextId);
         if(empty($value))
         {
-            if($this->getIsDev())
+            if($this->getIsDev() || $this->getIsTest())
             {
                 return str_replace("%%account%%", $this->getUsername(), self::RTUX_API_ENDPOINT_STAGE);
             }

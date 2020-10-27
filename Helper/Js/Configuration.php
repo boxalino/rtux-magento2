@@ -98,7 +98,7 @@ class Configuration extends \Magento\Framework\App\Helper\AbstractHelper
      */
     public function getTrackerUrl() : string
     {
-        if($this->isDev())
+        if($this->isDev() || $this->isTest())
         {
             return self::BOXALINO_API_TRACKING_STAGE;
         }
@@ -114,7 +114,7 @@ class Configuration extends \Magento\Framework\App\Helper\AbstractHelper
      */
     public function getServerUrl(string $session) : string
     {
-        if($this->isDev())
+        if($this->isDev() || $this->isTest())
         {
             return self::BOXALINO_API_SERVER_STAGE . "?_bxv=" . $session;
         }

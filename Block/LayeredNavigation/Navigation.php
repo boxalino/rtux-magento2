@@ -9,6 +9,7 @@ use Boxalino\RealTimeUserExperience\Api\CurrentApiResponseRegistryInterface;
 use Boxalino\RealTimeUserExperience\Api\CurrentApiResponseViewRegistryInterface;
 use Boxalino\RealTimeUserExperienceApi\Service\Api\Request\ContextInterface;
 use Boxalino\RealTimeUserExperienceApi\Service\Api\Request\RequestInterface;
+use Boxalino\RealTimeUserExperienceApi\Service\Api\Response\ResponseDefinitionInterface;
 use Magento\LayeredNavigation\Block\Navigation as MagentoNavigation;
 use Magento\Framework\View\Element\Template\Context;
 use Magento\Catalog\Model\Layer\Resolver;
@@ -29,16 +30,6 @@ class Navigation extends MagentoNavigation
 {
 
     use ApiBlockTrait;
-
-    /**
-     * @var CurrentApiResponseRegistryInterface
-     */
-    protected $currentApiResponse;
-
-    /**
-     * @var CurrentApiResponseViewRegistryInterface
-     */
-    protected $currentApiResponseView;
 
     /**
      * @var ContextInterface
@@ -79,7 +70,7 @@ class Navigation extends MagentoNavigation
      */
     public function getBlocks() : \ArrayIterator
     {
-        if(!$this->currentApiResponse->get() || $this->currentApiResponseView->get() && $this->currentApiResponseView->get()->isFallback())
+        if($this->isApiFallback())
         {
             return new \ArrayIterator();
         }
@@ -95,7 +86,7 @@ class Navigation extends MagentoNavigation
      */
     public function getTemplate()
     {
-        if(!$this->currentApiResponse->get() || $this->currentApiResponseView->get() && $this->currentApiResponseView->get()->isFallback())
+        if($this->isApiFallback())
         {
             return parent::getTemplate();
         }
@@ -112,7 +103,7 @@ class Navigation extends MagentoNavigation
     protected function _prepareLayout()
     {
         try{
-            if($this->currentApiResponse->get())
+            if($this->currentApiResponse->get() instanceof ResponseDefinitionInterface)
             {
                 return $this;
             }
@@ -141,7 +132,7 @@ class Navigation extends MagentoNavigation
      */
     protected function _beforeToHtml()
     {
-        if(!$this->currentApiResponse->get() || $this->currentApiResponseView->get() && $this->currentApiResponseView->get()->isFallback())
+        if($this->isApiFallback())
         {
             return parent::_beforeToHtml();
         }
@@ -157,7 +148,7 @@ class Navigation extends MagentoNavigation
      */
     public function canShowBlock()
     {
-        if(!$this->currentApiResponse->get() || $this->currentApiResponseView->get() && $this->currentApiResponseView->get()->isFallback())
+        if($this->isApiFallback())
         {
             return parent::canShowBlock();
         }

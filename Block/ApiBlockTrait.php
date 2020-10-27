@@ -4,7 +4,11 @@ namespace Boxalino\RealTimeUserExperience\Block;
 use Boxalino\RealTimeUserExperience\Api\ApiBlockAccessorInterface;
 use Boxalino\RealTimeUserExperience\Api\ApiRendererInterface;
 use Boxalino\RealTimeUserExperience\Api\ApiResponseBlockInterface;
+use Boxalino\RealTimeUserExperience\Api\CurrentApiResponseRegistryInterface;
+use Boxalino\RealTimeUserExperience\Api\CurrentApiResponseViewRegistryInterface;
 use Boxalino\RealTimeUserExperienceApi\Service\Api\Response\Accessor\BlockInterface;
+use Boxalino\RealTimeUserExperienceApi\Service\Api\Response\ApiResponseViewInterface;
+use Boxalino\RealTimeUserExperienceApi\Service\Api\Response\ResponseDefinitionInterface;
 use Boxalino\RealTimeUserExperienceApi\Service\ErrorHandler\MissingDependencyException;
 use Boxalino\RealTimeUserExperience\Model\Request\ApiPageLoader;
 use Boxalino\RealTimeUserExperienceApi\Service\ErrorHandler\UndefinedPropertyError;
@@ -41,6 +45,16 @@ trait ApiBlockTrait
      * @var ApiPageLoader
      */
     protected $apiLoader;
+
+    /**
+     * @var CurrentApiResponseRegistryInterface
+     */
+    protected $currentApiResponse;
+
+    /**
+     * @var CurrentApiResponseViewRegistryInterface
+     */
+    protected $currentApiResponseView;
 
     /**
      * @return \ArrayIterator|null
@@ -234,6 +248,19 @@ trait ApiBlockTrait
                 uniqid(ApiRendererInterface::BOXALINO_RTUX_API_BLOCK_NAME_DEFAULT)
             )
             ->setTemplate(ApiRendererInterface::BOXALINO_RTUX_API_BLOCK_TEMPLATE_DEFAULT);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isApiFallback() : bool
+    {
+        if($this->currentApiResponse->get() instanceof ResponseDefinitionInterface && $this->currentApiResponseView->get() instanceof ApiResponseViewInterface)
+        {
+            return $this->currentApiResponseView->get()->isFallback();
+        }
+
+        return true;
     }
 
 }

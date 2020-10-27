@@ -16,7 +16,7 @@ class CurrentApiResponseView implements CurrentApiResponseViewRegistryInterface
     /**
      * @var ApiResponseViewInterface
      */
-    private $apiResponseView;
+    private $apiResponseView = null;
 
     public function set(ApiResponseViewInterface $apiResponseView): void
     {
@@ -25,7 +25,7 @@ class CurrentApiResponseView implements CurrentApiResponseViewRegistryInterface
 
     public function get(): ?ApiResponseViewInterface
     {
-        return $this->apiResponseView ?? null;
+        return $this->apiResponseView;
     }
 
 }
