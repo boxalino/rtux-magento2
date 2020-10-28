@@ -98,7 +98,7 @@ class Configuration implements ConfigurationInterface
      */
     public function getIsDev() : bool
     {
-        $value = $this->scopeConfig->getValue('rtux/general/dev', $this->contextId);
+        $value = $this->scopeConfig->getValue('rtux/api/dev', $this->contextId);
         if(empty($value))
         {
             return false;

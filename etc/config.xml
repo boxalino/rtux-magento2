@@ -5,13 +5,13 @@
         <rtux>
             <general>
                 <status>0</status>
-                <dev>0</dev>
             </general>
             <tracker>
                 <status>0</status>
             </tracker>
             <api>
                 <test>0</test>
+                <dev>0</dev>
             </api>
         </rtux>
     </default>
