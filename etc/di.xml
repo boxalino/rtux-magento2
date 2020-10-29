@@ -67,7 +67,7 @@
 
     <preference for="Boxalino\RealTimeUserExperience\Api\ApiBlockAccessorInterface" type="Boxalino\RealTimeUserExperience\Service\Api\Response\Accessor\Block"/>
     <preference for="Boxalino\RealTimeUserExperienceApi\Service\Api\Util\ConfigurationInterface" type="Boxalino\RealTimeUserExperience\Helper\Api\Configuration"/>
-    <preference for="Boxalino\RealTimeUserExperienceApi\Framework\Content\Page\ApiResponsePageInterface" type="Boxalino\RealTimeUserExperience\Model\Response\Page\ApiResponsePage"/>
+    <preference for="Boxalino\RealTimeUserExperienceApi\Framework\Content\Page\ApiResponsePageInterface" type="Boxalino\RealTimeUserExperienceApi\Framework\Content\Page\ApiResponsePage"/>
     <preference for="Boxalino\RealTimeUserExperienceApi\Service\Api\Request\RequestTransformerInterface" type="Boxalino\RealTimeUserExperience\Service\Api\Request\RequestTransformer"/>
     <preference for="Boxalino\RealTimeUserExperienceApi\Service\Api\Request\RequestInterface" type="Boxalino\RealTimeUserExperience\Service\Api\Request\Request"/>
 

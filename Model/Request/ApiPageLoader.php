@@ -7,7 +7,7 @@ use Boxalino\RealTimeUserExperience\Service\Api\Util\ContextTrait;
 use Boxalino\RealTimeUserExperience\Service\Api\Util\RequestParametersTrait;
 use Boxalino\RealTimeUserExperience\Helper\Configuration as StoreConfigurationHelper;
 use Boxalino\RealTimeUserExperience\Model\ApiLoaderTrait;
-use Boxalino\RealTimeUserExperience\Model\Response\Page\ApiResponsePage;
+use Boxalino\RealTimeUserExperienceApi\Framework\Content\Page\ApiResponsePage;
 use Boxalino\RealTimeUserExperienceApi\Framework\Content\Page\ApiLoaderInterface;
 use Boxalino\RealTimeUserExperienceApi\Framework\Content\Page\ApiPageLoaderAbstract;
 use Boxalino\RealTimeUserExperienceApi\Framework\Content\Page\ApiResponsePageInterface;
@@ -118,4 +118,5 @@ class ApiPageLoader extends ApiPageLoaderAbstract
 
         return $this->apiResponsePage;
     }
+
 }
