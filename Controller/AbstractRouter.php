@@ -17,6 +17,8 @@ use \Magento\Framework\App\ResponseInterface;
 abstract class AbstractRouter implements \Magento\Framework\App\RouterInterface
 {
 
+    const BOXALINO_API_ISOLATE_REQUEST = '_bx_allow_duplicate_items';
+
     /**
      * @var \Magento\Framework\App\ActionFactory
      */
