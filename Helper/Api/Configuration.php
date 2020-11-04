@@ -31,6 +31,20 @@ class Configuration implements ConfigurationInterface
     }
 
     /**
+     * @return bool
+     */
+    public function isEnabled() : bool
+    {
+        $value = $this->scopeConfig->getValue('rtux/general/status', $this->contextId);
+        if(empty($value))
+        {
+            return false;
+        }
+
+        return (bool)$value;
+    }
+
+    /**
      * The API endpoint depends on the testing conditionals and on the data index
      *
      * @return string
