@@ -57,6 +57,11 @@ trait ApiBlockTrait
     protected $currentApiResponseView;
 
     /**
+     * @var \ArrayIterator
+     */
+    protected $bxAttributes;
+
+    /**
      * @return \ArrayIterator|null
      */
     public function getBlocks() : ?\ArrayIterator
@@ -90,9 +95,9 @@ trait ApiBlockTrait
     }
 
     /**
-     * @return ApiBlockAccessorInterface
+     * @return ApiBlockAccessorInterface | null
      */
-    public function getBlock() : ApiBlockAccessorInterface
+    public function getBlock() : ?ApiBlockAccessorInterface
     {
         return $this->rtuxApiBlock;
     }
@@ -262,5 +267,30 @@ trait ApiBlockTrait
 
         return true;
     }
+
+    /**
+     * Access the Boxalino response attributes for API JS tracker
+     *
+     * @return \ArrayIterator
+     */
+    public function getBxAttributes() : \ArrayIterator
+    {
+        try {
+            $block = $this->getBlock();
+            if(is_null($block))
+            {
+                /** this is the place where generally, the API request is done from Block; change per your setup (if needed) */
+                $this->_prepareLayout();
+            }
+
+            $this->bxAttributes = $this->getBlock()->getBxAttributes();
+        } catch (\Throwable $exception)
+        {
+            $this->bxAttributes = new \ArrayIterator();
+        }
+
+        return $this->bxAttributes;
+    }
+
 
 }
