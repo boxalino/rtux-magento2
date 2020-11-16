@@ -22,7 +22,7 @@ interface ApiRendererInterface extends BlockInterface
      *
      * @return ApiBlockAccessorInterface|null
      */
-    public function getBlock() : ApiBlockAccessorInterface;
+    public function getBlock();
 
     /**
      * @param ApiBlockAccessorInterface $block
@@ -91,5 +91,12 @@ interface ApiRendererInterface extends BlockInterface
      * @return ApiResponseBlockInterface
      */
     public function getDefaultResponseBlock() : ApiResponseBlockInterface;
+
+    /**
+     * Access the Boxalino response attributes for API JS tracker
+     *
+     * @return \ArrayIterator
+     */
+    public function getBxAttributes() : \ArrayIterator;
 
 }

@@ -7,6 +7,7 @@ use Boxalino\RealTimeUserExperience\Api\ApiResponseBlockInterface;
 use Boxalino\RealTimeUserExperience\Api\CurrentApiResponseRegistryInterface;
 use Boxalino\RealTimeUserExperience\Api\CurrentApiResponseViewRegistryInterface;
 use Boxalino\RealTimeUserExperienceApi\Service\Api\Response\Accessor\BlockInterface;
+use Boxalino\RealTimeUserExperienceApi\Service\Api\Response\Accessor\BxAttributeList;
 use Boxalino\RealTimeUserExperienceApi\Service\Api\Response\ApiResponseViewInterface;
 use Boxalino\RealTimeUserExperienceApi\Service\Api\Response\ResponseDefinitionInterface;
 use Boxalino\RealTimeUserExperienceApi\Service\ErrorHandler\MissingDependencyException;
@@ -56,6 +57,11 @@ trait ApiBlockTrait
      */
     protected $currentApiResponseView;
 
+    /**
+     * @var \ArrayIterator
+     */
+    protected $bxAttributes;
+
 
     /**
      * @return \ArrayIterator|null
@@ -91,9 +97,9 @@ trait ApiBlockTrait
     }
 
     /**
-     * @return ApiBlockAccessorInterface
+     * @return ApiBlockAccessorInterface | null
      */
-    public function getBlock() : ApiBlockAccessorInterface
+    public function getBlock()
     {
         return $this->rtuxApiBlock;
     }
@@ -262,6 +268,30 @@ trait ApiBlockTrait
         }
 
         return true;
+    }
+
+    /**
+     * Access the Boxalino response attributes for API JS tracker
+     *
+     * @return \ArrayIterator
+     */
+    public function getBxAttributes() : \ArrayIterator
+    {
+        try {
+            $block = $this->getBlock();
+            if(is_null($block))
+            {
+                /** this is the place where generally, the API request is done from Block; change per your setup (if needed) */
+                $this->_prepareLayout();
+            }
+
+            $this->bxAttributes = $this->getBlock()->getBxAttributes();
+        } catch (\Throwable $exception)
+        {
+            $this->bxAttributes = new BxAttributeList();
+        }
+
+        return $this->bxAttributes;
     }
 
 
