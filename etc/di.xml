@@ -58,6 +58,9 @@
                 <item name="bx-facets" xsi:type="array">
                     <item name="facetsList" xsi:type="string">Boxalino\RealTimeUserExperienceApi\Service\Api\Response\Accessor\BxAccessor</item>
                 </item>
+                <item name="bx-attributes" xsi:type="array">
+                    <item name="bxAttributes" xsi:type="string">Boxalino\RealTimeUserExperienceApi\Service\Api\Response\Accessor\BxAttribute</item>
+                </item>
             </argument>
             <argument name="hitIdFieldNameList" xsi:type="array">
                 <item name="bx-hit" xsi:type="string">products_group_id</item>

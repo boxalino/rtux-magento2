@@ -92,4 +92,11 @@ interface ApiRendererInterface extends BlockInterface
      */
     public function getDefaultResponseBlock() : ApiResponseBlockInterface;
 
+    /**
+     * Access the Boxalino response attributes for API JS tracker
+     *
+     * @return \ArrayIterator
+     */
+    public function getBxAttributes() : \ArrayIterator;
+
 }
