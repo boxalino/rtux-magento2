@@ -15,27 +15,23 @@ define([
         },
 
         execute() {
-            /** add to cart for main product on PDP **/
-            $('#product_addtocart_form').mage('validation', {
-                radioCheckboxClosest: '.nested',
-                submitHandler: function (form) {
-                    let productId = $(form).find('input[name="product"]').val(),
-                        priceBox = $('[data-role=priceBox][data-product-id='+productId+']');
+            /** add to cart tracker for the product view main item **/
+            $('button.tocart').on("click", function(e){
+                var productInfo = $(this).closest('.product-info-main');
+                if(productInfo.length)
+                {
+                    var productId = $(productInfo).find('input[name="product"]').val(),
+                        priceBox = $('[data-role=priceBox][data-product-id=' + productId + ']'),
+                        qty = $(productInfo).find('input[name="qty"]').val(),
+                        price = $(priceBox).find('meta[itemprop="price"]')[0].content;
 
                     /*global bxq */
                     bxq(['trackAddToBasket',
-                        productId,
-                        $(form).find('input[name="qty"]').val(),
-                        $(priceBox).find('meta[itemprop="price"]')[0].content,
-                        $(priceBox).find('meta[itemprop="priceCurrency"]')[0].content,
+                        parseInt(productId),
+                        qty,
+                        price,
+                        $.boxalino.rtuxApiHelper.getCurrencyCode(),
                     ]);
-
-                    var widget = $(form).catalogAddToCart({
-                        bindSubmit: false
-                    });
-
-                    widget.catalogAddToCart('submitForm', $(form));
-                    return false;
                 }
             });
 
