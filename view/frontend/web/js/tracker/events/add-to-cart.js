@@ -38,11 +38,16 @@ define([
             /** add to cart for products on listing  -- should be updated if the theme allows quick buy for configurable/grouped products **/
             $('[data-role=tocart-form]').mage('validation', {
                 submitHandler: function (form) {
-                    let productId = $(form).find('input[name="product"]').val(),
-                        price = $('#product-price-'+ productId).data("price-amount");
+                     let productId = $(form).find('input[name="product"]').val(),
+                     price = $('#product-price-'+ productId).data("price-amount");
+
+                    var parameters={
+                        "_n-name":$(form).closest('.bx-narrative')[0].dataset.bxNarrativeName,
+                        "_v-uuid":$(form).closest('.bx-narrative')[0].dataset.bxVariantUuid
+                    };
 
                     /*global bxq */
-                    bxq(['trackAddToBasket', productId, 1, price, $.boxalino.rtuxApiHelper.getCurrencyCode()]);
+                    bxq(['trackAddToBasket', productId, 1, price, $.boxalino.rtuxApiHelper.getCurrencyCode(), parameters]);
                 }
             });
         }
