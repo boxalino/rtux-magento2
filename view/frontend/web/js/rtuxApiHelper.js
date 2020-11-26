@@ -45,7 +45,7 @@ define([
          * @param {*} otherParameters
          * @returns {{widget: *, hitCount: number, apiKey: *, dev: boolean, test: boolean, profileId: (string|*|{}|DOMPoint|SVGTransform|SVGNumber|SVGLength|SVGPathSeg), customerId: (string|*), language: *, sessionId: *, groupBy: *, parameters: {"User-Agent": string, "User-URL", "User-Referer": string}, username: *}}
          */
-        this.getApiRequestData = function(widget, hitCount, groupBy, otherParameters = {}) {
+        this.getApiRequestData = function(widget, hitCount, groupBy, otherParameters) {
             let baseParameters = {
                 'username': this.getAccount(),
                 'apiKey': this.options.key,
@@ -64,6 +64,11 @@ define([
                 }
             };
 
+            if (!otherParameters)
+            {
+                otherParameters = {};
+            }
+
             return Object.assign({}, baseParameters, otherParameters);
         }
 
@@ -72,7 +77,7 @@ define([
          * @param url string|null
          * @returns {string}
          */
-        this.getApiRequestUrl = function(url = null) {
+        this.getApiRequestUrl = function(url) {
             var endpoint = this.options.endpoint;
             if (url) {
                 endpoint = url;
@@ -85,7 +90,7 @@ define([
          * @returns {string|*}
          * @param customerId
          */
-        this.getApiCustomerId = function(customerId = null) {
+        this.getApiCustomerId = function(customerId) {
             if (customerId) {
                 return atob(customerId);
             }
@@ -122,7 +127,7 @@ define([
          * @returns {boolean}
          */
         this.isTest = function() {
-           return this.options.test;
+            return this.options.test;
         }
 
         /**
