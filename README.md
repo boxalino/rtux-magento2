@@ -18,7 +18,11 @@ https://github.com/boxalino/rtux-integration-magento2
 
 ## Documentation
 
-The latest documentation is available upon request.
+Check the public documentation on Framework Integrations
+https://boxalino.atlassian.net/wiki/spaces/BPKB/pages/349503489/Framework+Integration
+
+For a Magento 2 API integration - please consult with the official documentation on available options
+https://boxalino.atlassian.net/wiki/spaces/BPKB/pages/392396801/Magento+2
 
 ## Setup
 1. Add the plugin to your project via composer
