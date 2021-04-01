@@ -12,8 +12,6 @@ use Boxalino\RealTimeUserExperienceApi\Service\ErrorHandler\MissingDependencyExc
  */
 class Configuration implements ConfigurationInterface
 {
-    const RTUX_API_ENDPOINT_PRODUCTION="https://main.bx-cloud.com/narrative/%%account%%/api/1";
-    const RTUX_API_ENDPOINT_STAGE="https://r-st.bx-cloud.com/narrative/%%account%%/api/1";
 
     /**
      * @var string
@@ -56,10 +54,10 @@ class Configuration implements ConfigurationInterface
         {
             if($this->getIsDev() || $this->getIsTest())
             {
-                return str_replace("%%account%%", $this->getUsername(), self::RTUX_API_ENDPOINT_STAGE);
+                return str_replace("%%account%%", $this->getUsername(), ConfigurationInterface::RTUX_API_ENDPOINT_STAGE);
             }
 
-            return str_replace("%%account%%", $this->getUsername(), self::RTUX_API_ENDPOINT_PRODUCTION);
+            return str_replace("%%account%%", $this->getUsername(), ConfigurationInterface::RTUX_API_ENDPOINT_PRODUCTION);
         }
 
         return $value;

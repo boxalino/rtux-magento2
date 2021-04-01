@@ -4,6 +4,7 @@ namespace Boxalino\RealTimeUserExperience\Helper\Js;
 use Boxalino\RealTimeUserExperience\Helper\Api\Configuration as ApiConfiguration;
 use Boxalino\RealTimeUserExperience\Helper\Configuration as GenericConfiguration;
 use Boxalino\RealTimeUserExperienceApi\Service\Api\ApiCookieSubscriber;
+use Boxalino\RealTimeUserExperienceApi\Service\Api\Util\ConfigurationInterface;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Request;
 use Magento\Framework\App\Helper\Context;
@@ -17,10 +18,6 @@ use Magento\Framework\Stdlib\CookieManagerInterface;
  */
 class Configuration extends \Magento\Framework\App\Helper\AbstractHelper
 {
-    const BOXALINO_API_TRACKING_PRODUCTION="//track.bx-cloud.com/static/bav2.min.js";
-    const BOXALINO_API_TRACKING_STAGE="//r-st.bx-cloud.com/static/bav2.min.js";
-    const BOXALINO_API_SERVER_PRODUCTION="//track.bx-cloud.com/track/v2";
-    const BOXALINO_API_SERVER_STAGE="//r-st.bx-cloud.com/track/v2";
 
     /**
      * Application json header.
@@ -100,10 +97,10 @@ class Configuration extends \Magento\Framework\App\Helper\AbstractHelper
     {
         if($this->isDev() || $this->isTest())
         {
-            return self::BOXALINO_API_TRACKING_STAGE;
+            return ConfigurationInterface::BOXALINO_API_TRACKING_STAGE;
         }
 
-        return self::BOXALINO_API_TRACKING_PRODUCTION;
+        return ConfigurationInterface::BOXALINO_API_TRACKING_PRODUCTION;
     }
 
     /**
@@ -116,10 +113,10 @@ class Configuration extends \Magento\Framework\App\Helper\AbstractHelper
     {
         if($this->isDev() || $this->isTest())
         {
-            return self::BOXALINO_API_SERVER_STAGE . "?_bxv=" . $session;
+            return ConfigurationInterface::BOXALINO_API_SERVER_STAGE . "?_bxv=" . $session;
         }
 
-        return self::BOXALINO_API_SERVER_PRODUCTION . "?_bxv=" . $session;
+        return ConfigurationInterface::BOXALINO_API_SERVER_PRODUCTION . "?_bxv=" . $session;
     }
 
     /**
