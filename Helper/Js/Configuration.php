@@ -72,8 +72,13 @@ class Configuration extends \Magento\Framework\App\Helper\AbstractHelper
         $params['_ln'] = $this->getLanguage();
         $params['_bxs'] = $this->cookieManager->getCookie(ApiCookieSubscriber::BOXALINO_API_COOKIE_SESSION);
         $params['_bxv'] = $this->cookieManager->getCookie(ApiCookieSubscriber::BOXALINO_API_COOKIE_VISITOR);
-        $this->_logger->info(json_encode($params));
+
         try {
+            if($this->isTest())
+            {
+                $this->_logger->info(json_encode($params));
+            }
+
             $this->trackClient->send(
                 new Request(
                     'POST',
