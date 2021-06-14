@@ -6,11 +6,12 @@ namespace Boxalino\RealTimeUserExperience\Api;
  */
 interface ApiListingBlockAccessorInterface extends ApiRendererInterface
 {
+
     /**
-     * As expected by a default Magento block managing product collections
+     * Optionally, the generic ArrayIterator for the bx-hits element must be available
      *
-     * @return \Magento\Eav\Model\Entity\Collection\AbstractCollection|null
+     * @return \ArrayIterator|null
      */
-    public function getLoadedProductCollection() : ?\Magento\Eav\Model\Entity\Collection\AbstractCollection;
+    public function getApiCollection() : ?\ArrayIterator;
 
 }

@@ -2,6 +2,7 @@
 namespace Boxalino\RealTimeUserExperience\Service\Api\Response\Accessor;
 
 use Boxalino\RealTimeUserExperience\Api\ApiBlockAccessorInterface;
+use Boxalino\RealTimeUserExperience\Api\ApiRendererInterface;
 use Boxalino\RealTimeUserExperienceApi\Service\Api\Response\Accessor\AccessorInterface;
 use Boxalino\RealTimeUserExperienceApi\Service\Api\Response\Accessor\Block as ApiBlock;
 
@@ -16,12 +17,12 @@ class Block extends ApiBlock
 {
 
     /**
-     * @var string
+     * @var string | null
      */
     protected $type;
 
     /**
-     * @var string
+     * @var string | null
      */
     protected $name;
 
@@ -32,17 +33,17 @@ class Block extends ApiBlock
      */
     public function getType(): string
     {
-        return $this->type;
+        return $this->type ?? ApiRendererInterface::BOXALINO_RTUX_API_BLOCK_TYPE_DEFAULT;
     }
 
     /**
      * Block name (as required in order to create Magento2 layout blocks)
      *
-     * @return string|null
+     * @return string
      */
-    public function getName(): ?string
+    public function getName(): string
     {
-        return $this->name;
+        return $this->name ?? ApiRendererInterface::BOXALINO_RTUX_API_BLOCK_NAME_DEFAULT;
     }
 
     /**
@@ -74,7 +75,7 @@ class Block extends ApiBlock
     {
         if(isset($this->product))
         {
-            return $this->get("product");
+            return $this->get("bxHit");
         }
 
         return null;

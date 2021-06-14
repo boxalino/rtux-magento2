@@ -38,25 +38,25 @@
                     <item name="sorting" xsi:type="string">Boxalino\RealTimeUserExperienceApi\Service\Api\Response\Accessor\Sort</item>
                 </item>
                 <item name="bx-acQuery" xsi:type="array">
-                    <item name="suggestion" xsi:type="string">Boxalino\RealTimeUserExperienceApi\Service\Api\Response\Accessor\AcQuery</item>
+                    <item name="acQuery" xsi:type="string">Boxalino\RealTimeUserExperienceApi\Service\Api\Response\Accessor\AcQuery</item>
                 </item>
                 <item name="bx-pagination" xsi:type="array">
                     <item name="pagination" xsi:type="string">Boxalino\RealTimeUserExperienceApi\Service\Api\Response\Accessor\Pagination</item>
                 </item>
                 <item name="bx-hit" xsi:type="array">
-                    <item name="product" xsi:type="string">Boxalino\RealTimeUserExperienceApi\Service\Api\Response\Accessor\Hit</item>
+                    <item name="bxHit" xsi:type="string">Boxalino\RealTimeUserExperienceApi\Service\Api\Response\Accessor\Hit</item>
                 </item>
                 <item name="blocks" xsi:type="array">
                     <item name="blocks" xsi:type="string">Boxalino\RealTimeUserExperience\Service\Api\Response\Accessor\Block</item>
                 </item>
                 <item name="bx-hits" xsi:type="array">
-                    <item name="productsCollection" xsi:type="string">Boxalino\RealTimeUserExperienceApi\Service\Api\Response\Accessor\BxAccessor</item>
+                    <item name="bxHits" xsi:type="string">Boxalino\RealTimeUserExperienceApi\Service\Api\Response\Accessor\BxAccessor</item>
                 </item>
                 <item name="bx-acQueries" xsi:type="array">
-                    <item name="suggestionsCollection" xsi:type="string">Boxalino\RealTimeUserExperienceApi\Service\Api\Response\Accessor\BxAccessor</item>
+                    <item name="acQueries" xsi:type="string">Boxalino\RealTimeUserExperienceApi\Service\Api\Response\Accessor\BxAccessor</item>
                 </item>
                 <item name="bx-facets" xsi:type="array">
-                    <item name="facetsList" xsi:type="string">Boxalino\RealTimeUserExperienceApi\Service\Api\Response\Accessor\BxAccessor</item>
+                    <item name="bxFacets" xsi:type="string">Boxalino\RealTimeUserExperienceApi\Service\Api\Response\Accessor\BxAccessor</item>
                 </item>
                 <item name="bx-attributes" xsi:type="array">
                     <item name="bxAttributes" xsi:type="string">Boxalino\RealTimeUserExperienceApi\Service\Api\Response\Accessor\BxAttribute</item>

@@ -164,30 +164,16 @@ trait ApiBlockTrait
      */
     public function getApiBlock(ApiBlockAccessorInterface $block) : ?ApiRendererInterface
     {
-        if(!$block->getType())
-        {
-            throw new MissingDependencyException("BoxalinoAPI RenderBlock Error: the block type is missing: " . json_encode($block));
-        }
-
         if(!$block->getTemplate())
         {
             throw new MissingDependencyException("BoxalinoAPI RenderBlock Error: the block template is missing: " . json_encode($block));
         }
 
-        if(!$block->getName())
-        {
-            throw new MissingDependencyException("BoxalinoAPI RenderBlock Error: the block name is missing: " . json_encode($block));
-        }
-
         try{
-            $apiBlock = $this->getLayout()->createBlock($block->getType(), $block->getName())
-                ->setTemplate($block->getTemplate());
-
+            $apiBlock = $this->createUniqIdApiBlock($block);
             if($apiBlock instanceof ApiRendererInterface)
             {
-                $apiBlock->setRtuxVariantUuid($this->getRtuxVariantUuid())
-                    ->setRtuxGroupBy($this->getRtuxGroupBy())
-                    ->setBlock($block);
+                $apiBlock = $this->addApiRendererPropertiesOnBlock($apiBlock, $block);
             }
 
             try{
@@ -221,6 +207,44 @@ trait ApiBlockTrait
         {
             return $this->getDefaultBlock();
         }
+    }
+
+    /**
+     * Use this for unique content sections on the page
+     *
+     * @param ApiBlockAccessorInterface $block
+     * @return ApiRendererInterface | BlockInterface
+     */
+    public function createApiBlock(ApiBlockAccessorInterface $block)
+    {
+        return $this->getLayout()->createBlock($block->getType(), $block->getName())
+            ->setTemplate($block->getTemplate());
+    }
+
+    /**
+     * Use this for repeatable elements
+     *
+     * @param ApiBlockAccessorInterface $block
+     * @return ApiRendererInterface | BlockInterface
+     */
+    public function createUniqIdApiBlock(ApiBlockAccessorInterface $block)
+    {
+        return $this->getLayout()->createBlock($block->getType(), uniqid($block->getName()))
+            ->setTemplate($block->getTemplate());
+    }
+
+    /**
+     * @param ApiRendererInterface $apiBlock
+     * @param ApiBlockAccessorInterface $block
+     * @return ApiRendererInterface
+     */
+    public function addApiRendererPropertiesOnBlock(ApiRendererInterface $apiBlock, ApiBlockAccessorInterface $block) : ApiRendererInterface
+    {
+        $apiBlock->setRtuxVariantUuid($this->getRtuxVariantUuid())
+            ->setRtuxGroupBy($this->getRtuxGroupBy())
+            ->setBlock($block);
+
+        return $apiBlock;
     }
 
     /**

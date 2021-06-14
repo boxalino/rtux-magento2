@@ -152,25 +152,13 @@ class Navigation extends \Magento\Framework\View\Element\Template
      */
     public function getApiBlock(ApiBlockAccessorInterface $block) : ?ApiRendererInterface
     {
-        if(!$block->getType())
-        {
-            throw new MissingDependencyException("BoxalinoAPI RenderBlock Error: the block type is missing: " . json_encode($block));
-        }
-
         if(!$block->getTemplate())
         {
             throw new MissingDependencyException("BoxalinoAPI RenderBlock Error: the block template is missing: " . json_encode($block));
         }
 
-        if(!$block->getName())
-        {
-            throw new MissingDependencyException("BoxalinoAPI RenderBlock Error: the block name is missing: " . json_encode($block));
-        }
-
         try{
-            $apiBlock = $this->getLayout()->createBlock($block->getType(), $block->getName())
-                ->setTemplate($block->getTemplate());
-
+            $apiBlock = $this->createUniqIdApiBlock($block);
             if($apiBlock instanceof ApiRendererInterface)
             {
                 $apiBlock->setBlock($block);

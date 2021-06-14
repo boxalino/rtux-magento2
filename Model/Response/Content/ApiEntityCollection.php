@@ -1,12 +1,10 @@
 <?php declare(strict_types=1);
 namespace Boxalino\RealTimeUserExperience\Model\Response\Content;
 
-use Boxalino\RealTimeUserExperienceApi\Service\Api\Response\Accessor\AccessorInterface;
+use Boxalino\RealTimeUserExperienceApi\Framework\Content\Listing\ApiEntityCollectionInterface;
 use Boxalino\RealTimeUserExperienceApi\Service\Api\Response\Accessor\AccessorModelInterface;
-use Boxalino\RealTimeUserExperienceApi\Framework\Content\Listing\ApiEntityCollectionModelAbstract;
+use Boxalino\RealTimeUserExperienceApi\Framework\Content\Listing\ApiEntityCollectionModel;
 use Magento\Catalog\Api\Data\ProductSearchResultsInterface;
-use Magento\Catalog\Model\ProductRepository;
-use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Catalog\Model\ResourceModel\Product\Collection;
 
 
@@ -19,19 +17,14 @@ use Magento\Catalog\Model\ResourceModel\Product\Collection;
  *
  * @package Boxalino\RealTimeUserExperience\Model\Response
  */
-class ApiEntityCollection extends ApiEntityCollectionModelAbstract
-    implements AccessorModelInterface
-{
+class ApiEntityCollection extends ApiEntityCollectionModel
+    implements AccessorModelInterface, ApiEntityCollectionInterface
 
+{
     /**
      * @var null | ProductSearchResultsInterface
      */
     protected $collection = null;
-
-    /**
-     * @var \ArrayIterator
-     */
-    protected $responseCollection;
 
     /**
      * @var \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory
@@ -47,6 +40,7 @@ class ApiEntityCollection extends ApiEntityCollectionModelAbstract
     /**
      * Accessing collection of products based on the hits
      * (\Magento\Catalog\Api\Data\ProductSearchResultsInterface)
+     *
      * @return \ArrayIterator
      */
     public function getCollection() : Collection
@@ -68,42 +62,5 @@ class ApiEntityCollection extends ApiEntityCollectionModelAbstract
         return $this->collection;
     }
 
-    /**
-     * @return \ArrayIterator
-     */
-    public function getResponseCollection() : \ArrayIterator
-    {
-        return $this->responseCollection;
-    }
-
-    /**
-     * Creates the collection which has only the return fields requested
-     *
-     * @param \ArrayIterator $blocks
-     * @param string $hitAccessor
-     */
-    public function setResponseCollection(\ArrayIterator $blocks, string $hitAccessor) : void
-    {
-        $products = array_map(function(AccessorInterface $block) use ($hitAccessor) {
-            if(property_exists($block, $hitAccessor))
-            {
-                return $block->get($hitAccessor);
-            }
-        }, $blocks->getArrayCopy());
-
-        $this->responseCollection = $products;
-    }
-
-    /**
-     * @param null | AccessorInterface $context
-     * @return AccessorModelInterface
-     */
-    public function addAccessorContext(?AccessorInterface $context = null): AccessorModelInterface
-    {
-        parent::addAccessorContext($context);
-        $this->setResponseCollection($context->getBlocks(), $context->getAccessorHandler()->getAccessorSetter("bx-hit"));
-
-        return $this;
-    }
 
 }

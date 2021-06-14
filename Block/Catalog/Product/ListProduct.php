@@ -2,11 +2,10 @@
 namespace Boxalino\RealTimeUserExperience\Block\Catalog\Product;
 
 use Boxalino\RealTimeUserExperience\Api\ApiBlockAccessorInterface;
-use Boxalino\RealTimeUserExperience\Api\ApiListingBlockAccessorInterface;
+use Boxalino\RealTimeUserExperience\Api\ApiProductListingBlockAccessorInterface;
 use Boxalino\RealTimeUserExperience\Api\ApiProductBlockAccessorInterface;
 use Boxalino\RealTimeUserExperience\Api\ApiRendererInterface;
-use Boxalino\RealTimeUserExperience\Block\ApiBlockTrait;
-use Boxalino\RealTimeUserExperience\Block\FrameworkBlockTrait;
+use Boxalino\RealTimeUserExperience\Block\Api\ListApi;
 use Boxalino\RealTimeUserExperience\Model\Response\Content\ApiEntityCollection;
 use Boxalino\RealTimeUserExperienceApi\Service\Api\Response\Accessor\BlockInterface;
 use Boxalino\RealTimeUserExperienceApi\Service\ErrorHandler\MissingDependencyException;
@@ -22,11 +21,9 @@ use Magento\Catalog\Api\Data\ProductInterface;
  *
  * @package Boxalino\RealTimeUserExperience\Block\Catalog\Product
  */
-class ListProduct extends \Magento\Framework\View\Element\Template
-    implements ApiRendererInterface, ApiListingBlockAccessorInterface
+class ListProduct extends ListApi
+    implements ApiRendererInterface, ApiProductListingBlockAccessorInterface
 {
-    use ApiBlockTrait;
-    use FrameworkBlockTrait;
 
     /**
      * @var null | \Magento\Eav\Model\Entity\Collection\AbstractCollection
@@ -37,6 +34,7 @@ class ListProduct extends \Magento\Framework\View\Element\Template
      * @var null | \ArrayIterator
      */
     protected $_collectionIterator = null;
+
 
     /**
      * @return \Magento\Eav\Model\Entity\Collection\AbstractCollection|null
@@ -59,6 +57,7 @@ class ListProduct extends \Magento\Framework\View\Element\Template
         return $this->_productCollection;
     }
 
+
     /**
      * The block is aware of the expected children elements (products)
      *
@@ -67,33 +66,31 @@ class ListProduct extends \Magento\Framework\View\Element\Template
      */
     public function getApiBlock(ApiBlockAccessorInterface $block) : ?ApiRendererInterface
     {
-        if(!$block->getType())
-        {
-            throw new MissingDependencyException("BoxalinoAPI RenderBlock Error: the block type is missing: " . json_encode($block));
-        }
-
         if(!$block->getTemplate())
         {
             throw new MissingDependencyException("BoxalinoAPI RenderBlock Error: the block template is missing: " . json_encode($block));
         }
 
         try{
-            $apiBlock = $this->getLayout()->createBlock($block->getType(), uniqid($block->getName()))
-                ->setTemplate($block->getTemplate());
-
+            $apiBlock = $this->createUniqIdApiBlock($block);
             if($apiBlock instanceof ApiRendererInterface)
             {
-                $apiBlock->setRtuxVariantUuid($this->getRtuxVariantUuid())
-                    ->setRtuxGroupBy($this->getRtuxGroupBy())
-                    ->setBlock($block);
-            }
-
-            if($apiBlock instanceof ApiProductBlockAccessorInterface)
-            {
-                if($product=$this->getProductById($this->getProductId($block)))
+                if ($apiBlock instanceof ApiProductBlockAccessorInterface)
                 {
-                    $apiBlock->setProduct($product);
+                    /** @var null |  ProductInterface $product only add a child block if the product ID has been loaded */
+                    if ($product = $this->getProductById($this->getProductId($block)))
+                    {
+                        $apiBlock = $this->addApiRendererPropertiesOnBlock($apiBlock, $block);
+                        $apiBlock->setProduct($product);
+
+                        return $apiBlock;
+                    }
+
+                    /** do not generate an empty child/div if the product ID was not loaded into the collection */
+                    return null;
                 }
+
+                return $this->addApiRendererPropertiesOnBlock($apiBlock, $block);
             }
 
             return $apiBlock;
@@ -111,10 +108,10 @@ class ListProduct extends \Magento\Framework\View\Element\Template
     {
         if($this->getRtuxGroupBy() == 'id')
         {
-            return $block->getProduct()->getId();
+            return $block->getBxHit()->getId();
         }
 
-        return $block->getProduct()->get($this->getRtuxGroupBy())[0];
+        return $block->getBxHit()->get($this->getRtuxGroupBy())[0];
     }
 
     /**

@@ -1,11 +1,14 @@
 <?php
 /**
  * Template core for rendering children elements
+ * Updated to only display available/valid Magento2 blocks
  *
  * @var $block Boxalino\RealTimeUserExperience\Block\Api\Block
  */
 ?>
 <?php foreach($this->getBlocks() as $block):?>
-    <?php echo $this->getApiBlock($block)->toHtml();?>
+    <?php $apiBlock = $this->getApiBlock($block);?>
+    <?php if($apiBlock) : ?>
+        <?php echo $apiBlock->toHtml();?>
+    <?php endif; ?>
 <?php endforeach;?>
-

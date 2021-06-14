@@ -46,6 +46,9 @@ class Block extends ItemBlock
      */
     protected $product = null;
 
+    /** @var AccessorInterface */
+    protected $_apiItem;
+
     public function __construct(
         UrlHelper $urlHelper,
         ProductRepositoryInterface $productRepository,
@@ -77,12 +80,12 @@ class Block extends ItemBlock
      */
     protected function getProductId() : string
     {
-        if($this->getRtuxGroupBy()=='id')
+        if($this->getRtuxGroupBy() == 'id')
         {
-            return $this->getApiProduct()->getId();
+            return $this->getApiItem()->getId();
         }
 
-        return $this->getBlock()->getProduct()->get($this->getRtuxGroupBy())[0];
+        return $this->getApiItem()->get($this->getRtuxGroupBy())[0];
     }
 
     /**
@@ -101,9 +104,17 @@ class Block extends ItemBlock
      * Object built with the returnFields property from the request
      * or based on the scenario rule (from Boxalino Intelligence)
      */
-    public function getApiProduct() : ?AccessorInterface
+    public function getApiItem() : ?AccessorInterface
     {
-        return $this->getBlock()->getProduct();
+        return $this->getBlock()->getBxHit();
+    }
+
+    /**
+     * @param AccessorInterface $item
+     */
+    public function setApiItem(AccessorInterface $item): void
+    {
+       $this->_apiItem = $item;
     }
 
     /**
@@ -123,7 +134,7 @@ class Block extends ItemBlock
         {
             return  $this->getLayout()
                 ->createBlock("Magento\Catalog\Block\Product\ProductList\Item\AddTo\Compare",
-                    "addto" . $this->getApiProduct()->getId())
+                    "addto" . $this->getProductId())
                 ->setTemplate("Magento_Catalog::product/list/addto/compare.phtml");
         }
 
