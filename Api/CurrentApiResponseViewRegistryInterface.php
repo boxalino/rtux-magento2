@@ -22,4 +22,16 @@ interface CurrentApiResponseViewRegistryInterface
      */
     public function get(): ?ApiResponseViewInterface;
 
+    /**
+     * @param string $widget
+     * @return ApiResponseViewInterface|null
+     */
+    public function getByWidget(string $widget) : ?ApiResponseViewInterface;
+
+    /**
+     * @param string $widget
+     * @param ApiResponseViewInterface $apiResponse
+     */
+    public function addByWidget(string $widget, ApiResponseViewInterface $apiResponse) : void;
+
 }

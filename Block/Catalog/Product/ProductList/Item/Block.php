@@ -134,7 +134,7 @@ class Block extends ItemBlock
         {
             return  $this->getLayout()
                 ->createBlock("Magento\Catalog\Block\Product\ProductList\Item\AddTo\Compare",
-                    "addto" . $this->getProductId())
+                    "addto" . uniqid($this->getProductId()))
                 ->setTemplate("Magento_Catalog::product/list/addto/compare.phtml");
         }
 

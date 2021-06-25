@@ -16,7 +16,7 @@ use Magento\Framework\View\Element\Template;
  *
  * @package Boxalino\RealTimeUserExperience\Block\Layout
  */
-class Main extends \Magento\Framework\View\Element\Template
+class Position extends \Magento\Framework\View\Element\Template
     implements ApiRendererInterface
 {
 
@@ -54,7 +54,13 @@ class Main extends \Magento\Framework\View\Element\Template
                 $apiResponse =  $this->currentApiResponse->get();
             }
 
-            $blocks = $apiResponse->getBlocks();
+            if($this->getData("position"))
+            {
+                $functionName = "get" . $this->getData("position");
+
+                /** @var \ArrayIterator $blocks */
+                $blocks = $apiResponse->$functionName();
+            }
         } catch (\Exception $exception)
         {
             $blocks = new \ArrayIterator();

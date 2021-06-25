@@ -96,6 +96,7 @@ class ListProduct extends ListApi
             return $apiBlock;
         } catch (\Throwable $exception) {
             $this->_logger->warning("BoxalinoAPI ListProduct ERROR: " . $exception->getMessage());
+
             return null;
         }
     }
@@ -111,7 +112,13 @@ class ListProduct extends ListApi
             return $block->getBxHit()->getId();
         }
 
-        return $block->getBxHit()->get($this->getRtuxGroupBy())[0];
+        try{
+            $value = $block->getBxHit()->get($this->getRtuxGroupBy());
+            return $value[0];
+        } catch (\Throwable $exception)
+        {
+            throw new MissingDependencyException("The field: {$this->getRtuxGroupBy()} is not part of the API request returnFields");
+        }
     }
 
     /**

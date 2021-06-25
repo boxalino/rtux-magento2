@@ -11,6 +11,7 @@ use Magento\Framework\View\Element\Template;
 
 /**
  * Class Top
+ *
  * The API request is not done in this block logic but it is part of the "main" page component
  * It will render the narrative Layout Blocks with the property "position":"top"
  *
@@ -48,7 +49,13 @@ class Top extends \Magento\Framework\View\Element\Template
         }
 
         try {
-            $blocks =  $this->currentApiResponse->get()->getTop();
+            $apiResponse = null;
+            if(is_null($apiResponse))
+            {
+                $apiResponse =  $this->currentApiResponse->get();
+            }
+
+            $blocks = $apiResponse->getTop();
         } catch (\Exception $exception)
         {
             $blocks = new \ArrayIterator();

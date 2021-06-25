@@ -25,4 +25,19 @@ interface CurrentApiResponseRegistryInterface
      */
     public function get(): ?ResponseDefinitionInterface;
 
+    /**
+     * Accessing the response for the requested widget
+     *
+     * @param string $widget
+     * @return ResponseDefinitionInterface|null
+     */
+    public function getByWidget(string $widget) : ?ResponseDefinitionInterface;
+
+    /**
+     * @param string $widget
+     * @param ResponseDefinitionInterface $apiResponse
+     */
+    public function addByWidget(string $widget, ResponseDefinitionInterface $apiResponse) : void;
+
+
 }

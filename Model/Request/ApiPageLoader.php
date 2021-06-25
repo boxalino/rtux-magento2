@@ -51,7 +51,7 @@ class ApiPageLoader extends ApiPageLoaderAbstract
         parent::__construct($apiCallService, $configuration);
         $this->currentApiResponse = $currentApiResponse;
         $this->currentApiResponseView = $currentApiResponseView;
-        $this->eventManager =$eventManager;
+        $this->eventManager = $eventManager;
         $this->storeConfigurationHelper = $storeConfigurationHelper;
     }
 
@@ -118,5 +118,42 @@ class ApiPageLoader extends ApiPageLoaderAbstract
 
         return $this->apiResponsePage;
     }
+
+    /**
+     * @return CurrentApiResponseRegistryInterface
+     */
+    public function getCurrentApiResponse(): CurrentApiResponseRegistryInterface
+    {
+        return $this->currentApiResponse;
+    }
+
+    /**
+     * @param CurrentApiResponseRegistryInterface $currentApiResponse
+     * @return ApiLoaderInterface
+     */
+    public function setCurrentApiResponse(CurrentApiResponseRegistryInterface $currentApiResponse): ApiLoaderInterface
+    {
+        $this->currentApiResponse = $currentApiResponse;
+        return $this;
+    }
+
+    /**
+     * @return CurrentApiResponseViewRegistryInterface
+     */
+    public function getCurrentApiResponseView(): CurrentApiResponseViewRegistryInterface
+    {
+        return $this->currentApiResponseView;
+    }
+
+    /**
+     * @param CurrentApiResponseViewRegistryInterface $currentApiResponseView
+     * @return ApiLoaderInterface
+     */
+    public function setCurrentApiResponseView(CurrentApiResponseViewRegistryInterface $currentApiResponseView): ApiLoaderInterface
+    {
+        $this->currentApiResponseView = $currentApiResponseView;
+        return $this;
+    }
+
 
 }

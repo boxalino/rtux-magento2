@@ -17,6 +17,14 @@ class CurrentApiResponse implements CurrentApiResponseRegistryInterface
      */
     private $apiResponse = null;
 
+    /** @var \ArrayObject  */
+    private $apiResponseCollection;
+
+    public function __construct()
+    {
+        $this->apiResponseCollection = new \ArrayObject();
+    }
+
     public function set(ResponseDefinitionInterface $apiResponse): void
     {
         $this->apiResponse = $apiResponse;
@@ -26,4 +34,21 @@ class CurrentApiResponse implements CurrentApiResponseRegistryInterface
     {
         return $this->apiResponse;
     }
+
+    public function getByWidget(string $widget) : ?ResponseDefinitionInterface
+    {
+        if($this->apiResponseCollection->offsetExists($widget))
+        {
+            return $this->apiResponseCollection->offsetGet($widget);
+        }
+
+        return null;
+    }
+
+    public function addByWidget(string $widget, ResponseDefinitionInterface $apiResponse) : void
+    {
+        $this->apiResponseCollection->offsetSet($widget,$apiResponse);
+    }
+
+
 }

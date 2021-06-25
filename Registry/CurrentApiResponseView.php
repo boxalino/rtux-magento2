@@ -2,7 +2,6 @@
 namespace Boxalino\RealTimeUserExperience\Registry;
 
 use Boxalino\RealTimeUserExperience\Api\CurrentApiResponseViewRegistryInterface;
-use Boxalino\RealTimeUserExperience\Model\Response\Page\ApiResponsePage;
 use Boxalino\RealTimeUserExperienceApi\Service\Api\Response\ApiResponseViewInterface;
 
 /**
@@ -18,6 +17,14 @@ class CurrentApiResponseView implements CurrentApiResponseViewRegistryInterface
      */
     private $apiResponseView = null;
 
+    /** @var \ArrayObject  */
+    private $apiResponseViewCollection;
+
+    public function __construct()
+    {
+        $this->apiResponseViewCollection = new \ArrayObject();
+    }
+
     public function set(ApiResponseViewInterface $apiResponseView): void
     {
         $this->apiResponseView = $apiResponseView;
@@ -27,5 +34,21 @@ class CurrentApiResponseView implements CurrentApiResponseViewRegistryInterface
     {
         return $this->apiResponseView;
     }
+
+    public function getByWidget(string $widget) : ?ApiResponseViewInterface
+    {
+        if($this->apiResponseViewCollection->offsetExists($widget))
+        {
+            return $this->apiResponseViewCollection->offsetGet($widget);
+        }
+
+        return null;
+    }
+
+    public function addByWidget(string $widget, ApiResponseViewInterface $apiResponse) : void
+    {
+        $this->apiResponseViewCollection->offsetSet($widget,$apiResponse);
+    }
+
 
 }

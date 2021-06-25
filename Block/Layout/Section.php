@@ -3,24 +3,23 @@ namespace Boxalino\RealTimeUserExperience\Block\Layout;
 
 use Boxalino\RealTimeUserExperience\Api\ApiRendererInterface;
 use Boxalino\RealTimeUserExperience\Api\ApiResponseBlockInterface;
-use Boxalino\RealTimeUserExperience\Block\ApiBlockTrait;
 use Boxalino\RealTimeUserExperience\Api\CurrentApiResponseRegistryInterface;
 use Boxalino\RealTimeUserExperience\Api\CurrentApiResponseViewRegistryInterface;
+use Boxalino\RealTimeUserExperience\Block\ApiBlockLoaderTrait;
 use Boxalino\RealTimeUserExperience\Model\Request\ApiPageLoader;
 use Magento\Framework\View\Element\Template;
 
 /**
- * Class Main
- * The API request is not done in this block logic but it is part of the "main" page component
+ * Class Section
  * It will render the narrative Layout Blocks with the missing property "position"
  *
  * @package Boxalino\RealTimeUserExperience\Block\Layout
  */
-class Main extends \Magento\Framework\View\Element\Template
+class Section extends \Magento\Framework\View\Element\Template
     implements ApiRendererInterface
 {
 
-    use ApiBlockTrait;
+    use ApiBlockLoaderTrait;
 
     public function __construct(
         CurrentApiResponseRegistryInterface $currentApiResponse,
@@ -36,7 +35,7 @@ class Main extends \Magento\Framework\View\Element\Template
     }
 
     /**
-     * In the assumption that the Boxalino Intelligence Layout Block has position:left,
+     * In the assumption that the Boxalino Intelligence Layout Block has a property "position"
      * it is expected for the blocks to be located under that response "parameter"
      *
      * @return \ArrayIterator
@@ -48,13 +47,25 @@ class Main extends \Magento\Framework\View\Element\Template
         }
 
         try {
-            $apiResponse = null;
+            $apiResponse = null; $blocks = new \ArrayIterator();
+
+            if($this->getData("widget"))
+            {
+                $apiResponse = $this->currentApiResponse->getByWidget($this->getData("widget"));
+            }
+
             if(is_null($apiResponse))
             {
                 $apiResponse =  $this->currentApiResponse->get();
             }
 
-            $blocks = $apiResponse->getBlocks();
+            if($this->getData("position"))
+            {
+                $functionName = "get" . $this->getData("position");
+
+                /** @var \ArrayIterator $blocks */
+                $blocks = $apiResponse->$functionName();
+            }
         } catch (\Exception $exception)
         {
             $blocks = new \ArrayIterator();
@@ -80,5 +91,6 @@ class Main extends \Magento\Framework\View\Element\Template
     {
         return null;
     }
+
 
 }
