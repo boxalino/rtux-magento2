@@ -42,7 +42,7 @@ class Pager extends \Magento\Catalog\Block\Product\Widget\Html\Pager
      */
     public function getPagination() : Pagination
     {
-        return $this->getBlock()->getPagination();
+        return $this->getBlock()->getBxPagination();
     }
 
     /**

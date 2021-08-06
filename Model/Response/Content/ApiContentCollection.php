@@ -35,6 +35,14 @@ class ApiContentCollection implements AccessorModelInterface
     }
 
     /**
+     * Preparing element for API preview (ex: pwa context)
+     * The protected properties are not public (for this purpose - create dedicated functions)
+     */
+    public function load(): void
+    {
+    }
+
+    /**
      * Creates the collection which has only the return fields requested
      *
      * @param \ArrayIterator $blocks
