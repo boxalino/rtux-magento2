@@ -48,11 +48,15 @@ class SetApiCookieObserver implements ObserverInterface
                 ->createPublicCookieMetadata()
                 ->setPath("/");
 
+            $id =$this->_generateUuid();
             $this->cookieManager->setPublicCookie(
                 ApiCookieSubscriber::BOXALINO_API_COOKIE_SESSION,
-                Uuid::uuid4()->toString(),
+                $id,
                 $metadata
             );
+
+            // the cookie manager does not populate the $_COOKIE array, but getCookie only checks this one
+            $_COOKIE[ApiCookieSubscriber::BOXALINO_API_COOKIE_SESSION] = $id;
         }
 
         if(!$this->cookieManager->getCookie(ApiCookieSubscriber::BOXALINO_API_COOKIE_VISITOR))
@@ -62,12 +66,25 @@ class SetApiCookieObserver implements ObserverInterface
                 ->setPath("/")
                 ->setDurationOneYear();
 
+            $id =$this->_generateUuid();
             $this->cookieManager->setPublicCookie(
                 ApiCookieSubscriber::BOXALINO_API_COOKIE_VISITOR,
-                Uuid::uuid4()->toString(),
+                $id,
                 $metadata
             );
+
+            // the cookie manager does not populate the $_COOKIE array, but getCookie only checks this one
+            $_COOKIE[ApiCookieSubscriber::BOXALINO_API_COOKIE_VISITOR] = $id;
         }
     }
+
+    /**
+     * @return string
+     */
+    protected function _generateUuid() : string
+    {
+        return Uuid::uuid4()->toString();
+    }
+
 
 }
