@@ -45,15 +45,44 @@ class ApiFacet extends ApiFacetModelAbstract
      */
     protected $facetValuesDelimiter;
 
+    /**
+     * @var bool
+     */
+    protected $useFacetOptionIdFilter;
+
     public function __construct(
         \Magento\Eav\Model\Config $config,
         UrlInterface $urlBuilder,
-        string $facetValuesDelimiter
+        string $facetValuesDelimiter,
+        bool $useFacetOptionIdFilter = false
     ){
         parent::__construct();
         $this->_config = $config;
         $this->urlBuilder = $urlBuilder;
         $this->facetValuesDelimiter = $facetValuesDelimiter;
+        $this->useFacetOptionIdFilter = $useFacetOptionIdFilter;
+    }
+
+    /**
+     * Added to support the flow when the filter is done via facet option ID
+     *
+     * @param FacetValue $facetValue
+     * @return int | string | null
+     */
+    protected function getValue(FacetValue $facetValue) : ?string
+    {
+        $value = $facetValue->getValue();
+        if($this->useFacetOptionIdFilter)
+        {
+            try{
+                $value = $facetValue->getId();
+            } catch (\Throwable $exception)
+            {
+                $value = $facetValue->getValue();
+            }
+        }
+
+        return $value;
     }
 
     /**
@@ -122,11 +151,11 @@ class ApiFacet extends ApiFacetModelAbstract
      */
     public function getUrlByFacetValue(Facet $facet, FacetValue $facetValue) : string
     {
-        $value = $facetValue->getValue();
+        $value = $this->getValue($facetValue);
         if($facet->isSelected() && $facet->allowMultiselect() && !$facetValue->isSelected())
         {
             $value = implode($this->facetValuesDelimiter,
-                array_merge(explode($this->facetValuesDelimiter, $this->urlParameters[$facet->getRequestField()]), [$facetValue->getValue()])
+                array_merge(explode($this->facetValuesDelimiter, $this->urlParameters[$facet->getRequestField()]), [$this->getValue($facetValue)])
             );
         }
         $query = [
@@ -188,7 +217,7 @@ class ApiFacet extends ApiFacetModelAbstract
             $parameters[$facet->getRequestField()] = $facet->getCleanValue();
             if($facet->allowMultiselect())
             {
-                unset($values[array_search($facetValue->getValue(), $values)]);
+                unset($values[array_search($this->getValue($facetValue), $values)]);
                 $parameters[$facet->getRequestField()] = implode($this->facetValuesDelimiter, $values);
             }
 
@@ -233,7 +262,7 @@ class ApiFacet extends ApiFacetModelAbstract
                     $this->facetValuesDelimiter,
                     array_map(
                         function(FacetValue $facetValue) {
-                            return $facetValue->getValue();
+                            return $this->getValue($facetValue);
                         },
                         $selectedFacet->getSelectedValues()
                     )
