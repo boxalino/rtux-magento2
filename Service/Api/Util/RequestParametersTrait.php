@@ -76,4 +76,29 @@ trait RequestParametersTrait
         return Toolbar::MODE_PARAM_NAME;
     }
 
+    /**
+     * @return string
+     */
+    public function getSystemContextParameter() : string
+    {
+        return "id";
+    }
+
+    /**
+     * @return array
+     */
+    public function getSystemParameters() : array
+    {
+        return [
+            $this->getPageLimitParameter(),
+            $this->getPageNumberParameter(),
+            $this->getBlockViewModeParameter(),
+            $this->getSearchParameter(),
+            $this->getDirectionParameter(),
+            $this->getSortParameter(),
+            $this->getSystemContextParameter()
+        ];
+    }
+
+
 }
