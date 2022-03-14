@@ -54,11 +54,13 @@ class ApiFacet extends ApiFacetModelAbstract
         \Magento\Eav\Model\Config $config,
         UrlInterface $urlBuilder,
         string $facetValuesDelimiter,
+        string $facetPrefix = self::BOXALINO_API_FACET_PREFIX,
         bool $useFacetOptionIdFilter = false
     ){
         parent::__construct();
         $this->_config = $config;
         $this->urlBuilder = $urlBuilder;
+        $this->facetPrefix = $facetPrefix;
         $this->facetValuesDelimiter = $facetValuesDelimiter;
         $this->useFacetOptionIdFilter = $useFacetOptionIdFilter;
     }
@@ -116,17 +118,18 @@ class ApiFacet extends ApiFacetModelAbstract
     public function getLabel(string $propertyName) : string
     {
         /** if the facet name starts with products_ it makes it a Magento2 product attribute */
-        if(strpos($propertyName, AccessorFacetModelInterface::BOXALINO_STORE_FACET_PREFIX)===0)
+        if(strpos($propertyName, AccessorFacetModelInterface::BOXALINO_STORE_FACET_PREFIX) === 0)
         {
             $propertyName = substr($propertyName, strlen(AccessorFacetModelInterface::BOXALINO_STORE_FACET_PREFIX), strlen($propertyName));
-            try{
-                $label = $this->_getAttributeModel($propertyName)->getStoreLabel();
-                if(!empty($label))
-                {
-                    return $label;
-                }
-            } catch(\Throwable $exception) {}
         }
+
+        try{
+            $label = $this->_getAttributeModel($propertyName)->getStoreLabel();
+            if(!empty($label))
+            {
+                return $label;
+            }
+        } catch(\Throwable $exception) {}
 
         return ucwords(str_replace("_", " ", $propertyName));
     }
