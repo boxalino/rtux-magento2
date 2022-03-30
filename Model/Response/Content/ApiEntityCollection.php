@@ -56,6 +56,7 @@ class ApiEntityCollection extends ApiEntityCollectionModel
                 ->addStoreFilter()
                 ->addUrlRewrite();
 
+            $collection->getSelect()->order("FIND_IN_SET(e.entity_id,'".implode(',', $this->getHitIds())."')");
             $this->collection = $collection;
         }
 
