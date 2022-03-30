@@ -56,7 +56,19 @@ class ApiEntityCollection extends ApiEntityCollectionModel
                 ->addStoreFilter()
                 ->addUrlRewrite();
 
-            $collection->getSelect()->order("FIND_IN_SET(e.entity_id,'".implode(',', $this->getHitIds())."')");
+            /** order the product items to match the returned order by API response */
+            foreach($this->getHitIds() as $id)
+            {
+                foreach($collection as $product)
+                {
+                    if($product->getId() === $id)
+                    {
+                        $collection->removeItemByKey($id);
+                        $collection->addItem($product);
+                    }
+                }
+            }
+
             $this->collection = $collection;
         }
 
