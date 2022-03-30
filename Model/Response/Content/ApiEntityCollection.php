@@ -65,6 +65,7 @@ class ApiEntityCollection extends ApiEntityCollectionModel
                     {
                         $collection->removeItemByKey($id);
                         $collection->addItem($product);
+                        break;
                     }
                 }
             }
