@@ -1,6 +1,7 @@
 <?php declare(strict_types=1);
 namespace Boxalino\RealTimeUserExperience\Service\Api\Util;
 
+use Boxalino\RealTimeUserExperienceApi\Service\Api\Request\RequestDefinitionInterface;
 use Magento\Catalog\Model\Product\ProductList\Toolbar;
 use Magento\Search\Model\QueryFactory;
 
@@ -96,7 +97,9 @@ trait RequestParametersTrait
             $this->getSearchParameter(),
             $this->getDirectionParameter(),
             $this->getSortParameter(),
-            $this->getSystemContextParameter()
+            $this->getSystemContextParameter(),
+            RequestDefinitionInterface::BOXALINO_API_REQUEST_INSPECT_FLAG,
+            RequestDefinitionInterface::BOXALINO_API_WIDGET_INSPECT_FLAG
         ];
     }
 

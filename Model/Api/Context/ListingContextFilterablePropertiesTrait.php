@@ -43,7 +43,7 @@ trait ListingContextFilterablePropertiesTrait
                 $this->getApiRequest()
                     ->addFacets(
                         $this->parameterFactory->get(ParameterFactoryInterface::BOXALINO_API_REQUEST_PARAMETER_TYPE_FACET)
-                            ->add(html_entity_decode($propertyName), -1, 1)
+                            ->add(html_entity_decode($propertyName), -1, 1, $this->getFacetValueCorrelation())
                     );
             }
         }
