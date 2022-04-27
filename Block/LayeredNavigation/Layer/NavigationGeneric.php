@@ -2,7 +2,6 @@
 namespace Boxalino\RealTimeUserExperience\Block\LayeredNavigation\Layer;
 
 use Boxalino\RealTimeUserExperience\Api\ApiRendererInterface;
-use Boxalino\RealTimeUserExperienceApi\Service\ErrorHandler\UndefinedPropertyError;
 
 /**
  * Class Navigation
@@ -12,12 +11,10 @@ use Boxalino\RealTimeUserExperienceApi\Service\ErrorHandler\UndefinedPropertyErr
  * Per Magento2 expectation, the following elements are available:
  * 1. active filters (also known as the "state")
  * 2. filters (rendered individually)
- * 
- * As it is expected to have facets on left - the facets configured with position:left will be used
  *
  * @package Boxalino\RealTimeUserExperience\Block\LayeredNavigation
  */
-class Navigation extends AbstractNavigation
+class NavigationGeneric extends AbstractNavigation
     implements ApiRendererInterface
 {
 
@@ -31,12 +28,6 @@ class Navigation extends AbstractNavigation
         if (is_null($this->filtersList))
         {
             $apiFacetsList = $this->getApiFacetModel()->getFacets();
-            try{
-                if($this->getBlock()->getPosition())
-                {
-                    $apiFacetsList = $this->getApiFacetModel()->getByPosition($this->getBlock()->getPosition());
-                }
-            } catch(UndefinedPropertyError $exception) {}
             $this->_eventManager->dispatch(
                 'rtux_api_block_facet_list_collection',
                 ['collection' => $apiFacetsList]
@@ -48,6 +39,5 @@ class Navigation extends AbstractNavigation
         return $this->filtersList;
     }
 
-    
 
 }
