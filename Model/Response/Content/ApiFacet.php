@@ -1,6 +1,7 @@
 <?php declare(strict_types=1);
 namespace Boxalino\RealTimeUserExperience\Model\Response\Content;
 
+use Boxalino\RealTimeUserExperience\Api\ApiFilterablePropertiesProviderInterface;
 use Boxalino\RealTimeUserExperience\Service\Api\Response\Accessor\Facet;
 use Boxalino\RealTimeUserExperience\Service\Api\Response\Accessor\FacetValue;
 use Boxalino\RealTimeUserExperience\Service\Api\Util\RequestParametersTrait;
@@ -23,7 +24,6 @@ class ApiFacet extends ApiFacetModelAbstract
 {
 
     use RequestParametersTrait;
-    const SELECTED_FACET_VALUES_URL_DELIMITER = ",";
 
     /**
      * @var \Magento\Eav\Model\Config
@@ -50,12 +50,29 @@ class ApiFacet extends ApiFacetModelAbstract
      */
     protected $useFacetOptionIdFilter;
 
+    /**
+     * @var array
+     */
+    protected $filterableProperties = [];
+
+    /**
+     * @var ApiFilterablePropertiesProviderInterface
+     */
+    protected $filterablePropertiesProvider;
+
+    /**
+     * @var string
+     */
+    protected $facetValueKey;
+
     public function __construct(
         \Magento\Eav\Model\Config $config,
         UrlInterface $urlBuilder,
-        string $facetValuesDelimiter,
-        string $facetPrefix = self::BOXALINO_API_FACET_PREFIX,
-        bool $useFacetOptionIdFilter = false
+        ApiFilterablePropertiesProviderInterface $filterablePropertiesProvider,
+        string $facetValuesDelimiter = self::SELECTED_FACET_VALUES_URL_DELIMITER,
+        string $facetPrefix = self::BOXALINO_SYSTEM_FACET_PREFIX,
+        bool $useFacetOptionIdFilter = false,
+        string $facetValueKey = "value"
     ){
         parent::__construct();
         $this->_config = $config;
@@ -63,10 +80,13 @@ class ApiFacet extends ApiFacetModelAbstract
         $this->facetPrefix = $facetPrefix;
         $this->facetValuesDelimiter = $facetValuesDelimiter;
         $this->useFacetOptionIdFilter = $useFacetOptionIdFilter;
+        $this->facetValueKey = $facetValueKey;
+        $this->filterablePropertiesProvider = $filterablePropertiesProvider;
     }
 
     /**
      * Added to support the flow when the filter is done via facet option ID
+     * Added to support the use-case when the filter is done via another facet value correlation property
      *
      * @param FacetValue $facetValue
      * @return int | string | null
@@ -84,7 +104,41 @@ class ApiFacet extends ApiFacetModelAbstract
             }
         }
 
-        return $value;
+        if($this->facetValueKey === "value")
+        {
+            return $value;
+        }
+
+        try{
+            $value = $facetValue->get($this->facetValueKey);
+            if(is_array($value))
+            {
+                return $value[0];
+            }
+        } catch (\Throwable $exception)
+        {
+        }
+
+        return $facetValue->getValue();
+    }
+
+    /**
+     * @param $facet
+     * @return bool
+     */
+    protected function facetRequiresPrefix($facet) : bool
+    {
+        if(empty($this->filterableProperties))
+        {
+            $this->filterableProperties = $this->filterablePropertiesProvider->getFilterableAttributes();
+        }
+
+        if(in_array($facet->getField(), $this->filterableProperties))
+        {
+            return false;
+        }
+
+        return true;
     }
 
     /**
@@ -111,18 +165,14 @@ class ApiFacet extends ApiFacetModelAbstract
 
     /**
      * Accessing translation for the property name from DB
+     * If there is a matching property in M2 db - the facet is a M2 property
+     * If there is no matching property in M2 db - the facet is a Boxalino-provided property and prefix must be appended
      *
      * @param string $propertyName
      * @return string
      */
     public function getLabel(string $propertyName) : string
     {
-        /** if the facet name starts with products_ it makes it a Magento2 product attribute */
-        if(strpos($propertyName, AccessorFacetModelInterface::BOXALINO_STORE_FACET_PREFIX) === 0)
-        {
-            $propertyName = substr($propertyName, strlen(AccessorFacetModelInterface::BOXALINO_STORE_FACET_PREFIX), strlen($propertyName));
-        }
-
         try{
             $label = $this->_getAttributeModel($propertyName)->getStoreLabel();
             if(!empty($label))
@@ -276,5 +326,6 @@ class ApiFacet extends ApiFacetModelAbstract
 
         return $this->urlParameters;
     }
+
 
 }

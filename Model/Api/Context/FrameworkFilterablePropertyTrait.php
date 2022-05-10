@@ -27,7 +27,17 @@ trait FrameworkFilterablePropertyTrait
      */
     protected function getStoreFilterablePropertiesByRequest(RequestInterface $request) : array
     {
-        return array_diff($this->getFilterablePropertyNames(), $this->getSelectedFacetsByRequest($request));
+        $properties = array_diff($this->getFilterablePropertyNames(), $this->getSelectedFacetsByRequest($request));
+        if($this->filterablePropertyProvider->getPropertyPrefix())
+        {
+            $prefix = $this->filterablePropertyProvider->getPropertyPrefix();
+            array_walk($properties, function($property) use ($prefix)
+            {
+                return $prefix . $property;
+            });
+        }
+
+        return $properties;
     }
 
     /**

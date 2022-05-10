@@ -18,5 +18,10 @@ interface ApiFilterablePropertiesProviderInterface
      */
    public function getFilterableAttributes() : array;
 
+    /**
+     * @return string | null
+     */
+   public function getPropertyPrefix() : ?string;
+
    
 }
