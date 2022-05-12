@@ -54,7 +54,15 @@ class Configuration extends \Magento\Framework\App\Helper\AbstractHelper
         $this->apiConfiguration = $apiConfiguration;
         $this->genericConfiguration = $genericConfiguration;
         $this->cookieManager = $cookieManager;
-        $this->trackClient = new Client();
+        $this->trackClient = new Client(
+            [
+                'base_uri'=>$this->_httpHeader->getRequestUri(),
+                'headers'=>[
+                    'user-agent'=>$this->_httpHeader->getHttpUserAgent(),
+                    'user-language'=>$this->_httpHeader->getHttpAcceptLanguage()
+                ]
+            ]
+        );
     }
 
     /**
