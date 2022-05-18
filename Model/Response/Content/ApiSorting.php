@@ -26,7 +26,7 @@ class ApiSorting extends ApiSortingModelAbstract
      *
      * @param array $sortingList
      */
-    public function __construct(array $sortingList, array $additionalSortingList)
+    public function __construct(array $sortingList, array $additionalSortingList = [])
     {
         parent::__construct();
         $this->addSortingOptionCollection($sortingList);
