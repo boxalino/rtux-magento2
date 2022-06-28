@@ -41,16 +41,6 @@ class ApiFacet extends ApiFacetModelAbstract
     protected $urlBuilder;
 
     /**
-     * @var string
-     */
-    protected $facetValuesDelimiter;
-
-    /**
-     * @var bool
-     */
-    protected $useFacetOptionIdFilter;
-
-    /**
      * @var array
      */
     protected $filterableProperties = [];
@@ -60,10 +50,6 @@ class ApiFacet extends ApiFacetModelAbstract
      */
     protected $filterablePropertiesProvider;
 
-    /**
-     * @var string
-     */
-    protected $facetValueKey;
 
     public function __construct(
         \Magento\Eav\Model\Config $config,
@@ -82,63 +68,6 @@ class ApiFacet extends ApiFacetModelAbstract
         $this->useFacetOptionIdFilter = $useFacetOptionIdFilter;
         $this->facetValueKey = $facetValueKey;
         $this->filterablePropertiesProvider = $filterablePropertiesProvider;
-    }
-
-    /**
-     * Added to support the flow when the filter is done via facet option ID
-     * Added to support the use-case when the filter is done via another facet value correlation property
-     *
-     * @param FacetValue $facetValue
-     * @return int | string | null
-     */
-    protected function getValue(FacetValue $facetValue) : ?string
-    {
-        $value = $facetValue->getValue();
-        if($this->useFacetOptionIdFilter)
-        {
-            try{
-                $value = $facetValue->getId();
-            } catch (\Throwable $exception)
-            {
-                $value = $facetValue->getValue();
-            }
-        }
-
-        if($this->facetValueKey === "value")
-        {
-            return $value;
-        }
-
-        try{
-            $value = $facetValue->get($this->facetValueKey);
-            if(is_array($value))
-            {
-                return $value[0];
-            }
-        } catch (\Throwable $exception)
-        {
-        }
-
-        return $facetValue->getValue();
-    }
-
-    /**
-     * @param $facet
-     * @return bool
-     */
-    protected function facetRequiresPrefix($facet) : bool
-    {
-        if(empty($this->filterableProperties))
-        {
-            $this->filterableProperties = $this->filterablePropertiesProvider->getFilterableAttributes();
-        }
-
-        if(in_array($facet->getField(), $this->filterableProperties))
-        {
-            return false;
-        }
-
-        return true;
     }
 
     /**
@@ -217,7 +146,6 @@ class ApiFacet extends ApiFacetModelAbstract
         ];
         return $this->urlBuilder->getUrl('*/*/*', ['_current' => true, '_use_rewrite' => true, '_query' => $query]);
     }
-
 
     /**
      * As seen in Magento2 filter item model \Magento\Catalog\Model\Layer\Filter\Item
@@ -325,6 +253,25 @@ class ApiFacet extends ApiFacetModelAbstract
         }
 
         return $this->urlParameters;
+    }
+
+    /**
+     * @param $facet
+     * @return bool
+     */
+    protected function facetRequiresPrefix($facet) : bool
+    {
+        if(empty($this->filterableProperties))
+        {
+            $this->filterableProperties = $this->filterablePropertiesProvider->getFilterableAttributes();
+        }
+
+        if(in_array($facet->getField(), $this->filterableProperties))
+        {
+            return false;
+        }
+
+        return true;
     }
 
 
