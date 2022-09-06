@@ -18,7 +18,7 @@
     "magento/module-search": "*",
     "magento/module-indexer": "*",
     "magento/framework": "*",
-    "boxalino/rtux-api-php": "~3.4.10"
+    "boxalino/rtux-api-php": "~3.5.0"
   },
   "autoload": {
     "files": ["registration.php"],
