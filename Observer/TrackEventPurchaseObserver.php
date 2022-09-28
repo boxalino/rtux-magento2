@@ -42,7 +42,7 @@ class TrackEventPurchaseObserver implements ObserverInterface
                     $this->getEventParameters($observer->getOrder())
                 );
             }
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             //do nothing
         }
     }

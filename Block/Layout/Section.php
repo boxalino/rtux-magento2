@@ -66,7 +66,7 @@ class Section extends \Magento\Framework\View\Element\Template
                 /** @var \ArrayIterator $blocks */
                 $blocks = $apiResponse->$functionName();
             }
-        } catch (\Exception $exception)
+        } catch (\Throwable $exception)
         {
             $blocks = new \ArrayIterator();
         }
