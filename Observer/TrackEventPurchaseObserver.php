@@ -55,7 +55,7 @@ class TrackEventPurchaseObserver implements ObserverInterface
     {
         $productsCount = 0;
         $eventParameters = [
-            't'  => round($order->getGrandTotal(), 2),
+            't'  => round((float)$order->getGrandTotal(), 2),
             'c'  => $order->getBaseCurrencyCode(),
             'orderId' => $order->getEntityId()
         ];
