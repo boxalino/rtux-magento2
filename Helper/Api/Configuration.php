@@ -82,7 +82,7 @@ class Configuration implements ConfigurationInterface
      */
     public function getApiKey() : string
     {
-        $value = $this->scopeConfig->getValue('rtux/general/apiKey', $this->contextId);
+        $value = $this->scopeConfig->getValue('rtux/general/api_key', $this->contextId);
         if(empty($value))
         {
             throw new MissingDependencyException("BoxalinoAPI: API KEY has not been configured.");
@@ -96,7 +96,7 @@ class Configuration implements ConfigurationInterface
      */
     public function getApiSecret() : string
     {
-        $value = $this->scopeConfig->getValue('rtux/general/apiSecret', $this->contextId);
+        $value = $this->scopeConfig->getValue('rtux/general/api_secret', $this->contextId);
         if(empty($value))
         {
             throw new MissingDependencyException("BoxalinoAPI: API SECRET has not been configured.");

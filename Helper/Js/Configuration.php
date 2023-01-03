@@ -156,7 +156,7 @@ class Configuration extends \Magento\Framework\App\Helper\AbstractHelper
      */
     public function getKey() : ?string
     {
-        $value = $this->scopeConfig->getValue('rtux/api/apiServerKey', \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
+        $value = $this->scopeConfig->getValue('rtux/api/api_server_key', \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
         if(empty($value))
         {
             return null;

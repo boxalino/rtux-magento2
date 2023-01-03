@@ -23,11 +23,11 @@
                     <label>Boxalino account name</label>
                     <comment>Please request your account with credentials by contacting support@boxalino.com</comment>
                 </field>
-                <field id="apiKey" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0" >
+                <field id="api_key" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0" >
                     <label>ApiKey</label>
                     <comment>Please request your account with credentials by contacting support@boxalino.com</comment>
                 </field>
-                <field id="apiSecret" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="0" >
+                <field id="api_secret" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="0" >
                     <label>ApiSecret</label>
                     <comment>Please request your account with credentials by contacting support@boxalino.com</comment>
                 </field>
@@ -57,7 +57,7 @@
                     <label>Use Development Data Index</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
-                <field id="apiServerKey" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0" >
+                <field id="api_server_key" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0" >
                     <label>JS API Key</label>
                     <comment>JavaScript API Key as provided by Boxalino</comment>
                 </field>
