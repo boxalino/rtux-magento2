@@ -190,25 +190,11 @@ class Configuration extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * @param bool $proxy
      * @return string
      */
-    public function getEndpoint(bool $proxy = false) : string
+    public function getEndpoint() : string
     {
-        if($proxy)
-        {
-            return $this->apiConfiguration->setProxy(true)->getRestApiEndpoint();
-        }
-
-        return $this->apiConfiguration->getRestApiEndpoint();
-    }
-
-    /**
-     * @return string
-     */
-    public function getAlternativeEndpoint() : string
-    {
-        return $this->apiConfiguration->getRestApiEndpoint();
+        return str_replace("%%account%%", $this->getAccount(), $this->apiConfiguration->getEndpointByDomain(ConfigurationInterface::RTUX_API_DOMAIN_ALTERNATIVE));
     }
 
     /**

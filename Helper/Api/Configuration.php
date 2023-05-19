@@ -13,9 +13,6 @@ use Boxalino\RealTimeUserExperienceApi\Service\ErrorHandler\MissingDependencyExc
 class Configuration implements ConfigurationInterface
 {
 
-    /** @var bool  */
-    protected $proxy = false;
-
     /**
      * @var string
      */
@@ -55,12 +52,7 @@ class Configuration implements ConfigurationInterface
         $value = $this->scopeConfig->getValue('rtux/api/url', $this->contextId);
         if(empty($value))
         {
-            if($this->getIsDev() || $this->getIsTest())
-            {
-                return str_replace("%%account%%", $this->getUsername(), $this->getDomainEndpoint(ConfigurationInterface::RTUX_API_ENDPOINT_STAGE));
-            }
-
-            return str_replace("%%account%%", $this->getUsername(), $this->getDomainEndpoint(ConfigurationInterface::RTUX_API_ENDPOINT_PRODUCTION));
+            return str_replace("%%account%%", $this->getUsername(), $this->getEndpointByDomain());
         }
 
         return $value;
@@ -137,35 +129,20 @@ class Configuration implements ConfigurationInterface
     }
 
     /**
-     * @param string $endpoint
+     * On server-side requests, only the bx-cloud is used
+     * On frontend-side requests, only the alternative domain is used
+     *
+     * @param string|null $domain
      * @return string
      */
-    public function getDomainEndpoint(string $endpoint) : string
+    public function getEndpointByDomain(?string $domain = ConfigurationInterface::RTUX_API_DOMAIN_MAIN) : string
     {
-        if($this->isProxy())
+        if($this->getIsDev() || $this->getIsTest())
         {
-            return str_replace("%%domain%%", ConfigurationInterface::RTUX_API_DOMAIN_ALTERNATIVE, $endpoint);
+            return str_replace("%%domain%%", $domain,ConfigurationInterface::RTUX_API_ENDPOINT_STAGE);
         }
 
-        return str_replace("%%domain%%", ConfigurationInterface::RTUX_API_DOMAIN_MAIN, $endpoint);
-    }
-
-    /**
-     * @return bool
-     */
-    public function isProxy(): bool
-    {
-        return $this->proxy;
-    }
-
-    /**
-     * @param bool $proxy
-     * @return Configuration
-     */
-    public function setProxy(bool $proxy): ConfigurationInterface
-    {
-        $this->proxy = $proxy;
-        return $this;
+        return str_replace("%%domain%%", $domain, ConfigurationInterface::RTUX_API_ENDPOINT_PRODUCTION);
     }
 
 
