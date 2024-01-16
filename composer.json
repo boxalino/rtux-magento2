@@ -7,7 +7,7 @@
   "support": {
     "email": "support@boxalino.com"
   },
-  "version": "3.1.1",
+  "version": "4.0.0",
   "license": [
     "OSL-3.0",
     "AFL-3.0"
@@ -19,7 +19,7 @@
     "magento/module-search": "*",
     "magento/module-indexer": "*",
     "magento/framework": "*",
-    "boxalino/rtux-api-php": "~3.7.2"
+    "boxalino/rtux-api-php": "~4.0.0"
   },
   "autoload": {
     "files": ["registration.php"],
