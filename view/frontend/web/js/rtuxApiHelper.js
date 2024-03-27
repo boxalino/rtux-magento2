@@ -31,7 +31,8 @@ define([
             isProduct: false,
             isNavigation: false,
             isSearch: false,
-            isRestricted: false
+            isRestricted: false,
+            isRti: false
         };
 
         /**
@@ -127,7 +128,7 @@ define([
          * @returns {boolean}
          */
         this.isTest = function() {
-           return this.options.test;
+            return this.options.test;
         }
 
         /**
@@ -140,18 +141,75 @@ define([
 
         /**
          * @public
+         * @returns {boolean}
+         */
+        this.isRti = function() {
+            return this.options.isRti;
+        }
+
+        /**
+         * @public
          */
         this.addTracker = function() {
+            this._addTracker();
+            this._addRti();
+            this.useDebugCookie();
+        }
+
+        /**
+         * @public
+         */
+        this.addTrackerNoDebug = function() {
+            this._addTracker();
+        }
+
+        /**
+         * @private
+         */
+        this._addTracker = function() {
             (function (i, s, o, g, a, m) {
                 a = s.createElement(o), m = s.getElementsByTagName(o)[0];
                 a.async = 1; a.src = g;
                 m.parentNode.insertBefore(a, m)
-            })(window, document, 'script', this.isDev() ? '//r-st.bx-cloud.com/static/bav2.min.js' : '//track.bx-cloud.com/static/bav2.min.js');
+            })(window, document, 'script', this.getTrackerSource());
 
             bxq(["setAccount", this.getAccount()]);
+        }
+
+        /**
+         * @private
+         */
+        this._addRti = function() {
+            if(this.isRti()) {
+                (function (i, s, o, g, a, m) {
+                    a = s.createElement(o), m = s.getElementsByTagName(o)[0];
+                    a.async = 1; a.src = g;
+                    m.parentNode.insertBefore(a, m)
+                })(window, document, 'script', this.getRtiSource());
+            }
+        }
+
+        /**
+         * @public
+         */
+        this.useDebugCookie = function(){
             if(this.isTest()) {
                 bxq(['debugCookie', true]);
             }
+        }
+
+        /**
+         * @returns {string}
+         */
+        this.getTrackerSource = function() {
+            return this.isDev() || this.isTest() ? '//r-st.bx-cloud.com/static/bav2.min.js' : '//track.bx-cloud.com/static/bav2.min.js';
+        }
+
+        /**
+         * @returns {string}
+         */
+        this.getRtiSource = function() {
+            return this.isDev() || this.isTest() ? '//r-st.bx-cloud.com/static/rti.min.js' : '//track.bx-cloud.com/static/rti.min.js';
         }
 
         /**

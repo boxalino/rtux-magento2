@@ -54,7 +54,15 @@ class Configuration extends \Magento\Framework\App\Helper\AbstractHelper
         $this->apiConfiguration = $apiConfiguration;
         $this->genericConfiguration = $genericConfiguration;
         $this->cookieManager = $cookieManager;
-        $this->trackClient = new Client();
+        $this->trackClient = new Client(
+            [
+                'base_uri'=>$this->_httpHeader->getRequestUri(),
+                'headers'=>[
+                    'user-agent'=>$this->_httpHeader->getHttpUserAgent(),
+                    'user-language'=>$this->_httpHeader->getHttpAcceptLanguage()
+                ]
+            ]
+        );
     }
 
     /**
@@ -141,6 +149,22 @@ class Configuration extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
+     * Check if rti is active
+     *
+     * @return bool
+     */
+    public function isRtiActive() : bool
+    {
+        $value = $this->scopeConfig->getValue('rtux/rti/status',\Magento\Store\Model\ScopeInterface::SCOPE_STORE);
+        if(empty($value))
+        {
+            return false;
+        }
+
+        return (bool)$value;
+    }
+
+    /**
      * Server-side API key to allow access without a secret
      * (only allowed for autocomplete requests)
      *
@@ -148,7 +172,7 @@ class Configuration extends \Magento\Framework\App\Helper\AbstractHelper
      */
     public function getKey() : ?string
     {
-        $value = $this->scopeConfig->getValue('rtux/api/apiServerKey', \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
+        $value = $this->scopeConfig->getValue('rtux/api/api_server_key', \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
         if(empty($value))
         {
             return null;
@@ -186,7 +210,7 @@ class Configuration extends \Magento\Framework\App\Helper\AbstractHelper
      */
     public function getEndpoint() : string
     {
-        return $this->apiConfiguration->getRestApiEndpoint();
+        return str_replace("%%account%%", $this->getAccount(), $this->apiConfiguration->getEndpointByDomain(ConfigurationInterface::RTUX_API_DOMAIN_ALTERNATIVE));
     }
 
     /**

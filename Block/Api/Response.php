@@ -41,11 +41,11 @@ class Response extends \Magento\Framework\View\Element\Template
         {
             try{
                 return $this->getApiResponsePage()->$methodName();
-            } catch (\Exception $exception)
+            } catch (\Throwable $exception)
             {
                 try{
                     return $this->$key;
-                } catch (\Exception $exception)
+                } catch (\Throwable $exception)
                 {
                     throw new UndefinedPropertyError("BoxalinoAPI: the function $methodName is not available in the response page block " . json_encode($this->getApiResponsePage()));
                 }

@@ -2,11 +2,12 @@
   "name": "boxalino/rtux-magento2",
   "description": "Boxalino Real Time User Experience (RTUX) Magento2 plugin",
   "type": "magento2-module",
-  "homepage": "http://www.boxalino.com",
+  "homepage": "https://www.boxalino.com",
   "keywords": ["boxalino","rtux","real-time","personalization","magento"],
   "support": {
     "email": "support@boxalino.com"
   },
+  "version": "2.1.10",
   "license": [
     "OSL-3.0",
     "AFL-3.0"
@@ -18,7 +19,7 @@
     "magento/module-search": "*",
     "magento/module-indexer": "*",
     "magento/framework": "*",
-    "boxalino/rtux-api-php": "~3.2.3"
+    "boxalino/rtux-api-php": "3.2.4"
   },
   "autoload": {
     "files": ["registration.php"],

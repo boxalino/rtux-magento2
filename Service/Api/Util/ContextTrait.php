@@ -38,28 +38,10 @@ trait ContextTrait
     /**
      * @return ParameterInterface
      */
-    public function getVisibilityFilter(RequestInterface $request) : ParameterInterface
-    {
-        return $this->getParameterFactory()->get(ParameterFactoryInterface::BOXALINO_API_REQUEST_PARAMETER_TYPE_FILTER)
-            ->add("products_visibility" , $this->getContextVisibility());
-    }
-
-    /**
-     * @return ParameterInterface
-     */
     public function getCategoryFilter(RequestInterface $request) : ParameterInterface
     {
         return $this->getParameterFactory()->get(ParameterFactoryInterface::BOXALINO_API_REQUEST_PARAMETER_TYPE_FILTER)
             ->add("category_id", $this->getContextNavigationId($request));
-    }
-
-    /**
-     * @return ParameterInterface
-     */
-    public function getActiveFilter(RequestInterface $request) : ParameterInterface
-    {
-        return $this->getParameterFactory()->get(ParameterFactoryInterface::BOXALINO_API_REQUEST_PARAMETER_TYPE_FILTER)
-            ->add("products_status", [\Magento\Catalog\Model\Product\Attribute\Source\Status::STATUS_ENABLED]);
     }
 
     /**
@@ -77,5 +59,6 @@ trait ContextTrait
     {
         return $this->parameterFactory;
     }
+
 
 }

@@ -71,7 +71,13 @@ trait ApiBlockTrait
             return $this->apiBlocks;
         }
 
-        return $this->getBlock()->getBlocks();
+        $block = $this->getBlock();
+        if($block)
+        {
+            return $block->getBlocks();
+        }
+
+        return new \ArrayIterator();
     }
 
     /**
@@ -203,7 +209,7 @@ trait ApiBlockTrait
             }
 
             return $apiBlock;
-        } catch (\Exception $exception)
+        } catch (\Throwable $exception)
         {
             return $this->getDefaultBlock();
         }

@@ -55,7 +55,7 @@ class Main extends \Magento\Framework\View\Element\Template
             }
 
             $blocks = $apiResponse->getBlocks();
-        } catch (\Exception $exception)
+        } catch (\Throwable $exception)
         {
             $blocks = new \ArrayIterator();
         }

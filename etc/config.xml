@@ -9,6 +9,9 @@
             <tracker>
                 <status>0</status>
             </tracker>
+            <rti>
+                <status>0</status>
+            </rti>
             <api>
                 <test>0</test>
                 <dev>0</dev>

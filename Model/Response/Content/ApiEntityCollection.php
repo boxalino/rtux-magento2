@@ -56,6 +56,20 @@ class ApiEntityCollection extends ApiEntityCollectionModel
                 ->addStoreFilter()
                 ->addUrlRewrite();
 
+            /** order the product items to match the returned order by API response */
+            foreach($this->getHitIds() as $id)
+            {
+                foreach($collection as $product)
+                {
+                    if($product->getId() === $id)
+                    {
+                        $collection->removeItemByKey($id);
+                        $collection->addItem($product);
+                        break;
+                    }
+                }
+            }
+
             $this->collection = $collection;
         }
 

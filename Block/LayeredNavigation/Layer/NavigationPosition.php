@@ -13,11 +13,10 @@ use Boxalino\RealTimeUserExperienceApi\Service\ErrorHandler\UndefinedPropertyErr
  * 1. active filters (also known as the "state")
  * 2. filters (rendered individually)
  *
- * As it is expected to have facets on left - the facets configured with position:left will be used
- *
+ * As it is expected to have facets on a position - the facets configured with a position will be used
  * @package Boxalino\RealTimeUserExperience\Block\LayeredNavigation
  */
-class Navigation extends AbstractNavigation
+class NavigationPosition extends AbstractNavigation
     implements ApiRendererInterface
 {
 
@@ -47,7 +46,6 @@ class Navigation extends AbstractNavigation
 
         return $this->filtersList;
     }
-
 
 
 }

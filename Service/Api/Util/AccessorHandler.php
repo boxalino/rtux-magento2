@@ -65,7 +65,7 @@ class AccessorHandler extends \Boxalino\RealTimeUserExperienceApi\Service\Api\Ut
                 $service->addAccessorContext($context);
             }
             return $service;
-        } catch (\Exception $exception)
+        } catch (\Throwable $exception)
         {
             throw new MissingDependencyException(
                 "BoxalinoApiAccessor: there was an issue accessing the service/model requested for $type. Original error: " . $exception->getMessage()

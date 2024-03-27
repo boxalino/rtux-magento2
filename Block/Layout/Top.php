@@ -56,7 +56,7 @@ class Top extends \Magento\Framework\View\Element\Template
             }
 
             $blocks = $apiResponse->getTop();
-        } catch (\Exception $exception)
+        } catch (\Throwable $exception)
         {
             $blocks = new \ArrayIterator();
         }

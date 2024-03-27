@@ -52,12 +52,7 @@ class Configuration implements ConfigurationInterface
         $value = $this->scopeConfig->getValue('rtux/api/url', $this->contextId);
         if(empty($value))
         {
-            if($this->getIsDev() || $this->getIsTest())
-            {
-                return str_replace("%%account%%", $this->getUsername(), ConfigurationInterface::RTUX_API_ENDPOINT_STAGE);
-            }
-
-            return str_replace("%%account%%", $this->getUsername(), ConfigurationInterface::RTUX_API_ENDPOINT_PRODUCTION);
+            return str_replace("%%account%%", $this->getUsername(), $this->getEndpointByDomain());
         }
 
         return $value;
@@ -82,7 +77,7 @@ class Configuration implements ConfigurationInterface
      */
     public function getApiKey() : string
     {
-        $value = $this->scopeConfig->getValue('rtux/general/apiKey', $this->contextId);
+        $value = $this->scopeConfig->getValue('rtux/general/api_key', $this->contextId);
         if(empty($value))
         {
             throw new MissingDependencyException("BoxalinoAPI: API KEY has not been configured.");
@@ -96,7 +91,7 @@ class Configuration implements ConfigurationInterface
      */
     public function getApiSecret() : string
     {
-        $value = $this->scopeConfig->getValue('rtux/general/apiSecret', $this->contextId);
+        $value = $this->scopeConfig->getValue('rtux/general/api_secret', $this->contextId);
         if(empty($value))
         {
             throw new MissingDependencyException("BoxalinoAPI: API SECRET has not been configured.");
@@ -132,5 +127,23 @@ class Configuration implements ConfigurationInterface
 
         return (bool)$value;
     }
+
+    /**
+     * On server-side requests, only the bx-cloud is used
+     * On frontend-side requests, only the alternative domain is used
+     *
+     * @param string|null $domain
+     * @return string
+     */
+    public function getEndpointByDomain(?string $domain = ConfigurationInterface::RTUX_API_DOMAIN_MAIN) : string
+    {
+        if($this->getIsDev() || $this->getIsTest())
+        {
+            return str_replace("%%domain%%", $domain,ConfigurationInterface::RTUX_API_ENDPOINT_STAGE);
+        }
+
+        return str_replace("%%domain%%", $domain, ConfigurationInterface::RTUX_API_ENDPOINT_PRODUCTION);
+    }
+
 
 }

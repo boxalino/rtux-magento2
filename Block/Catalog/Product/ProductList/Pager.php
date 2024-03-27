@@ -6,6 +6,7 @@ use Boxalino\RealTimeUserExperience\Block\ApiBlockTrait;
 use Boxalino\RealTimeUserExperience\Block\FrameworkBlockTrait;
 use Boxalino\RealTimeUserExperienceApi\Service\Api\Response\Accessor\Pagination;
 use Magento\Catalog\Helper\Product\ProductList;
+use Magento\Framework\DataObject;
 use Magento\Framework\View\Element\Template;
 
 /**
@@ -221,5 +222,23 @@ class Pager extends \Magento\Catalog\Block\Product\Widget\Html\Pager
             return false;
         }
     }
+
+    /**
+     * Review the 'Magento_Theme::html/pager.phtml' template (or the pager template in your integration layer)
+     * to assess if this is a needed function
+     *
+     * @return DataObject
+     */
+    public function getCollection()
+    {
+        if(!$this->_collection)
+        {
+            $this->_collection = new DataObject();
+            $this->_collection->addData(["size"=> $this->getPagination()->getTotalHitCount()]);
+        }
+
+        return $this->_collection;
+    }
+
 
 }

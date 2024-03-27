@@ -1,6 +1,7 @@
 <?php declare(strict_types=1);
 namespace Boxalino\RealTimeUserExperience\Model\Response\Content;
 
+use Boxalino\RealTimeUserExperience\Api\ApiFilterablePropertiesProviderInterface;
 use Boxalino\RealTimeUserExperience\Service\Api\Response\Accessor\Facet;
 use Boxalino\RealTimeUserExperience\Service\Api\Response\Accessor\FacetValue;
 use Boxalino\RealTimeUserExperience\Service\Api\Util\RequestParametersTrait;
@@ -23,7 +24,6 @@ class ApiFacet extends ApiFacetModelAbstract
 {
 
     use RequestParametersTrait;
-    const SELECTED_FACET_VALUES_URL_DELIMITER = ",";
 
     /**
      * @var \Magento\Eav\Model\Config
@@ -41,19 +41,33 @@ class ApiFacet extends ApiFacetModelAbstract
     protected $urlBuilder;
 
     /**
-     * @var string
+     * @var array
      */
-    protected $facetValuesDelimiter;
+    protected $filterableProperties = [];
+
+    /**
+     * @var ApiFilterablePropertiesProviderInterface
+     */
+    protected $filterablePropertiesProvider;
+
 
     public function __construct(
         \Magento\Eav\Model\Config $config,
         UrlInterface $urlBuilder,
-        string $facetValuesDelimiter
+        ApiFilterablePropertiesProviderInterface $filterablePropertiesProvider,
+        string $facetValuesDelimiter = self::SELECTED_FACET_VALUES_URL_DELIMITER,
+        string $facetPrefix = self::BOXALINO_SYSTEM_FACET_PREFIX,
+        bool $useFacetOptionIdFilter = false,
+        string $facetValueKey = "value"
     ){
         parent::__construct();
         $this->_config = $config;
         $this->urlBuilder = $urlBuilder;
+        $this->facetPrefix = $facetPrefix;
         $this->facetValuesDelimiter = $facetValuesDelimiter;
+        $this->useFacetOptionIdFilter = $useFacetOptionIdFilter;
+        $this->facetValueKey = $facetValueKey;
+        $this->filterablePropertiesProvider = $filterablePropertiesProvider;
     }
 
     /**
@@ -80,24 +94,21 @@ class ApiFacet extends ApiFacetModelAbstract
 
     /**
      * Accessing translation for the property name from DB
+     * If there is a matching property in M2 db - the facet is a M2 property
+     * If there is no matching property in M2 db - the facet is a Boxalino-provided property and prefix must be appended
      *
      * @param string $propertyName
      * @return string
      */
     public function getLabel(string $propertyName) : string
     {
-        /** if the facet name starts with products_ it makes it a Magento2 product attribute */
-        if(strpos($propertyName, AccessorFacetModelInterface::BOXALINO_STORE_FACET_PREFIX)===0)
-        {
-            $propertyName = substr($propertyName, strlen(AccessorFacetModelInterface::BOXALINO_STORE_FACET_PREFIX), strlen($propertyName));
-            try{
-                $label = $this->_getAttributeModel($propertyName)->getStoreLabel();
-                if(!empty($label))
-                {
-                    return $label;
-                }
-            } catch(\Throwable $exception) {}
-        }
+        try{
+            $label = $this->_getAttributeModel($propertyName)->getStoreLabel();
+            if(!empty($label))
+            {
+                return $label;
+            }
+        } catch(\Throwable $exception) {}
 
         return ucwords(str_replace("_", " ", $propertyName));
     }
@@ -122,11 +133,11 @@ class ApiFacet extends ApiFacetModelAbstract
      */
     public function getUrlByFacetValue(Facet $facet, FacetValue $facetValue) : string
     {
-        $value = $facetValue->getValue();
+        $value = $this->getValue($facetValue);
         if($facet->isSelected() && $facet->allowMultiselect() && !$facetValue->isSelected())
         {
             $value = implode($this->facetValuesDelimiter,
-                array_merge(explode($this->facetValuesDelimiter, $this->urlParameters[$facet->getRequestField()]), [$facetValue->getValue()])
+                array_merge(explode($this->facetValuesDelimiter, $this->urlParameters[$facet->getRequestField()]), [$this->getValue($facetValue)])
             );
         }
         $query = [
@@ -135,7 +146,6 @@ class ApiFacet extends ApiFacetModelAbstract
         ];
         return $this->urlBuilder->getUrl('*/*/*', ['_current' => true, '_use_rewrite' => true, '_query' => $query]);
     }
-
 
     /**
      * As seen in Magento2 filter item model \Magento\Catalog\Model\Layer\Filter\Item
@@ -188,7 +198,7 @@ class ApiFacet extends ApiFacetModelAbstract
             $parameters[$facet->getRequestField()] = $facet->getCleanValue();
             if($facet->allowMultiselect())
             {
-                unset($values[array_search($facetValue->getValue(), $values)]);
+                unset($values[array_search($this->getValue($facetValue), $values)]);
                 $parameters[$facet->getRequestField()] = implode($this->facetValuesDelimiter, $values);
             }
 
@@ -233,7 +243,7 @@ class ApiFacet extends ApiFacetModelAbstract
                     $this->facetValuesDelimiter,
                     array_map(
                         function(FacetValue $facetValue) {
-                            return $facetValue->getValue();
+                            return $this->getValue($facetValue);
                         },
                         $selectedFacet->getSelectedValues()
                     )
@@ -244,5 +254,25 @@ class ApiFacet extends ApiFacetModelAbstract
 
         return $this->urlParameters;
     }
+
+    /**
+     * @param $facet
+     * @return bool
+     */
+    protected function facetRequiresPrefix($facet) : bool
+    {
+        if(empty($this->filterableProperties))
+        {
+            $this->filterableProperties = $this->filterablePropertiesProvider->getFilterableAttributes();
+        }
+
+        if(in_array($facet->getField(), $this->filterableProperties))
+        {
+            return false;
+        }
+
+        return true;
+    }
+
 
 }

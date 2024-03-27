@@ -48,4 +48,13 @@ class ListApi extends \Magento\Framework\View\Element\Template
     }
 
 
+    /**
+     * @return bool
+     */
+    public function hasHits() : bool
+    {
+        return (bool) $this->getApiCollection()->count();
+    }
+
+
 }

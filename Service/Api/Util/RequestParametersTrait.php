@@ -1,6 +1,7 @@
 <?php declare(strict_types=1);
 namespace Boxalino\RealTimeUserExperience\Service\Api\Util;
 
+use Boxalino\RealTimeUserExperienceApi\Service\Api\Request\RequestDefinitionInterface;
 use Magento\Catalog\Model\Product\ProductList\Toolbar;
 use Magento\Search\Model\QueryFactory;
 
@@ -75,5 +76,32 @@ trait RequestParametersTrait
     {
         return Toolbar::MODE_PARAM_NAME;
     }
+
+    /**
+     * @return string
+     */
+    public function getSystemContextParameter() : string
+    {
+        return "id";
+    }
+
+    /**
+     * @return array
+     */
+    public function getSystemParameters() : array
+    {
+        return [
+            $this->getPageLimitParameter(),
+            $this->getPageNumberParameter(),
+            $this->getBlockViewModeParameter(),
+            $this->getSearchParameter(),
+            $this->getDirectionParameter(),
+            $this->getSortParameter(),
+            $this->getSystemContextParameter(),
+            RequestDefinitionInterface::BOXALINO_API_REQUEST_INSPECT_FLAG,
+            RequestDefinitionInterface::BOXALINO_API_WIDGET_INSPECT_FLAG
+        ];
+    }
+
 
 }

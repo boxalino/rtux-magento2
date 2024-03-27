@@ -15,6 +15,7 @@
         <arguments>
             <argument name="definitionLinks" xsi:type="array">
                 <item name="facet" xsi:type="object">Boxalino\RealTimeUserExperienceApi\Service\Api\Request\Parameter\FacetDefinitionFactory</item>
+                <item name="correlation" xsi:type="object">Boxalino\RealTimeUserExperienceApi\Service\Api\Request\Parameter\CorrelationDefinitionFactory</item>
                 <item name="filter" xsi:type="object">Boxalino\RealTimeUserExperienceApi\Service\Api\Request\Parameter\FilterDefinitionFactory</item>
                 <item name="header" xsi:type="object">Boxalino\RealTimeUserExperienceApi\Service\Api\Request\Parameter\HeaderParameterDefinitionFactory</item>
                 <item name="item" xsi:type="object">Boxalino\RealTimeUserExperienceApi\Service\Api\Request\Parameter\ItemDefinitionFactory</item>
@@ -48,6 +49,9 @@
                 </item>
                 <item name="blocks" xsi:type="array">
                     <item name="blocks" xsi:type="string">Boxalino\RealTimeUserExperience\Service\Api\Response\Accessor\Block</item>
+                </item>
+                <item name="correlations" xsi:type="array">
+                    <item name="correlations" xsi:type="string">Boxalino\RealTimeUserExperienceApi\Service\Api\Response\Accessor\Correlation</item>
                 </item>
                 <item name="bx-hits" xsi:type="array">
                     <item name="bxHits" xsi:type="string">Boxalino\RealTimeUserExperienceApi\Service\Api\Response\Accessor\BxAccessor</item>

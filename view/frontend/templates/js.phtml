@@ -15,24 +15,25 @@ $helper = $this->helper(\Boxalino\RealTimeUserExperience\Helper\Js\Configuration
         window._bxq = window._bxq || [];
         function bxq(arguments) { _bxq.push(arguments); }
     </script>
-<?php endif;?>
-<script type="text/x-magento-init">
-    {
-        "*":{
-            "rtuxApiHelper": {
-                "account":"<?= $block->escapeHtml($helper->getAccount()) ?>",
-                "key":"<?= $block->escapeHtml($helper->getKey()) ?>",
-                "endpoint":"<?= $block->escapeHtml($helper->getEndpoint()) ?>",
-                "language":"<?= $block->escapeHtml($helper->getLanguage()) ?>",
-                "dev":<?= json_encode($helper->isDev()) ?>,
-                "test":<?= json_encode($helper->isTest()) ?>,
-                "isRestricted": <?= json_encode($helper->isTrackingRestricted()) ?>,
-                "isNavigation": <?= json_encode($this->getRequest()->getModuleName() ==='catalog' && $this->getRequest()->getControllerName() ==='category' && $this->getRequest()->getActionName() ==='view'); ?>,
-                "isSearch": <?= json_encode($this->getRequest()->getModuleName() ==='catalogsearch' && $this->getRequest()->getControllerName() ==='result' && $this->getRequest()->getActionName() ==='index'); ?>,
-                "isProduct": <?= json_encode($this->getRequest()->getModuleName() ==='catalog' && $this->getRequest()->getControllerName() ==='product' && $this->getRequest()->getActionName() ==='view'); ?>,
-                "activeId": <?= json_encode($this->getRequest()->getParam("id")); ?>,
-                "currencyCode": "<?= $helper->getCurrencyCode(); ?>"
+    <script type="text/x-magento-init">
+        {
+            "*":{
+                "rtuxApiHelper": {
+                    "account":"<?= $block->escapeHtml($helper->getAccount()) ?>",
+                    "key":"<?= $block->escapeHtml($helper->getKey()) ?>",
+                    "endpoint":"<?= $block->escapeHtml($helper->getEndpoint()) ?>",
+                    "language":"<?= $block->escapeHtml($helper->getLanguage()) ?>",
+                    "dev":<?= json_encode($helper->isDev()) ?>,
+                    "test":<?= json_encode($helper->isTest()) ?>,
+                    "isRestricted": <?= json_encode($helper->isTrackingRestricted()) ?>,
+                    "isNavigation": <?= json_encode($this->getRequest()->getModuleName() ==='catalog' && $this->getRequest()->getControllerName() ==='category' && $this->getRequest()->getActionName() ==='view'); ?>,
+                    "isSearch": <?= json_encode($this->getRequest()->getModuleName() ==='catalogsearch' && $this->getRequest()->getControllerName() ==='result' && $this->getRequest()->getActionName() ==='index'); ?>,
+                    "isProduct": <?= json_encode($this->getRequest()->getModuleName() ==='catalog' && $this->getRequest()->getControllerName() ==='product' && $this->getRequest()->getActionName() ==='view'); ?>,
+                    "activeId": <?= json_encode($this->getRequest()->getParam("id")); ?>,
+                    "currencyCode": "<?= $helper->getCurrencyCode(); ?>",
+                    "isRti":<?= json_encode($helper->isRtiActive()) ?>
+                }
             }
         }
-    }
-</script>
+    </script>
+<?php endif;?>

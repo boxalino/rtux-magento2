@@ -23,11 +23,11 @@
                     <label>Boxalino account name</label>
                     <comment>Please request your account with credentials by contacting support@boxalino.com</comment>
                 </field>
-                <field id="apiKey" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0" >
+                <field id="api_key" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0" >
                     <label>ApiKey</label>
                     <comment>Please request your account with credentials by contacting support@boxalino.com</comment>
                 </field>
-                <field id="apiSecret" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="0" >
+                <field id="api_secret" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="0" >
                     <label>ApiSecret</label>
                     <comment>Please request your account with credentials by contacting support@boxalino.com</comment>
                 </field>
@@ -41,12 +41,21 @@
                     <comment>Is the JavaScript tracker enabled?</comment>
                 </field>
             </group>
+            <group id="rti" translate="label" type="text"  sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>RTI</label>
+                <!-- create text type field -->
+                <field id="status" translate="label" sortOrder="10" type="select" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Status</label>
+                    <source_model>Magento\Config\Model\Config\Source\Enabledisable</source_model>
+                    <comment>Is the RTI enabled?</comment>
+                </field>
+            </group>
 
-            <group id="api" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+            <group id="api" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>REST API</label>
                 <field id="url" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0" >
                     <label>REST API Url</label>
-                    <comment>REST API Url is https://*domain*.bx-cloud.com/narrative/*account*/api/1 where *domain* is main/r-st depending on your instance context (production or staging); *account* is the account name</comment>
+                    <comment>REST API Url is https://*sub-domain*.*domain*.com/narrative/*account*/api/1 where *sub-domain* is main/r-st depending on your instance context (production or staging); *domain* is bx-cloud/alternative (for FE API requests); *account* is the account name</comment>
                 </field>
                 <field id="test" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1" >
                     <label>Test mode</label>
@@ -57,7 +66,7 @@
                     <label>Use Development Data Index</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
-                <field id="apiServerKey" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0" >
+                <field id="api_server_key" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0" >
                     <label>JS API Key</label>
                     <comment>JavaScript API Key as provided by Boxalino</comment>
                 </field>

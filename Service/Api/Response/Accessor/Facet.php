@@ -1,6 +1,7 @@
 <?php
 namespace Boxalino\RealTimeUserExperience\Service\Api\Response\Accessor;
 
+use Boxalino\RealTimeUserExperienceApi\Service\Api\Response\Accessor\AccessorFacetModelInterface;
 use Boxalino\RealTimeUserExperienceApi\Service\Api\Response\Accessor\Facet as ApiFacet;
 
 /**
@@ -38,5 +39,23 @@ class Facet extends ApiFacet
         $this->cleanValue = $value;
         return $this;
     }
+
+    /**
+     * Check to be removed when old DI is deprecated
+     *
+     * @param string $field
+     * @return \Boxalino\RealTimeUserExperienceApi\Service\Api\Response\Accessor\Facet
+     */
+    public function setField(string $field): \Boxalino\RealTimeUserExperienceApi\Service\Api\Response\Accessor\Facet
+    {
+        if(strpos($field, AccessorFacetModelInterface::BOXALINO_STORE_FACET_PREFIX) === 0)
+        {
+            $field = substr($field, strlen(AccessorFacetModelInterface::BOXALINO_STORE_FACET_PREFIX), strlen($field));
+        }
+
+        parent::setField($field);
+        return $this;
+    }
+
 
 }
