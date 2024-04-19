@@ -149,6 +149,22 @@ class Configuration extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
+     * Check if rti is active
+     *
+     * @return bool
+     */
+    public function isRtiActive() : bool
+    {
+        $value = $this->scopeConfig->getValue('rtux/rti/status',\Magento\Store\Model\ScopeInterface::SCOPE_STORE);
+        if(empty($value))
+        {
+            return false;
+        }
+
+        return (bool)$value;
+    }
+
+    /**
      * Server-side API key to allow access without a secret
      * (only allowed for autocomplete requests)
      *

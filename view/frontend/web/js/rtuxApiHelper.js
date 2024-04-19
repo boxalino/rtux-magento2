@@ -31,7 +31,8 @@ define([
             isProduct: false,
             isNavigation: false,
             isSearch: false,
-            isRestricted: false
+            isRestricted: false,
+            isRti: false
         };
 
         /**

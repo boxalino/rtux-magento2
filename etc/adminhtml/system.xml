@@ -41,8 +41,17 @@
                     <comment>Is the JavaScript tracker enabled?</comment>
                 </field>
             </group>
+            <group id="rti" translate="label" type="text"  sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>RTI</label>
+                <!-- create text type field -->
+                <field id="status" translate="label" sortOrder="10" type="select" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Status</label>
+                    <source_model>Magento\Config\Model\Config\Source\Enabledisable</source_model>
+                    <comment>Is the RTI enabled?</comment>
+                </field>
+            </group>
 
-            <group id="api" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+            <group id="api" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>REST API</label>
                 <field id="url" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0" >
                     <label>REST API Url</label>

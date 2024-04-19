@@ -30,7 +30,8 @@ $helper = $this->helper(\Boxalino\RealTimeUserExperience\Helper\Js\Configuration
                     "isSearch": <?= json_encode($this->getRequest()->getModuleName() ==='catalogsearch' && $this->getRequest()->getControllerName() ==='result' && $this->getRequest()->getActionName() ==='index'); ?>,
                     "isProduct": <?= json_encode($this->getRequest()->getModuleName() ==='catalog' && $this->getRequest()->getControllerName() ==='product' && $this->getRequest()->getActionName() ==='view'); ?>,
                     "activeId": <?= json_encode($this->getRequest()->getParam("id")); ?>,
-                    "currencyCode": "<?= $helper->getCurrencyCode(); ?>"
+                    "currencyCode": "<?= $helper->getCurrencyCode(); ?>",
+                    "isRti":<?= json_encode($helper->isRtiActive()) ?>
                 }
             }
         }
