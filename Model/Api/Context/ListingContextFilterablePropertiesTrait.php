@@ -17,6 +17,9 @@ trait ListingContextFilterablePropertiesTrait
 
     use FrameworkFilterablePropertyTrait;
 
+    protected int $facetMaxCountDefault = -1;
+    protected int $facetMinPopulationDefault = 1;
+
     /**
      * Extend default to add filterable facets to request
      *
@@ -43,15 +46,38 @@ trait ListingContextFilterablePropertiesTrait
                 $this->getApiRequest()
                     ->addFacets(
                         $this->parameterFactory->get(ParameterFactoryInterface::BOXALINO_API_REQUEST_PARAMETER_TYPE_FACET)
-                            ->add(html_entity_decode($propertyName), -1, 1, $this->getFacetValueCorrelation())
+                            ->add(
+                                html_entity_decode($propertyName),
+                                $this->getFacetMaxCount($propertyName),
+                                $this->getFacetMinPopulation($propertyName),
+                                $this->getFacetValueCorrelation()
+                            )
                     );
             }
         }
     }
 
     /**
+     * @param string $propertyName
+     * @return int
+     */
+    public function getFacetMaxCount(string $propertyName) : int
+    {
+        return $this->facetMaxCountDefault;
+    }
+
+    /**
+     * @param string $propertyName
+     * @return int
+     */
+    public function getFacetMinPopulation(string $propertyName) : int
+    {
+        return $this->facetMinPopulationDefault;
+    }
+
+    /**
      * @param bool $value
-     * @return $this
+     * @return ListingContextInterface
      */
     public function addStoreFilterablePropertiesToApiRequest(bool $value) : ListingContextInterface
     {
