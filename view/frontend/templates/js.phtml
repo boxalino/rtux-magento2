@@ -14,7 +14,7 @@ $helper = $this->helper(\Boxalino\RealTimeUserExperience\Helper\Js\Configuration
     <script type="text/javascript">
         window._bxq = window._bxq || [];
         function bxq(arguments) { _bxq.push(arguments); }
-        bxq(['setAccount', <?= $block->escapeHtml($helper->getAccount()) ?>]);
+        bxq(['setAccount', "<?= $block->escapeHtml($helper->getAccount()) ?>"]);
         bxq(['trackPageView']);
     </script>
     <script async src="<?= $block->escapeHtml($helper->getTrackerUrl()) ?>"></script>
