@@ -14,7 +14,13 @@ $helper = $this->helper(\Boxalino\RealTimeUserExperience\Helper\Js\Configuration
     <script type="text/javascript">
         window._bxq = window._bxq || [];
         function bxq(arguments) { _bxq.push(arguments); }
+        bxq(['setAccount', "<?= $block->escapeHtml($helper->getAccount()) ?>"]);
+        bxq(['trackPageView']);
     </script>
+    <script async src="<?= $block->escapeHtml($helper->getTrackerUrl()) ?>"></script>
+    <?php if($helper->isRtiActive()):?>
+        <script async src="<?= $block->escapeHtml($helper->getRtiUrl()) ?>"></script>
+    <?php endif; ?>
     <script type="text/x-magento-init">
         {
             "*":{
@@ -32,8 +38,8 @@ $helper = $this->helper(\Boxalino\RealTimeUserExperience\Helper\Js\Configuration
                     "activeId": <?= json_encode($this->getRequest()->getParam("id")); ?>,
                     "currencyCode": "<?= $helper->getCurrencyCode(); ?>",
                     "isRti":<?= json_encode($helper->isRtiActive()) ?>
-                }
-            }
         }
+    }
+}
     </script>
 <?php endif;?>

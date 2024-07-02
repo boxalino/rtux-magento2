@@ -117,6 +117,19 @@ class Configuration extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
+     * @return string
+     */
+    public function getRtiUrl() : string
+    {
+        if($this->isDev() || $this->isTest())
+        {
+            return ConfigurationInterface::BOXALINO_API_RTI_STAGE;
+        }
+
+        return ConfigurationInterface::BOXALINO_API_RTI_PRODUCTION;
+    }
+
+    /**
      * Tracker URL for server-side requests
      *
      * @param string $session

@@ -193,7 +193,7 @@ define([
          * @public
          */
         this.useDebugCookie = function(){
-            if(this.isTest()) {
+            if(this.isTest() && this.isDev()) {
                 bxq(['debugCookie', true]);
             }
         }
