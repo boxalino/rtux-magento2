@@ -24,5 +24,15 @@
                 <value id="rti-gcs-generic" type="host">storage.googleapis.com/rtux-rtux-data-integration-rti/</value>
             </values>
         </policy>
+        <policy id="font-src">
+            <values>
+                <value id="rti-gcs-generic" type="host">storage.googleapis.com/rtux-rtux-data-integration-rti/</value>
+            </values>
+        </policy>
+        <policy id="media-src">
+            <values>
+                <value id="rti-gcs-generic" type="host">storage.googleapis.com/rtux-rtux-data-integration-rti/</value>
+            </values>
+        </policy>
     </policies>
 </csp_whitelist>
