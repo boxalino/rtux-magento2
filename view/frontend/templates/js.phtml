@@ -38,8 +38,8 @@ $helper = $this->helper(\Boxalino\RealTimeUserExperience\Helper\Js\Configuration
                     "activeId": <?= json_encode($this->getRequest()->getParam("id")); ?>,
                     "currencyCode": "<?= $helper->getCurrencyCode(); ?>",
                     "isRti":<?= json_encode($helper->isRtiActive()) ?>
+                }
+            }
         }
-    }
-}
     </script>
 <?php endif;?>

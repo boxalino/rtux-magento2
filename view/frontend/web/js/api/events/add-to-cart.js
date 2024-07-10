@@ -23,7 +23,7 @@ define([
                     var productId = $(productInfo).find('input[name="product"]').val(),
                         priceBox = $('[data-role=priceBox][data-product-id=' + productId + ']'),
                         qty = $(productInfo).find('input[name="qty"]').val(),
-                        price = $(priceBox).find('meta[itemprop="price"]')[0].content;
+                        price = $(priceBox).find('#product-price-'+ productId).data("price-amount");
 
                     /*global bxq */
                     bxq(['trackAddToBasket',
