@@ -50,7 +50,8 @@ trait ListingContextFilterablePropertiesTrait
                                 html_entity_decode($propertyName),
                                 $this->getFacetMaxCount($propertyName),
                                 $this->getFacetMinPopulation($propertyName),
-                                $this->getFacetValueCorrelation()
+                                $this->getFacetValueCorrelation(),
+                                $this->getFacetRequestProperties($propertyName)
                             )
                     );
             }

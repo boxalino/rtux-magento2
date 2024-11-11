@@ -7,6 +7,7 @@ use Boxalino\RealTimeUserExperienceApi\Service\Api\ApiCookieSubscriber;
 use Boxalino\RealTimeUserExperienceApi\Service\Api\Util\ConfigurationInterface;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Request;
+use Ramsey\Uuid\Uuid;
 use Magento\Framework\App\Helper\Context;
 use Magento\Framework\Stdlib\CookieManagerInterface;
 
@@ -86,11 +87,17 @@ class Configuration extends \Magento\Framework\App\Helper\AbstractHelper
             {
                 $this->_logger->info(json_encode($params));
             }
+            $profileId = $params['_bxv'];
+            if(is_null($profileId))
+            {
+                $this->_logger->notice("[Boxalino][track] missing _bxv detail for $event: " . json_encode($params));
+                $profileId = Uuid::uuid4()->toString();
+            }
 
             $this->trackClient->send(
                 new Request(
                     'POST',
-                    $this->getServerUrl($params["_bxv"]),
+                    $this->getServerUrl($profileId),
                     self::APPLICATION_TRACKER_HEADER,
                     json_encode(['events' => [$params]])
                 )
