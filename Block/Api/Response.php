@@ -24,6 +24,8 @@ class Response extends \Magento\Framework\View\Element\Template
         {
             return $this->apiResponsePage->getBlocks();
         }
+
+        return new \ArrayIterator();
     }
 
     /**
@@ -47,7 +49,11 @@ class Response extends \Magento\Framework\View\Element\Template
                     return $this->$key;
                 } catch (\Throwable $exception)
                 {
-                    throw new UndefinedPropertyError("BoxalinoAPI: the function $methodName is not available in the response page block " . json_encode($this->getApiResponsePage()));
+                    try {
+                        return parent::__call();
+                    } catch (\Throwable $exception) {
+                        throw new UndefinedPropertyError("BoxalinoAPI: the function $methodName is not available in the response page block " . json_encode($this->getApiResponsePage()));
+                    }
                 }
             }
         }

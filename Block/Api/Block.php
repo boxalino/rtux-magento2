@@ -33,7 +33,11 @@ class Block extends \Magento\Framework\View\Element\Template
                 return $this->getBlock()->get($key);
             } catch (\Exception $exception)
             {
-                throw new UndefinedPropertyError("BoxalinoAPI: the property $key is not available in the layout block " . json_encode($this->getBlock()));
+                try {
+                    parent::__call();
+                } catch (\Throwable $exception) {
+                    throw new UndefinedPropertyError("BoxalinoAPI: the property $key is not available in the layout block " . json_encode($this->getBlock()));
+                }
             }
         }
     }
