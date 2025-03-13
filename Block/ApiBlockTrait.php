@@ -321,6 +321,15 @@ trait ApiBlockTrait
 
         return $this->bxAttributes;
     }
-
+	
+	/**
+	 * Return 0 for the API-response blocks to not be cacheable
+	 *
+	 * @return int
+	 */
+	public function getCacheLifetime()
+	{
+		return 0;
+	}
 
 }

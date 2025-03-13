@@ -2,6 +2,7 @@
 namespace Boxalino\RealTimeUserExperience\Model\Api\Context;
 
 use Boxalino\RealTimeUserExperienceApi\Service\Api\Request\Context\ListingContextInterface;
+use Boxalino\RealTimeUserExperienceApi\Service\Api\Request\Parameter\FacetDefinition;
 use Boxalino\RealTimeUserExperienceApi\Service\Api\Request\ParameterFactoryInterface;
 use Boxalino\RealTimeUserExperienceApi\Service\Api\Request\RequestDefinitionInterface;
 use Boxalino\RealTimeUserExperienceApi\Service\Api\Request\RequestInterface;
@@ -45,17 +46,26 @@ trait ListingContextFilterablePropertiesTrait
             foreach ($storeFilterableProperties as $propertyName) {
                 $this->getApiRequest()
                     ->addFacets(
-                        $this->parameterFactory->get(ParameterFactoryInterface::BOXALINO_API_REQUEST_PARAMETER_TYPE_FACET)
-                            ->add(
-                                html_entity_decode($propertyName),
-                                $this->getFacetMaxCount($propertyName),
-                                $this->getFacetMinPopulation($propertyName),
-                                $this->getFacetValueCorrelation(),
-                                $this->getFacetRequestProperties($propertyName)
-                            )
+                        $this->getFacetDefinitionByPropertyName($propertyName)
                     );
             }
         }
+    }
+
+    /**
+     * @param string $propertyName
+     * @return FacetDefinition
+     */
+    public function getFacetDefinitionByPropertyName(string $propertyName) : FacetDefinition
+    {
+        return $this->parameterFactory->get(ParameterFactoryInterface::BOXALINO_API_REQUEST_PARAMETER_TYPE_FACET)
+            ->add(
+                html_entity_decode($propertyName),
+                $this->getFacetMaxCount($propertyName),
+                $this->getFacetMinPopulation($propertyName),
+                $this->getFacetValueCorrelation(),
+                $this->getFacetRequestProperties($propertyName)
+            );
     }
 
     /**
