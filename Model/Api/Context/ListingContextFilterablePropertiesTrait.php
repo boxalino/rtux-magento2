@@ -58,6 +58,7 @@ trait ListingContextFilterablePropertiesTrait
      */
     public function getFacetDefinitionByPropertyName(string $propertyName) : FacetDefinition
     {
+        /** @var FacetDefinition $facet */
         return $this->parameterFactory->get(ParameterFactoryInterface::BOXALINO_API_REQUEST_PARAMETER_TYPE_FACET)
             ->add(
                 html_entity_decode($propertyName),
@@ -66,6 +67,19 @@ trait ListingContextFilterablePropertiesTrait
                 $this->getFacetValueCorrelation(),
                 $this->getFacetRequestProperties($propertyName)
             );
+    }
+
+    /**
+     * @param string $propertyName
+     * @return array[]
+     */
+    public function getFacetRequestProperties(string $propertyName) : array
+    {
+        return [
+            'extra-info' => [
+                'order' =>$this->getFilterablePropertyPositionByName($propertyName)
+            ]
+        ];
     }
 
     /**

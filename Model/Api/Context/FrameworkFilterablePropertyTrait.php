@@ -22,6 +22,11 @@ trait FrameworkFilterablePropertyTrait
     protected $filterablePropertyProvider;
 
     /**
+     * @var array
+     */
+    protected array $_filterableProperties = [];
+
+    /**
      * @param RequestInterface $request
      * @return array
      */
@@ -45,7 +50,29 @@ trait FrameworkFilterablePropertyTrait
      */
     public function getFilterablePropertyNames() : array
     {
-        return $this->filterablePropertyProvider->getFilterableAttributes();
+        return array_keys($this->_getFilterableProperties());
+    }
+
+    /**
+     * @param string $name
+     * @return int
+     */
+    public function getFilterablePropertyPositionByName(string $name) : int
+    {
+        return $this->_getFilterableProperties()[$name]['position'] ?? 0;
+    }
+
+    /**
+     * @return array
+     */
+    protected function _getFilterableProperties() : array
+    {
+        if(empty($this->_filterableProperties))
+        {
+            $this->_filterableProperties = $this->filterablePropertyProvider->getFilterableAttributes();
+        }
+
+        return $this->_filterableProperties;
     }
 
 

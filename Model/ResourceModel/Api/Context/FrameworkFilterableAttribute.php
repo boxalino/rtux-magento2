@@ -40,9 +40,9 @@ class FrameworkFilterableAttribute implements ApiFilterablePropertiesProviderInt
      */
     public function getFilterableAttributes() : array
     {
-        $select = $this->_getFilterableAttributeSql(["attribute_code"]);
+        $select = $this->_getFilterableAttributeSql(["attribute_code", "c_e_a.position"]);
 
-        return $this->adapter->fetchCol($select);
+        return $this->adapter->fetchAssoc($select);
     }
 
     /**
@@ -54,10 +54,13 @@ class FrameworkFilterableAttribute implements ApiFilterablePropertiesProviderInt
     public function getFilterableAttributesWithPrefix() : array
     {
         $select = $this->_getFilterableAttributeSql(
-            [new \Zend_Db_Expr("CONCAT('$this->prefix' , attribute_code) AS attribute_code" )]
+            [
+                new \Zend_Db_Expr("CONCAT('$this->prefix' , attribute_code) AS attribute_code" ),
+                new \Zend_Db_Expr("c_e_a.position AS position" ),
+            ]
         );
 
-        return $this->adapter->fetchCol($select);
+        return $this->adapter->fetchAssoc($select);
     }
 
     /**
