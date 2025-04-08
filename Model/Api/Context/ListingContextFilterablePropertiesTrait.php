@@ -75,13 +75,18 @@ trait ListingContextFilterablePropertiesTrait
      */
     public function getFacetRequestProperties(string $propertyName) : array
     {
-        return [
-            'extra-info' => [
-                'order' =>$this->getFilterablePropertyPositionByName($propertyName)
-            ]
-        ];
+        if($this->getProperty("addStoreFilterablePropertiesOrder"))
+        {
+            return [
+                'extra-info' => [
+                    'order' =>$this->getFilterablePropertyPositionByName($propertyName)
+                ]
+            ];
+        }
+        
+        return [];
     }
-
+    
     /**
      * @param string $propertyName
      * @return int
@@ -109,6 +114,16 @@ trait ListingContextFilterablePropertiesTrait
         $this->set("addStoreFilterableProperties", (bool)$value);
         return $this;
     }
-
-
+    
+    /**
+     * @param bool $value
+     * @return ListingContextInterface
+     */
+    public function addStoreFilterablePropertiesOrderToApiRequest(bool $value) : ListingContextInterface
+    {
+        $this->set("addStoreFilterablePropertiesOrder", (bool)$value);
+        return $this;
+    }
+    
+    
 }

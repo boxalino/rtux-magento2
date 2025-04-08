@@ -81,7 +81,8 @@ class FrameworkFilterableAttribute implements ApiFilterablePropertiesProviderInt
             )
             ->where('e_a.entity_type_id = ?', \Magento\Catalog\Setup\CategorySetup::CATALOG_PRODUCT_ENTITY_TYPE_ID)
             ->where('c_e_a.is_filterable_in_search = 1 OR c_e_a.is_filterable = 1')
-            ->where("e_a.frontend_input <> 'price'");
+            ->where("e_a.frontend_input <> 'price'")
+            ->order('c_e_a.position ASC');
     }
 
     /**
