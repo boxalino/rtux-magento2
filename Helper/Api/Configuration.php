@@ -23,9 +23,24 @@ class Configuration implements ConfigurationInterface
      */
     protected $scopeConfig;
 
-    public function __construct(\Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig)
-    {
+    /**
+     * @var \Magento\Cookie\Helper\Cookie
+     */
+    protected $cookieHelper;
+
+    /**
+     * @var \Magento\Customer\Model\Session
+     */
+    protected $customerSession;
+
+    public function __construct(
+        \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
+        \Magento\Cookie\Helper\Cookie $cookieHelper,
+        \Magento\Customer\Model\Session $customerSession
+    ){
         $this->scopeConfig = $scopeConfig;
+        $this->cookieHelper = $cookieHelper;
+        $this->customerSession = $customerSession;
     }
 
     /**
@@ -143,6 +158,72 @@ class Configuration implements ConfigurationInterface
         }
 
         return str_replace("%%domain%%", $domain, ConfigurationInterface::RTUX_API_ENDPOINT_PRODUCTION);
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getSessionCustomerId() : ?int
+    {
+        if($this->customerSession->getCustomerId())
+        {
+            return $this->customerSession->getCustomerId();
+        }
+
+        return null;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isCookieRestrictionModeEnabled() : bool
+    {
+        return $this->cookieHelper->isCookieRestrictionModeEnabled();
+    }
+
+    /**
+     * https://boxalino.atlassian.net/wiki/spaces/BPKB/pages/848887816/Data+Privacy+Guidelines+for+Tracking
+     * @return bool
+     */
+    public function isUserNotAllowSaveCookie() : bool
+    {
+        return $this->cookieHelper->isUserNotAllowSaveCookie();
+    }
+
+    /**
+     * Sets a generic attribute in the customer's session.
+     * Use a unique key to prevent conflicts (e.g., 'vendor_module_consent_status').
+     *
+     * @param string $key
+     * @param string $value
+     * @return string
+     */
+    public function setSessionAttribute(string $key, string $value): string
+    {
+        $this->customerSession->setData($key, $value);
+        return $value;
+    }
+
+    /**
+     * Retrieves a generic attribute from the customer's session.
+     *
+     * @param string $key
+     * @return mixed|null
+     */
+    public function getSessionAttribute(string $key)
+    {
+        return $this->customerSession->getData($key);
+    }
+
+    /**
+     * Checks if a specific attribute exists in the customer's session.
+     *
+     * @param string $key
+     * @return bool
+     */
+    public function hasSessionAttribute(string $key): bool
+    {
+        return $this->customerSession->hasData($key);
     }
 
 

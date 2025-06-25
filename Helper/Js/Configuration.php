@@ -79,8 +79,9 @@ class Configuration extends \Magento\Framework\App\Helper\AbstractHelper
         $params['_ev'] = $event;
         $params['_t'] = round(microtime(true) * 1000);
         $params['_ln'] = $this->getLanguage();
-        $params['_bxs'] = $this->cookieManager->getCookie(ApiCookieSubscriber::BOXALINO_API_COOKIE_SESSION);
-        $params['_bxv'] = $this->cookieManager->getCookie(ApiCookieSubscriber::BOXALINO_API_COOKIE_VISITOR);
+        list($cems, $cemv) = $this->getSessionAttributes();
+        $params['_bxs'] = $cems;
+        $params['_bxv'] = $cemv;
 
         try {
             if($this->isTest())
@@ -272,7 +273,38 @@ class Configuration extends \Magento\Framework\App\Helper\AbstractHelper
      */
     public function isTrackingRestricted() : bool
     {
-        return $this->genericConfiguration->isCookieRestrictionModeEnabled();
+        return $this->apiConfiguration->isCookieRestrictionModeEnabled();
     }
+
+    /**
+     * Per Magento2 logic
+     *
+     * @return bool
+     */
+    public function userNotAllowedSaveCookie() : string
+    {
+        return $this->apiConfiguration->isUserNotAllowSaveCookie();
+    }
+
+    /**
+     * Access the tracking attributes, if they exist
+     * @return array
+     */
+    public function getSessionAttributes() : array
+    {
+        if($this->apiConfiguration->isCookieRestrictionModeEnabled() && $this->apiConfiguration->isUserNotAllowSaveCookie())
+        {
+            return [
+                $this->apiConfiguration->getSessionAttribute(ApiCookieSubscriber::BOXALINO_API_INIT_SESSION)
+                , $this->apiConfiguration->getSessionAttribute(ApiCookieSubscriber::BOXALINO_API_INIT_VISITOR)
+            ];
+        }
+
+        return [
+            $this->cookieManager->getCookie(ApiCookieSubscriber::BOXALINO_API_COOKIE_SESSION)
+            , $this->cookieManager->getCookie(ApiCookieSubscriber::BOXALINO_API_COOKIE_VISITOR)
+        ];
+    }
+
 
 }

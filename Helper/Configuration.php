@@ -21,32 +21,18 @@ class Configuration
     protected $storeManager;
 
     /**
-     * @var \Magento\Customer\Model\Session
-     */
-    protected $customerSession;
-
-    /**
      * @var \Magento\Search\Helper\Data
      */
     protected $searchHelper;
 
-    /**
-     * @var \Magento\Cookie\Helper\Cookie
-     */
-    protected $cookieHelper;
-
     public function __construct(
         \Magento\Store\Model\StoreManagerInterface $storeManager,
         \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
-        \Magento\Customer\Model\Session $customerSession,
-        \Magento\Cookie\Helper\Cookie $cookieHelper,
         \Magento\Search\Helper\Data $searchHelper
     ) {
         $this->scopeConfig = $scopeConfig;
         $this->storeManager = $storeManager;
-        $this->customerSession = $customerSession;
         $this->searchHelper = $searchHelper;
-        $this->cookieHelper = $cookieHelper;
     }
 
     /**
@@ -68,14 +54,6 @@ class Configuration
     public function getCurrencyCode() : string
     {
         return $this->storeManager->getStore()->getCurrentCurrency()->getCode();
-    }
-
-    /**
-     * @return bool
-     */
-    public function isCookieRestrictionModeEnabled() : bool
-    {
-        return $this->cookieHelper->isCookieRestrictionModeEnabled();
     }
 
     /**
@@ -124,24 +102,12 @@ class Configuration
     }
 
     /**
-     * @return int|null
-     */
-    public function getSessionCustomerId() : ?int
-    {
-        if($this->customerSession->getCustomerId())
-        {
-            return $this->customerSession->getCustomerId();
-        }
-
-        return null;
-    }
-
-    /**
      * @return string
      */
     public function getSearchQueryParameter() : string
     {
         return $this->searchHelper->getQueryParamName();
     }
+
 
 }

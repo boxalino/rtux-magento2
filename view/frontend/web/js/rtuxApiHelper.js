@@ -32,7 +32,9 @@ define([
             isNavigation: false,
             isSearch: false,
             isRestricted: false,
-            isRti: false
+            isUserNotAllowed: false,
+            userCookieConfirmed: false,
+            active: []
         };
 
         /**
@@ -104,6 +106,9 @@ define([
          * @returns {string|*|{}|DOMPoint|SVGTransform|SVGNumber|SVGLength|SVGPathSeg}
          */
         this.getApiProfileId = function() {
+            if(this.hasCookieRestriction() && !this.userCookieConfirmed()) {
+                return this.options.active[1];
+            }
             return $.mage.cookies.get('cemv');
         }
 
@@ -112,6 +117,9 @@ define([
          * @returns {string|*|{}|DOMPoint|SVGTransform|SVGNumber|SVGLength|SVGPathSeg}
          */
         this.getApiSessionId = function() {
+            if(this.hasCookieRestriction() && !this.userCookieConfirmed()) {
+                return this.options.active[0];
+            }
             return $.mage.cookies.get('cems');
         }
 
@@ -141,75 +149,9 @@ define([
 
         /**
          * @public
-         * @returns {boolean}
-         */
-        this.isRti = function() {
-            return this.options.isRti;
-        }
-
-        /**
-         * @public
-         */
-        this.addTracker = function() {
-            this._addTracker();
-            this._addRti();
-            this.useDebugCookie();
-        }
-
-        /**
-         * @public
-         */
-        this.addTrackerNoDebug = function() {
-            this._addTracker();
-        }
-
-        /**
-         * @private
-         */
-        this._addTracker = function() {
-            (function (i, s, o, g, a, m) {
-                a = s.createElement(o), m = s.getElementsByTagName(o)[0];
-                a.async = 1; a.src = g;
-                m.parentNode.insertBefore(a, m)
-            })(window, document, 'script', this.getTrackerSource());
-
-            bxq(["setAccount", this.getAccount()]);
-        }
-
-        /**
-         * @private
-         */
-        this._addRti = function() {
-            if(this.isRti()) {
-                (function (i, s, o, g, a, m) {
-                    a = s.createElement(o), m = s.getElementsByTagName(o)[0];
-                    a.async = 1; a.src = g;
-                    m.parentNode.insertBefore(a, m)
-                })(window, document, 'script', this.getRtiSource());
-            }
-        }
-
-        /**
-         * @public
          */
         this.useDebugCookie = function(){
-            if(this.isTest() && this.isDev()) {
-                bxq(['debugCookie', true]);
-            }
-        }
-
-        /**
-         * @returns {string}
-         */
-        this.getTrackerSource = function() {
-            return this.isDev() || this.isTest() ? '//r-st.bx-cloud.com/static/bav2.min.js' : '//track.bx-cloud.com/static/bav2.min.js';
-        }
-
-        /**
-         * @returns {string}
-         */
-        this.getRtiSource = function() {
-            return this.isDev() || this.isTest() ? '//r-st.bx-cloud.com/static/rti.min.js' : '//track.bx-cloud.com/static/rti.min.js';
+            bxq(['debugCookie', true]);
         }
 
         /**
@@ -218,6 +160,52 @@ define([
          */
         this.hasCookieRestriction = function() {
             return this.options.isRestricted;
+        }
+
+        /**
+         * @public
+         * @returns {boolean}
+         */
+        this.isUserNotAllowed = function() {
+            return this.options.isUserNotAllowed;
+        }
+
+        /**
+         * @public
+         * @returns {boolean}
+         */
+        this.userCookieConfirmed = function() {
+            return this.options.userCookieConfirmed;
+        }
+
+        /**
+         * @public
+         * @param value
+         */
+        this.setUserCookieConsent = function(value) {
+            this.options.userCookieConfirmed = value;
+            if(value) {
+                this.setRtuxCookie("cemv", this.options.active[1], false);
+                this.setRtuxCookie("cems", this.options.active[0], true);
+            }
+        }
+
+        /**
+         * @param name
+         * @param value
+         * @param isSession
+         */
+        this.setRtuxCookie = function(name, value, isSession) {
+            let options = {}, defaultLifetime=$.mage.cookies.defaults.lifetime;
+            if(isSession) {
+                options = {lifetime: null, expires: null};
+                $.mage.cookies.defaults.lifetime = null;
+            }
+
+            $.mage.cookies.set(name, value, options);
+            if(isSession) {
+                $.mage.cookies.defaults.lifetime = defaultLifetime;
+            }
         }
 
         /**

@@ -27,12 +27,19 @@ class SetApiCookieObserver implements ObserverInterface
      */
     protected $cookieMetadataFactory;
 
+    /**
+     * @var \Magento\Cookie\Helper\Cookie
+     */
+    protected $cookieHelper;
+
     public function __construct(
         CookieManagerInterface $cookieManager,
-        CookieMetadataFactory $cookieMetadataFactory
+        CookieMetadataFactory $cookieMetadataFactory,
+        \Magento\Cookie\Helper\Cookie $cookieHelper
     ){
         $this->cookieManager = $cookieManager;
         $this->cookieMetadataFactory = $cookieMetadataFactory;
+        $this->cookieHelper = $cookieHelper;
     }
 
     /**
@@ -42,6 +49,13 @@ class SetApiCookieObserver implements ObserverInterface
      */
     public function execute(Observer $observer) : void
     {
+        if($this->cookieHelper->isCookieRestrictionModeEnabled()) {
+            if($this->cookieHelper->isUserNotAllowSaveCookie())
+            {
+                return;
+            }
+        }
+
         if(!$this->cookieManager->getCookie(ApiCookieSubscriber::BOXALINO_API_COOKIE_SESSION))
         {
             $metadata = $this->cookieMetadataFactory
