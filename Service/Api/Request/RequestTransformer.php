@@ -24,8 +24,19 @@ class RequestTransformer extends ApiRequestTransformer
     implements RequestTransformerInterface
 {
     use RequestParametersTrait;
-
-    /**
+	
+	public function __construct(
+		ParameterFactoryInterface $parameterFactory,
+		ConfigurationInterface $configuration,
+		ApiSortingModelInterface $sortingModel,
+		LoggerInterface $logger,
+		StoreConfigurationHelper $storeConfigurationHelper
+	){
+		parent::__construct($parameterFactory, $configuration, $sortingModel, $logger);
+		$this->storeConfigurationHelper = $storeConfigurationHelper;
+	}
+	
+	/**
      * @param RequestInterface $request
      * @return string
      */

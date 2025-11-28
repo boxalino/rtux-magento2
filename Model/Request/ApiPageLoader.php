@@ -43,7 +43,7 @@ class ApiPageLoader extends ApiPageLoaderAbstract
     protected $currentApiResponseView;
 
     public function __construct(
-        CurrentApiResponseRegistryInterface$currentApiResponse,
+        CurrentApiResponseRegistryInterface $currentApiResponse,
         CurrentApiResponseViewRegistryInterface $currentApiResponseView,
         ApiCallServiceInterface $apiCallService,
         ConfigurationInterface $configuration,
