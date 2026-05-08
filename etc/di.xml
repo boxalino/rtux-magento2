@@ -1,13 +1,13 @@
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
-    <preference for="Boxalino\RealTimeUserExperienceApi\Service\Api\ApiCallServiceInterface" type="Boxalino\RealTimeUserExperienceApi\Service\Api\ApiCallService"/>
-    <preference for="Boxalino\RealTimeUserExperienceApi\Service\Api\Request\RequestDefinitionInterface" type="Boxalino\RealTimeUserExperienceApi\Service\Api\Request\RequestDefinition"/>
-    <preference for="Boxalino\RealTimeUserExperienceApi\Service\Api\Response\ResponseDefinitionInterface" type="Boxalino\RealTimeUserExperienceApi\Service\Api\Response\ResponseDefinition"/>
-    <preference for="Boxalino\RealTimeUserExperienceApi\Service\Api\Response\Accessor\AccessorInterface" type="Boxalino\RealTimeUserExperienceApi\Service\Api\Response\Accessor\Accessor"/>
-    <preference for="Boxalino\RealTimeUserExperienceApi\Service\Api\Request\Definition\ItemRequestDefinitionInterface" type="Boxalino\RealTimeUserExperienceApi\Service\Api\Request\Definition\ItemRequestDefinition"/>
-    <preference for="Boxalino\RealTimeUserExperienceApi\Service\Api\Request\Definition\AutocompleteRequestDefinitionInterface" type="Boxalino\RealTimeUserExperienceApi\Service\Api\Request\Definition\AutocompleteRequestDefinition"/>
-    <preference for="Boxalino\RealTimeUserExperienceApi\Service\Api\Request\Definition\SearchRequestDefinitionInterface" type="Boxalino\RealTimeUserExperienceApi\Service\Api\Request\Definition\SearchRequestDefinition"/>
-    <preference for="Boxalino\RealTimeUserExperienceApi\Service\Api\Request\Definition\ListingRequestDefinitionInterface" type="Boxalino\RealTimeUserExperienceApi\Service\Api\Request\Definition\ListingRequestDefinition"/>
+    <preference for="Boxalino\RealTimeUserExperienceApi\Service\Api\ApiCallServiceInterface" type="Boxalino\RealTimeUserExperience\Service\Api\ApiCallService"/>
+    <preference for="Boxalino\RealTimeUserExperienceApi\Service\Api\Request\RequestDefinitionInterface" type="Boxalino\RealTimeUserExperience\Service\Api\Request\RequestDefinition"/>
+    <preference for="Boxalino\RealTimeUserExperienceApi\Service\Api\Response\ResponseDefinitionInterface" type="Boxalino\RealTimeUserExperience\Service\Api\Response\ResponseDefinition"/>
+    <preference for="Boxalino\RealTimeUserExperienceApi\Service\Api\Response\Accessor\AccessorInterface" type="Boxalino\RealTimeUserExperience\Service\Api\Response\Accessor\Accessor"/>
+    <preference for="Boxalino\RealTimeUserExperienceApi\Service\Api\Request\Definition\ItemRequestDefinitionInterface" type="Boxalino\RealTimeUserExperience\Service\Api\Request\Definition\ItemRequestDefinition"/>
+    <preference for="Boxalino\RealTimeUserExperienceApi\Service\Api\Request\Definition\AutocompleteRequestDefinitionInterface" type="Boxalino\RealTimeUserExperience\Service\Api\Request\Definition\AutocompleteRequestDefinition"/>
+    <preference for="Boxalino\RealTimeUserExperienceApi\Service\Api\Request\Definition\SearchRequestDefinitionInterface" type="Boxalino\RealTimeUserExperience\Service\Api\Request\Definition\SearchRequestDefinition"/>
+    <preference for="Boxalino\RealTimeUserExperienceApi\Service\Api\Request\Definition\ListingRequestDefinitionInterface" type="Boxalino\RealTimeUserExperience\Service\Api\Request\Definition\ListingRequestDefinition"/>
     <preference for="Boxalino\RealTimeUserExperienceApi\Service\Api\Util\AccessorHandlerInterface" type="Boxalino\RealTimeUserExperience\Service\Api\Util\AccessorHandler"/>
     <preference for="Boxalino\RealTimeUserExperienceApi\Service\Api\Request\ParameterFactoryInterface" type="Boxalino\RealTimeUserExperience\Service\Api\Request\ParameterFactory"/>
 
@@ -74,7 +74,7 @@
 
     <preference for="Boxalino\RealTimeUserExperience\Api\ApiBlockAccessorInterface" type="Boxalino\RealTimeUserExperience\Service\Api\Response\Accessor\Block"/>
     <preference for="Boxalino\RealTimeUserExperienceApi\Service\Api\Util\ConfigurationInterface" type="Boxalino\RealTimeUserExperience\Helper\Api\Configuration"/>
-    <preference for="Boxalino\RealTimeUserExperienceApi\Framework\Content\Page\ApiResponsePageInterface" type="Boxalino\RealTimeUserExperienceApi\Framework\Content\Page\ApiResponsePage"/>
+    <preference for="Boxalino\RealTimeUserExperienceApi\Framework\Content\Page\ApiResponsePageInterface" type="Boxalino\RealTimeUserExperience\Framework\Content\Page\ApiResponsePage"/>
     <preference for="Boxalino\RealTimeUserExperienceApi\Service\Api\Request\RequestTransformerInterface" type="Boxalino\RealTimeUserExperience\Service\Api\Request\RequestTransformer"/>
     <preference for="Boxalino\RealTimeUserExperienceApi\Service\Api\Request\RequestInterface" type="Boxalino\RealTimeUserExperience\Service\Api\Request\Request"/>
 
