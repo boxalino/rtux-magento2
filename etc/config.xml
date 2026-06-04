@@ -11,6 +11,7 @@
             </tracker>
             <rti>
                 <status>0</status>
+                <lock>0</lock>
             </rti>
             <api>
                 <test>0</test>

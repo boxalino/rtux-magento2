@@ -24,6 +24,12 @@ $helper = $this->helper(\Boxalino\RealTimeUserExperience\Helper\Js\Configuration
     <?php if($helper->isRtiActive()):?>
         <script async src="<?= $block->escapeHtml($helper->getRtiUrl()) ?>"></script>
     <?php endif; ?>
+	<?php if($helper->isRtiLocked()):?>
+        <script type="text/javascript">
+            window._rtuxRti = window._rtuxRti || [];
+            window._rtuxRti.push(["setOptions", { lockTest: true }]);
+        </script>
+	<?php endif; ?>
     <script type="text/x-magento-init">
         {
             "*":{

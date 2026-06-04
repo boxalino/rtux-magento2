@@ -184,6 +184,22 @@ class Configuration extends \Magento\Framework\App\Helper\AbstractHelper
 
         return (bool)$value;
     }
+	
+	/**
+	 * Check if rti is locked
+	 *
+	 * @return bool
+	 */
+	public function isRtiLocked() : bool
+	{
+		$value = $this->scopeConfig->getValue('rtux/rti/lock',\Magento\Store\Model\ScopeInterface::SCOPE_STORE);
+		if(empty($value))
+		{
+			return false;
+		}
+		
+		return (bool)$value;
+	}
 
     /**
      * Server-side API key to allow access without a secret
