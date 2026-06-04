@@ -49,6 +49,11 @@
                     <source_model>Magento\Config\Model\Config\Source\Enabledisable</source_model>
                     <comment>Is the RTI enabled?</comment>
                 </field>
+                <field id="lock" translate="label" sortOrder="11" type="select" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Lock test mode</label>
+                    <source_model>Magento\Config\Model\Config\Source\Enabledisable</source_model>
+                    <comment>Is the RTI not allowed to switch to test mode?</comment>
+                </field>
             </group>
 
             <group id="api" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
