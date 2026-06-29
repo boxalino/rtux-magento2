@@ -57,7 +57,6 @@ class Configuration extends \Magento\Framework\App\Helper\AbstractHelper
         $this->cookieManager = $cookieManager;
         $this->trackClient = new Client(
             [
-                'base_uri'=>$this->_httpHeader->getRequestUri(),
                 'headers'=>[
                     'user-agent'=>$this->_httpHeader->getHttpUserAgent(),
                     'user-language'=>$this->_httpHeader->getHttpAcceptLanguage()
@@ -147,10 +146,10 @@ class Configuration extends \Magento\Framework\App\Helper\AbstractHelper
     {
         if($this->isDev() || $this->isTest())
         {
-            return ConfigurationInterface::BOXALINO_API_SERVER_STAGE . "?_bxv=" . $session;
+            return "https:" . ConfigurationInterface::BOXALINO_API_SERVER_STAGE . "?_bxv=" . $session;
         }
 
-        return ConfigurationInterface::BOXALINO_API_SERVER_PRODUCTION . "?_bxv=" . $session;
+        return "https:" . ConfigurationInterface::BOXALINO_API_SERVER_PRODUCTION . "?_bxv=" . $session;
     }
 
     /**
