@@ -107,6 +107,16 @@ class Navigation extends MagentoNavigation
             {
                 return $this;
             }
+	        
+	        if($this->apiLoader->getApiCallService()->isFallback())
+	        {
+		        $this->apiLoader->getApiResponsePage()->setFallback(true);
+		        $this->_logger->warning(
+			        "BoxalinoAPI Layered Navigation: the page API request is in fallback, the default layered navigation is rendered."
+		        );
+		        
+		        return parent::_prepareLayout();
+	        }
 
             $this->apiLoader
                 ->setRequest($this->requestWrapper->setRequest($this->_request))
@@ -115,7 +125,9 @@ class Navigation extends MagentoNavigation
         } catch (\Throwable $exception)
         {
             $this->apiLoader->getApiResponsePage()->setFallback(true);
-            $this->_logger->warning("BoxalinoAPI Layered Navigation Error: " . $exception->getMessage());
+	        $this->_logger->warning("BoxalinoAPI Layered Navigation Error: " . $exception->getMessage()
+		        . " [apiContext: " . get_class($this->apiContext) . "]"
+	        );
 
             return parent::_prepareLayout();
         }

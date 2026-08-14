@@ -179,12 +179,12 @@ class ApiFacet extends ApiFacetModelAbstract
         $parameters = $this->getUrlParams();
         if($facet->isSelected() && $facet->isRange())
         {
-            if($facetValue->getMinSelectedValue())
+            if($facetValue->getMinSelectedValue() && $facet->getRangeFromField())
             {
                 $parameters[$facet->getRangeFromField()] = $facet->getCleanValue();
             }
 
-            if($facetValue->getMaxSelectedValue())
+            if($facetValue->getMaxSelectedValue() && $facet->getRangeToField())
             {
                 $parameters[$facet->getRangeToField()] = $facet->getCleanValue();
             }
@@ -226,12 +226,12 @@ class ApiFacet extends ApiFacetModelAbstract
                 {
                     /** @var FacetValue $facetValue */
                     $facetValue = $selectedFacet->getSelectedValues()[0];
-                    if($facetValue->getMinSelectedValue())
+                    if($facetValue->getMinSelectedValue() && $selectedFacet->getRangeFromField())
                     {
                         $parameters[$selectedFacet->getRangeFromField()] = $facetValue->getMinSelectedValue();
                     }
 
-                    if($facetValue->getMaxSelectedValue())
+                    if($facetValue->getMaxSelectedValue() && $selectedFacet->getRangeToField())
                     {
                         $parameters[$selectedFacet->getRangeToField()] = $facetValue->getMaxSelectedValue();
                     }

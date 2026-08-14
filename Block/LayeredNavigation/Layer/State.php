@@ -66,12 +66,12 @@ class State extends \Magento\Framework\View\Element\Template
             {
                 /** @var FacetValue $facetValue */
                 $facetValue = $filter->getSelectedValues()[0];
-                if($facetValue->getMinSelectedValue())
+                if($facetValue->getMinSelectedValue() && $filter->getRangeFromField())
                 {
                     $filterState[$filter->getRangeFromField()] = $filter->getCleanValue();
                 }
 
-                if($facetValue->getMaxSelectedValue())
+                if($facetValue->getMaxSelectedValue() && $filter->getRangeToField())
                 {
                     $filterState[$filter->getRangeToField()] = $filter->getCleanValue();
                 }
